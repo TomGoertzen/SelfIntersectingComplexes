@@ -30,6 +30,8 @@ DeclareGlobalFunction("DrawSTLwithNormalsVOF");
 
 DeclareGlobalFunction("ComputeChambers");
 
+DeclareGlobalFunction("AnimateChamberExplode");
+
 DeclareGlobalFunction("fix_intersections_planar");
 
 DeclareGlobalFunction("my_triangle_fix");
