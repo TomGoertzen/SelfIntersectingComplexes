@@ -14,6 +14,52 @@ BindGlobal("MergeSurfacesCoordinates", function(data)
 end);
 
 
+# Create Simplicial Surface from Coordinate List
+# Input is of type [IsList,IsFloat]
+BingGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
+        local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
+        Coords := params[1];
+        faces := params[2];
+        
+        # vertex counter
+        i := 1;
+
+        # face counter
+        j := 1;
+        
+        VerticesInFaces := [];
+        VerticesCoords := [];
+        
+        for f in faces do
+            verts := [];
+
+            for l in [1,2,3] do 
+                pos := NumericalPosition(VerticesCoords,Coords[f][l],eps);
+            
+                if pos = fail then
+                    # vertex coord is new
+                    VerticesCoords[i] := Coords[f][l];
+                    
+                    verts[l] := i;
+
+                    i := i + 1;
+                
+                else
+                    verts[l] := pos;
+                fi;
+
+                
+            od;
+
+            VerticesInFaces[j] := verts;
+            j := j + 1;
+        od;
+        
+        surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
+
+        return [surf,VerticesCoords];
+    end
+);
 
 InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name, eps, shift_param, group, group_ort, has_intersections, has_ram_edges)
     local data, f, n, order_data, unramified_data, unram_surf, unram_points;

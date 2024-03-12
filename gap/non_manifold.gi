@@ -1,9 +1,6 @@
-Read("triangulation.gd");
-Read("triangulation.gi");
-Read("my_triangle_fix.g"); 
-
 # now shift the right faces
 # find faces with same vertex v as f (3)
+
 UmbrellaPathFaceVertex:=function(t,f,v,data,points)
 	local faces,new_face,edges,edge,old_face;
 	faces:=[];
@@ -24,7 +21,7 @@ UmbrellaPathFaceVertex:=function(t,f,v,data,points)
 end;;
 
 UmbrellaComponents := function(t,v)
-	local u_comps, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges;;
+	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges;;
 	
 	u_comps := [];
 	v_faces := ShallowCopy(FacesOfVertex(t,v));
@@ -81,7 +78,7 @@ FixNormals:=function(Coords)
     eps := 1./10^6;
     for f in Coords do
         c_verts := ShallowCopy([f[1],f[2],f[3]]);
-        norm := Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/Norm2(Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
+        norm := Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/MyNorm(Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
         if FlGeq(norm*f[4],0.,eps) then
         	f[4] := norm;
         else
@@ -95,7 +92,7 @@ end;;
 
 ReadSTL:=function(fileName)
 	# reads a file from the current dir
-	local surf, file, name, r, r2, eps, filesepr, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
+	local surf, file, name, r, r2, eps, filesepr, faces, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
 	eps := 1./10^6;
 	filesepr := SplitString(fileName, ".");
         name := filesepr[1];
@@ -413,7 +410,7 @@ end;;
 
 # only works with simple paths
 ChooseStartOfNMPath:=function(e,verts_of_e)
-	local delet_e, inner, l, q, delet1, delet2, vert1, vert2;
+	local delet_e, inner, i,l, q, delet1, delet2, vert1, vert2;
     inner := [];
     i := 1;
 	delet_e := ShallowCopy(e);
@@ -555,7 +552,7 @@ end;;
 
 
 OrderNMEdges:=function(surf, data)
-	local e,VertsOfNMEdges, coincident_vert, path, isolated_edges, cur_path, found, l, q, i, cur_verts, info, pos, curr_verts;
+	local e,VertsOfNMEdges, coincident_vert, path, isolated_edges, cur_path, found, l, q, i, j, k, cur_verts, info, pos, curr_verts;
 	e:=ShallowCopy(RamifiedEdges(surf));
 	VertsOfNMEdges := [];
 	
@@ -612,8 +609,9 @@ FixNMIntersection := function(surf,order,info,data,points,Coords,shift_param)
 	return [points,Coords];
 end;;
 
+
 FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
-	local l, comp, path, not_split, data_fix, inner, is_circle, points_fix, s_data, branches, branch, verts_current, verts_comp, same, info,j, e, v,len, s,t;
+	local l, comp, path, not_split, data_fix, inner, is_circle, points_fix, s_data, branches, branch, verts_current, verts_comp, same, info,j, e, v, i, len, s,t;
 
 	is_circle := order[2];
 	inner := order[3];
@@ -705,14 +703,21 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 end;;
 
 
-FixNMEdgePath := function(surf,order,data,points,Coords,shift_param)
-	local l, comp, path, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
-	# TODO: calculate order data here
-	not_split := [];
-	is_circle := order[2];
-	inner := order[3];
+
+
+
+
+
+FixNMEdgePath := function(surf,data,points,Coords,shift_param)
+	local l, comp, path, order_data, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
+		
+	order_data := OrderNMEdges(surf,ShallowCopy(data));
 	
-	for comp in order[1] do
+	not_split := [];
+	is_circle := order_data[2];
+	inner := order_data[3];
+	
+	for comp in order_data[1] do
 		path := comp;
 		data_fix := FixNMPathRec(surf,[comp,is_circle,inner],data,points,Coords,shift_param);
 		points := data_fix[1];
@@ -725,7 +730,7 @@ FixNMEdgePath := function(surf,order,data,points,Coords,shift_param)
 	points_fix := points;
 	
 	
-    	return [surf,points_fix,Coords];
+    	return [surf,points_fix,Coords,order_data];
 end;;
 
 
@@ -753,15 +758,15 @@ end;;
 
 
 Remedy_NonManifold := function(data,points, shift_param)
-	local surf, shift_param, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
+	local surf, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
 	#
-	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2
+	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2, shift_param: norm of the vectors that will be added to shift vertices
 	# surf1 is a intersection free complex 
 	# surf2 its outer hull
 	# faces are the faces of surf2
 	# normals_coordinates are the coordinates of the normals of the faces of surf2, indexed by the resp. face number
 	#
-	# output has structure [fully_m_surf, fully_m_points, fully_m_coords] where fully_m_surf is the manifold version of surf2 and the other two its data
+	# output has structure [fully_m_surf, fully_m_points, fully_m_coords, order_data] where fully_m_surf is the manifold version of surf2 and the other two its data. order_data is the information about the non-manifold edge paths present in the original complex
 	
 	
 	
@@ -770,61 +775,18 @@ Remedy_NonManifold := function(data,points, shift_param)
 	
 	Coords := ConvertDataFormatPtC(surf,points,normals);
 	
-	order_data := OrderNMEdges(surf,ShallowCopy(data));
-	
-	m_data := FixNMEdgePath(surf,order_data,ShallowCopy(data),points,Coords,shift_param);
+	m_data := FixNMEdgePath(surf, ShallowCopy(data),points,Coords,shift_param);
 	
 	m_surf := m_data[1];
 	m_points := m_data[2];
 	m_coords := m_data[3];
+	order_data := m_data[4];
 
 
 	fully_m_data := FixNMVerts(m_surf,data,ShallowCopy(m_points),m_coords,shift_param);
+	fully_m_data[4] := order_data;
 	
-	# TODO: output order data?
+
 	return fully_m_data;
 end;;
-
-
-##############################################################################################
-##########
-########
-######## exemplary use case
-Coord3_1:= [
-                        [  0.5877852523,  0.0000000000,  0.0000000000 ],
-                        [ -0.2628655561,  0.5257311121,  0.0000000000 ],
-                        [ -0.2628655561, -0.4253254041,  0.3090169943 ],
-                        [  0.4979796570,  0.8057480107,  0.5854101964 ],
-                        [ -0.2628655561,  0.1624598481,  0.4999999999 ],
-                        [ -0.2628655561,  0.1624598481, -0.4999999999 ],
-                        [  0.2628655561, -0.1624598481, -0.4999999999 ],
-                        [  0.2628655561, -0.1624598481,  0.4999999999 ],
-                        [  0.2628655561,  0.4253254041, -0.3090169943 ],
-                        [  0.2628655561, -0.5257311121,  0.0000000000 ],
-                        [ -0.4979796570, -0.8057480107, -0.5854101964 ],
-                        [ -0.5877852523,  0.0000000000,  0.0000000000 ],
-                        ];
-#### this block should be handeled by the previous functions  
-#
-                   
-calculate_intersections(VerticesOfFaces(Icosahedron()),Coord3_1,false,Group(()));
-datas:=last;
-points:=datas[1];
-points_fix := ShallowCopy(points);
-t:=TriangularComplexByVerticesInFaces(datas[2]); 
-VerticesOfFace(t,1); 
-n:=Crossproduct(points[2]-points[1],points[3]-points[1]);
-n:=-n/Norm2(n);
-datas:=OuterHull(t,points,1,-n);
-
-#
-####
-
-shift_param:=0.04;
-f := Remedy_NonManifold(datas,points_fix);
-DrawSTLwithNormals(f[1],"ico_3_1_path_repaired",f[2],datas[4],[]);
-
-
-
-
 

@@ -253,4 +253,83 @@ BindGlobal("Sublist", function(list, positions)
     return new_list; # Return the newly formed sublist
 end);
 
+########## new
 
+
+# check if x is greater or equal to y with a numerical error margin
+BindGlobal( "FlGeq", function(x,y,epsilon)
+	return y <= x+epsilon;
+    end
+);
+
+
+BindGlobal( "FlLeq", function(x,y,epsilon)
+	return x <= y+epsilon;
+    end
+);
+
+
+# check if List x is equal to List y with a numerical error margin, equivalent to being both FlLeq and FlGeq
+BindGlobal( "FlVEq", function(x,y,epsilon)
+        return MyNorm(x-y) <= epsilon
+    end
+);
+
+BindGlobal("NumericalPosition", function(list,entry,epsilon)
+        local i, n;
+
+        n := Length(list);
+        i := 1;
+        
+        while i <= n do
+            if FlVEq(list[i],entry, epsilon) then
+                return i;
+            fi;
+            i := i + 1;
+        od;
+        
+        return fail;
+    end
+);
+
+
+BindGlobal( "NumericalUniqueListOfLists", function(list, eps)
+        local n, I, i, unique;
+        
+        n := Length(list);
+        I := [2..n];
+        unique := [];
+        unique[1] := list[1];
+        
+        for i in I do
+            if ForAll(unique, x-> not FlVEq(x,list[i],eps)) then
+                unique[Length(unique)+1] := list[i];
+            fi;
+        od;
+        return unique;
+    end
+);
+
+# Create a simplicial surface from changed coordinates and a previous simplicial surface (that determines the faces of the new simplicial surface
+# Input is of type[IsList,IsFloat], where List = [Coordinates,SimplicialSurface]
+BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
+        local Coords, faces, f, i, j, l, pos, old_surf, VerticesInFaces, VerticesCoords, verts, surf;
+        Coords := params[1];
+        old_surf := params[2];
+        faces := ShallowCopy(Faces(old_surf));
+        
+        VerticesInFaces := [];
+        
+        
+        for f in faces do
+            verts := Coords[f][5];
+
+            VerticesInFaces[f] := verts;
+
+        od;
+        
+        surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
+
+        return [surf];
+    end
+);
