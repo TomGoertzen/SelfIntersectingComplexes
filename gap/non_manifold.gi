@@ -92,7 +92,7 @@ FixNormals:=function(Coords)
 end;;
 
 
-# TODO: add in additional functionality file
+
 ReadSTL:=function(fileName)
 	# reads a file from the current dir
 	local surf, file, name, r, r2, eps, filesepr, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
@@ -705,8 +705,9 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 end;;
 
 
-FixNMPathOuter := function(surf,order,data,points,Coords,shift_param)
-	local l, comp, path, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t;
+FixNMEdgePath := function(surf,order,data,points,Coords,shift_param)
+	local l, comp, path, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
+	# TODO: calculate order data here
 	not_split := [];
 	is_circle := order[2];
 	inner := order[3];
@@ -751,8 +752,9 @@ FixNMVerts := function(surf, data, points, Coords, shift_param)
 end;;
 
 
-Remedy_NonManifold := function(data,points)
+Remedy_NonManifold := function(data,points, shift_param)
 	local surf, shift_param, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
+	#
 	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2
 	# surf1 is a intersection free complex 
 	# surf2 its outer hull
@@ -762,7 +764,7 @@ Remedy_NonManifold := function(data,points)
 	# output has structure [fully_m_surf, fully_m_points, fully_m_coords] where fully_m_surf is the manifold version of surf2 and the other two its data
 	
 	
-	shift_param:=0.04;
+	
 	surf := ShallowCopy(data[2]);
 	normals := ShallowCopy(data[4]);
 	
@@ -770,7 +772,7 @@ Remedy_NonManifold := function(data,points)
 	
 	order_data := OrderNMEdges(surf,ShallowCopy(data));
 	
-	m_data := FixNMPathOuter(surf,order_data,ShallowCopy(data),points,Coords,shift_param);
+	m_data := FixNMEdgePath(surf,order_data,ShallowCopy(data),points,Coords,shift_param);
 	
 	m_surf := m_data[1];
 	m_points := m_data[2];
@@ -779,6 +781,7 @@ Remedy_NonManifold := function(data,points)
 
 	fully_m_data := FixNMVerts(m_surf,data,ShallowCopy(m_points),m_coords,shift_param);
 	
+	# TODO: output order data?
 	return fully_m_data;
 end;;
 
@@ -817,7 +820,7 @@ datas:=OuterHull(t,points,1,-n);
 #
 ####
 
-
+shift_param:=0.04;
 f := Remedy_NonManifold(datas,points_fix);
 DrawSTLwithNormals(f[1],"ico_3_1_path_repaired",f[2],datas[4],[]);
 
