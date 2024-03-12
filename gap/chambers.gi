@@ -443,7 +443,7 @@ InstallGlobalFunction(ComputeChambers,function(t,points)
         if not count=2 then
             vof:=VerticesOfFace(t,current_face);
             n:=Crossproduct(points[vof[2]]-points[vof[1]],points[vof[3]]-points[vof[1]]);
-            n:=n/Norm2(n);
+            n:=n/MyNorm(n);
             data:=OuterHull(t,points,current_face,n);
             if not data[2] in components[1] then
                 Add(components[1],data[2]);
@@ -462,7 +462,7 @@ InstallGlobalFunction(ComputeChambers,function(t,points)
 end);
 
 
-BindGlobal("MergeSurfacesCoordinates",function(data)
+BindGlobal("ChambersMergeSurfacesCoordinates",function(data)
     local vof, coordinates,i;
     vof:=[];
     coordinates:=[];
@@ -476,7 +476,7 @@ end);
 #This function requires the GAPic Package
 #Use the output of the PrintableOuterHull function and a name for the resulting html file
 InstallGlobalFunction(AnimateChamberExplode,function(data_tri,name)
-    local comps,InvertList,FixCoordinateFormat,c,data_big,s_assembly,coordinates_assembly,y,explode_vector_trans,points,new_points,i,v,verticesPositions,printRecord,params;
+    local comps,InvertList,FixCoordinateFormat,c,data_big,s_assembly,coordinates_assembly,y,explode_vector_trans,points,new_points,i,j,v,verticesPositions,printRecord,params;
     comps:=ComputeChambers(data_tri[1],data_tri[3]);;
     InvertList:=function(list)
       local new_list,i;
@@ -500,7 +500,7 @@ InstallGlobalFunction(AnimateChamberExplode,function(data_tri,name)
         Remove(comps,Position(comps,c));
       fi;
     od;
-    data_big:=MergeSurfacesCoordinates(comps);;
+    data_big:=ChambersMergeSurfacesCoordinates(comps);;
     s_assembly:=data_big[1];;
     coordinates_assembly:=data_big[2];;
     LoadPackage("GapIC");
