@@ -1,68 +1,4 @@
-# now shift the right faces
-# find faces with same vertex v as f (3)
-
-UmbrellaPathFaceVertex:=function(t,f,v,data,points)
-	local faces,new_face,edges,edge,old_face;
-	faces:=[];
-	new_face:=f;
-	edge:=Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face))[2];
-	while not new_face in faces do
-		Add(faces,new_face);
-		# this way you only find one butterfly part of the non-manifold edge
-		old_face:=new_face;
-		if IsRamifiedEdge(t,edge) then
-			new_face:=UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
-		else
-			new_face:=Difference(FacesOfEdge(t,edge),[new_face])[1];
-		fi;
-		edge:=Difference(Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face)),EdgesOfFace(t,old_face))[1];
-	od;
-	return faces;
-end;;
-
-UmbrellaComponents := function(t,v)
-	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges;;
-	
-	u_comps := [];
-	v_faces := ShallowCopy(FacesOfVertex(t,v));
-	v_edges := ShallowCopy(EdgesOfVertex(t,v));
-	edges_of_faces := [];
-	for f in v_faces do
-		 edges := ShallowCopy(EdgesOfFace(t,f));
-		 edges_of_faces[f] := Intersection(edges,v_edges);
-	od;
-	while v_faces <> [] do
-		fa := v_faces[1];
-		Remove(v_faces,Position(v_faces,fa));
-		comp := [fa];
-		cur_edges := [edges_of_faces[fa][1]];
-		
-		available_edges := Unique(Flat(ShallowCopy(edges_of_faces)));
-		# so that we dont land in an infinite loop
-		Remove(available_edges,Position(available_edges,edges_of_faces[fa][2]));
-		
-		while Intersection(cur_edges,available_edges) <> [] do
-			# while we can still reach a face on our side of the umbrella, continue
-			for f in v_faces do
-				connection := Intersection(edges_of_faces[f],cur_edges);
-				if connection <> [] then
-					Add(comp,f);
-					cur_edges := Union(cur_edges,edges_of_faces[f]);
-					Remove(v_faces,Position(v_faces,f));
-					for e in connection do
-						if e in available_edges then
-							Remove(available_edges,Position(available_edges,e));
-						fi;
-					od;
-				fi;
-			od;
-		od;
-		Add(u_comps,comp);
-	od;
-	return u_comps;
-end;;
-
-ChooseIsolatedVertex:=function(t,e,points,data)
+BindGlobal("_ChooseIsolatedVertex", function(t,e,points,data)
 	local voe,foe;
 	voe:=VerticesOfEdge(t,e);
 	foe:=FacesOfEdge(t,e);
@@ -70,10 +6,10 @@ ChooseIsolatedVertex:=function(t,e,points,data)
 		return voe[1];
 	fi;
 	return voe[2];
-end;;
+end);;
 
 
-FixNormals:=function(Coords)
+BindGlobal("_UpdateNormals", function(Coords)
     local f, faces, norm, c_verts, eps;
     eps := 1./10^6;
     for f in Coords do
@@ -86,122 +22,11 @@ FixNormals:=function(Coords)
         fi; 
     od;
     return Coords;
-end;;
+end);;
 
 
 
-ReadSTL:=function(fileName)
-	# reads a file from the current dir
-	local surf, file, name, r, r2, eps, filesepr, faces, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
-	eps := 1./10^6;
-	filesepr := SplitString(fileName, ".");
-        name := filesepr[1];
-        file := Filename( DirectoryCurrent(), Concatenation(name,".stl") );
-        points := [];
-        Coords:=[];
-        i := 1;
-       	# test file name
-	if IsReadableFile(file) then
-		
-        	input := InputTextFile(file);
-		r := ReadLine(input);
-		Print(r);
-		endsign := SplitString(ShallowCopy(r), " ")[1];
-		
-		while not endsign = "endsolid" do
-			
-			
-			r := ReadLine(input);
-			r2 := SplitString(ShallowCopy(r), " ");
-			endsign := r2[1];
-			if not endsign = "endsolid" then
-				Coords[i]:=[];
-				# TODO:  maybe find way to round less?
-				
-				normal := [Float(r2[3]),Float(r2[4]),Float(r2[5])];
-				Coords[i][4]:=normal;
-				
-				r := ReadLine(input);
-				
-				j := 1;
-				verts := [];
-				while j < 4 do
-					r := ReadLine(input);
-					r2 := SplitString(ShallowCopy(r), " ");
-					coords := [Float(r2[2]),Float(r2[3]),Float(r2[4])];
-					
-					test := ShallowCopy(points);
-					Add(test,coords);
-					if Length(NumericalUniqueListOfLists(test,eps)) > Length(points) then
-						Add(points,coords);
-						index := Length(points); 
-					else
-						index := NumericalPosition(points,coords,eps);
-					fi;
-					verts[j] := index;
-					Coords[i][j] := coords;
-					j := j+1;
-				od;
-				Coords[i][5] := verts;
-				r := ReadLine(input);
-				r := ReadLine(input);
-				i := i + 1;
-			fi;
-			
-		od;
-		
-	else
-		Print("file does not exist");
-		return 0;
-	fi;
-	
-	faces := [1..Length(Coords)];
-	data := SimplicialSurfaceFromCoordinates([Coords,faces],eps);
-	return [data[1],Coords,points];
-end;
-
-
-ConvertDataFormatPtC:=function(surf,points,normals)
-    local faces, f, Coords, verts, c_verts;
-
-    faces := Faces(surf);
-    Coords := [];
-    for f in faces do
-        Coords[f] := [];
-        verts := ShallowCopy(VerticesOfFace(surf,f));
-        c_verts := [points[verts[1]],points[verts[2]],points[verts[3]]];
-
-        Coords[f][1] := c_verts[1];
-        Coords[f][2] := c_verts[2];
-        Coords[f][3] := c_verts[3];
-        Coords[f][4] := normals[f];
-        Coords[f][5] := verts;
-    od;
-    return Coords;
-end;;
-
-
-ConvertDataFormatCtP:=function(surf,Coords)
-    local f, faces, points, normals, c_p, normal, v;
-
-    faces := Faces(surf);
-    points := [];
-    normals := [];
-
-    for f in faces do
-        c_p := [Coords[f][1],Coords[f][2],Coords[f][3]];
-        normal := Coords[f][4];
-        v := Coords[f][5];
-        
-        points[v[1]] := c_p[1];
-        points[v[2]] := c_p[2];
-        points[v[3]] := c_p[3];
-        normals[f] := normal;
-    od;
-    return [points,normals];
-end;;
-
-FixVertOfOuterNMEdge:=function(t,e,Coords,points,data,shift_param,not_split)
+BindGlobal("_FixVertOfOuterNMEdge", function(t,e,Coords,points,data,shift_param,not_split)
 	local v,data_fan,data_fix,alpha,verts_e, vC,n,v_p, p_f, n_f, n_ff,f, ff, vec,v_alpha,w,index_f, verts_f, verts_ff, index_ff,points_fix,t_fix,MyNormal,VoE,VoF,fa, u, p, v_index,w_index,v_faces,w_faces,i;
 	f:=FacesOfEdge(t,e)[1];
 
@@ -256,9 +81,9 @@ FixVertOfOuterNMEdge:=function(t,e,Coords,points,data,shift_param,not_split)
     	od;
     	
 	return [Coords,points_fix,[v]];
-end;;
+end);;
 
-FixNMVert:= function(surf,p,Coords,points,data,shift_param)
+BindGlobal("_FixNMVert", function(surf,p,Coords,points,data,shift_param)
 	local coord_p,f, fp, pu, verts, umbrella_verts, points_fix, umb, p_index, coord_p_new, vec, p_f, fa, u, i;
 	
 	# fix non manifold vertex
@@ -308,10 +133,10 @@ FixNMVert:= function(surf,p,Coords,points,data,shift_param)
 	od;
 	points_fix := ShallowCopy(points);
 	return [Coords,points_fix,[p]];
-end;;
+end);;
 
 
-FixVertOfInnerNMEdge:=function(t,e,Coords,points,data,shift_param,not_split)
+BindGlobal("_FixVertOfInnerNMEdge", function(t,e,Coords,points,data,shift_param,not_split)
 	local v,data_fan,data_fix, verts_e, n_f, n_ff, p_f, v_p, fa, alpha,vC,n,vec, verts_f, verts_ff, v_alpha,f,w,u,p, ff, initial_f, initial_ff, normal, index_f,index_ff,points_fix,t_fix,MyNormal,VoE,VoF,v_index,w_index,v_faces,w_faces,i;
 	initial_f:=FacesOfEdge(t,e)[1];
 
@@ -382,11 +207,11 @@ FixVertOfInnerNMEdge:=function(t,e,Coords,points,data,shift_param,not_split)
     	
 
 	return [Coords,points_fix,[v]];
-end;;
+end);;
 
 
 
-InnerRemEdge:= function(e,edges,verts_of_es)
+BindGlobal("_InnerRemEdge", function(e,edges,verts_of_es)
 	local in1, in2, vert1, vert2, q;
 	in1 := false;
 	in2 := false;
@@ -406,17 +231,17 @@ InnerRemEdge:= function(e,edges,verts_of_es)
 	else
 		return false;
 	fi;
-end;;
+end);;
 
 # only works with simple paths
-ChooseStartOfNMPath:=function(e,verts_of_e)
+BindGlobal("_ChooseStartOfNMPath", function(e,verts_of_e)
 	local delet_e, inner, i,l, q, delet1, delet2, vert1, vert2;
-    inner := [];
-    i := 1;
+    	inner := [];
+   	i := 1;
 	delet_e := ShallowCopy(e);
 	for l in e do
         inner[l] := false;
-		if InnerRemEdge(l,e,verts_of_e) then
+		if _InnerRemEdge(l,e,verts_of_e) then
 			Remove(delet_e,Position(delet_e,l));
             inner[l] := true;
 		fi;
@@ -430,9 +255,9 @@ ChooseStartOfNMPath:=function(e,verts_of_e)
 	else
 		return [delet_e,false,inner];
 	fi;
-end;;
+end);;
 
-DetectCircle:=function(Edges,VertsOfEdges,start,next)
+BindGlobal("_DetectCircle", function(Edges,VertsOfEdges,start,next)
 	local l, traversedVerts, leftVerts, leftEdges, reset, start_e, cur_e, cur_vs, n_v;
 	reset := false;
 	traversedVerts := [];
@@ -467,9 +292,9 @@ DetectCircle:=function(Edges,VertsOfEdges,start,next)
 	od;
 	
 	return false;
-end;; 
+end);; 
 
-OrderPath:=function(NMEdges,VertsOfNMEdges,start,path)
+BindGlobal("_OrderPath", function(NMEdges,VertsOfNMEdges,start,path)
 	local found, cur_verts, coincident_vert, circle_in_direction, q, c_numb, p, l, i, numb, next, next_verts, next_edges, next_edge_verts, comp;
 	numb := 0;
 	c_numb := 0;
@@ -484,7 +309,7 @@ OrderPath:=function(NMEdges,VertsOfNMEdges,start,path)
 		if ((cur_verts[1] in VertsOfNMEdges[q] and cur_verts[1] <> coincident_vert) or (cur_verts[2] in VertsOfNMEdges[q] and cur_verts[2] <> coincident_vert)) and not q in Flat(path) and not q = l then
 				
 				
-				circle_in_direction := DetectCircle(NMEdges,VertsOfNMEdges,start,q);
+				circle_in_direction := _DetectCircle(NMEdges,VertsOfNMEdges,start,q);
 				if not (circle_in_direction and c_numb > 0) then
 					numb := numb + 1;
 					if circle_in_direction then
@@ -518,7 +343,7 @@ OrderPath:=function(NMEdges,VertsOfNMEdges,start,path)
 		Unbind\[\](next_edge_verts,p);
 		
 		path[Length(path)+1] := l;
-		OrderPath(next_edges,next_edge_verts,[p,next_verts,coincident_vert],path);
+		_OrderPath(next_edges,next_edge_verts,[p,next_verts,coincident_vert],path);
 	elif numb = 0 then
 		path[Length(path)+1] := l;
 	else
@@ -534,7 +359,7 @@ OrderPath:=function(NMEdges,VertsOfNMEdges,start,path)
 			Unbind\[\](next_edge_verts,p);
 			
 			if next_edges <> [] then
-				comp[i] := OrderPath(next_edges,next_edge_verts,[p,next_verts,coincident_vert],[]);
+				comp[i] := _OrderPath(next_edges,next_edge_verts,[p,next_verts,coincident_vert],[]);
 			else
 				comp[i] := [p];
 			fi;
@@ -546,12 +371,12 @@ OrderPath:=function(NMEdges,VertsOfNMEdges,start,path)
 	fi;
 	
 	return path;
-end;;
+end);;
 
 
 
 
-OrderNMEdges:=function(surf, data)
+InstallGlobalFunction(OrderNMEdges, function(surf, data)
 	local e,VertsOfNMEdges, coincident_vert, path, isolated_edges, cur_path, found, l, q, i, j, k, cur_verts, info, pos, curr_verts;
 	e:=ShallowCopy(RamifiedEdges(surf));
 	VertsOfNMEdges := [];
@@ -560,7 +385,7 @@ OrderNMEdges:=function(surf, data)
 		VertsOfNMEdges[l] := VerticesOfEdge(surf,l);
 	od;
 	
-	info := ChooseStartOfNMPath(e,VertsOfNMEdges);
+	info := _ChooseStartOfNMPath(e,VertsOfNMEdges);
 	
 	l := info[1][1];
 	isolated_edges := [];
@@ -587,30 +412,30 @@ OrderNMEdges:=function(surf, data)
 		i := i + 1;
 	od;
     return [path,info[2],info[3]];
-end;;
+end);;
 
 
-FixNMIntersection := function(surf,order,info,data,points,Coords,shift_param)
+BindGlobal("_FixNMIntersection",function(surf,order,info,data,points,Coords,shift_param)
 	local l, int_v, branches, not_split, data_fix, b;
 	int_v := info[1];
 	branches := info[2];
 	not_split := [];
 	for b in branches do
-		data_fix := FixVertOfOuterNMEdge(surf,b[1],Coords,points,data,shift_param,not_split);
+		data_fix := _FixVertOfOuterNMEdge(surf,b[1],Coords,points,data,shift_param,not_split);
 		Coords:=data_fix[1];
 		points:=data_fix[2];
 		if Length(b[2]) > 1 then
 			# the path continues in this direction
-			data_fix := FixNMPathRec(surf,[b[2],order[2],order[3]],data,points,Coords,shift_param);
+			data_fix := _FixNMPathRec(surf,[b[2],order[2],order[3]],data,points,Coords,shift_param);
 			points := data_fix[1];
 			Coords := data_fix[2];
 		fi;
 	od;
 	return [points,Coords];
-end;;
+end);;
 
 
-FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
+BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 	local l, comp, path, not_split, data_fix, inner, is_circle, points_fix, s_data, branches, branch, verts_current, verts_comp, same, info,j, e, v, i, len, s,t;
 
 	is_circle := order[2];
@@ -621,16 +446,16 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 		if IsInt(path) then
 			if path in Edges(surf) then
 				if inner[path] or is_circle then			
-						data_fix:=FixVertOfInnerNMEdge(surf,path,Coords,points,data,shift_param,not_split);
+						data_fix:=_FixVertOfInnerNMEdge(surf,path,Coords,points,data,shift_param,not_split);
 						Coords:=data_fix[1];
 						points:=data_fix[2];
 						not_split := data_fix[3];
 				else
 						verts_current := VerticesOfEdge(surf,path);
 						
-						same := ChooseIsolatedVertex(surf,path,points,data);
+						same := _ChooseIsolatedVertex(surf,path,points,data);
 						Add(not_split,same);
-						data_fix := FixVertOfOuterNMEdge(surf,path,Coords,points,data,shift_param,not_split);
+						data_fix := _FixVertOfOuterNMEdge(surf,path,Coords,points,data,shift_param,not_split);
 			      			Coords:=data_fix[1];
 						points:=data_fix[2];
 			
@@ -655,7 +480,7 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 						branches[j]:= [branch,path[j]];
 					od;
 					info := [v,branches];
-					data_fix := FixNMIntersection(surf,[e,is_circle,inner],info,data,points,Coords,shift_param);
+					data_fix := _FixNMIntersection(surf,[e,is_circle,inner],info,data,points,Coords,shift_param);
 					points := data_fix[1];
 					Coords := data_fix[2];
 				else
@@ -671,8 +496,8 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 						elif Length(path) = 1 then
 							verts_current := VerticesOfEdge(surf,e);
 							
-							same := ChooseIsolatedVertex(surf,e,points,data);
-							data_fix := FixVertOfOuterNMEdge(surf,e,Coords,points,data,shift_param,not_split);
+							same := _ChooseIsolatedVertex(surf,e,points,data);
+							data_fix := _FixVertOfOuterNMEdge(surf,e,Coords,points,data,shift_param,not_split);
 				      			Coords:=data_fix[1];
 							points:=data_fix[2];
 						else
@@ -684,7 +509,7 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 							fi;
 						 	# vertex which does not need to be split
 						 	same := Filtered(verts_current,x-> not x in verts_comp)[1];
-							data_fix := FixVertOfOuterNMEdge(surf,e,Coords,points,data,shift_param,not_split);
+							data_fix := _FixVertOfOuterNMEdge(surf,e,Coords,points,data,shift_param,not_split);
 				      			Coords:=data_fix[1];
 							points:=data_fix[2];
 							not_split := data_fix[3];
@@ -700,7 +525,7 @@ FixNMPathRec := function(surf,order,data,points,Coords,shift_param)
 	od;
 	points_fix := points;
     	return [points_fix,Coords];
-end;;
+end);;
 
 
 
@@ -708,7 +533,7 @@ end;;
 
 
 
-FixNMEdgePath := function(surf,data,points,Coords,shift_param)
+InstallGlobalFunction(FixNMEdgePath := function(surf,data,points,Coords,shift_param)
 	local l, comp, path, order_data, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
 		
 	order_data := OrderNMEdges(surf,ShallowCopy(data));
@@ -719,7 +544,7 @@ FixNMEdgePath := function(surf,data,points,Coords,shift_param)
 	
 	for comp in order_data[1] do
 		path := comp;
-		data_fix := FixNMPathRec(surf,[comp,is_circle,inner],data,points,Coords,shift_param);
+		data_fix := _FixNMPathRec(surf,[comp,is_circle,inner],data,points,Coords,shift_param);
 		points := data_fix[1];
 		Coords:= data_fix[2];
 		
@@ -731,11 +556,11 @@ FixNMEdgePath := function(surf,data,points,Coords,shift_param)
 	
 	
     	return [surf,points_fix,Coords,order_data];
-end;;
+end);;
 
 
 
-FixNMVerts := function(surf, data, points, Coords, shift_param)
+InstallGlobalFunction(FixNMVerts := function(surf, data, points, Coords, shift_param)
 	local NM_verts, v, new_data, s_data;
 	
 	# to be executed after fixing the non-manifold edges
@@ -743,7 +568,7 @@ FixNMVerts := function(surf, data, points, Coords, shift_param)
 	NM_verts := ShallowCopy(RamifiedVertices(surf));
 	
 	for v in NM_verts do
-		new_data := FixNMVert(surf,v,Coords,points,data,shift_param);
+		new_data := _FixNMVert(surf,v,Coords,points,data,shift_param);
 		Coords := new_data[1];
 		points := new_data[2];
 		
@@ -752,12 +577,12 @@ FixNMVerts := function(surf, data, points, Coords, shift_param)
 	s_data := SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
 	surf := s_data[1];
 	
-	Coords := FixNormals(Coords);
+	Coords := _UpdateNormals(Coords);
 	return [surf,points,Coords];
-end;;
+end);;
 
 
-Remedy_NonManifold := function(data,points, shift_param)
+InstallGlobalFunction(Remedy_NonManifold := function(data,points, shift_param)
 	local surf, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
 	#
 	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2, shift_param: norm of the vectors that will be added to shift vertices
@@ -788,5 +613,5 @@ Remedy_NonManifold := function(data,points, shift_param)
 	
 
 	return fully_m_data;
-end;;
+end);;
 
