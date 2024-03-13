@@ -58,7 +58,7 @@ datas:=OuterHull(t,points,1,-n);
 ####
 
 shift_param:=0.04;
-f := Remedy_NonManifold(datas,points_fix,shift_param);
+f := RemedyNonManifold(datas,points_fix,shift_param);
 DrawSTLwithNormals(f[1],"ico_3_1_path_repaired",f[2],datas[4],[]);
 
 ######## 

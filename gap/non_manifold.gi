@@ -582,7 +582,7 @@ InstallGlobalFunction(FixNMVerts := function(surf, data, points, Coords, shift_p
 end);;
 
 
-InstallGlobalFunction(Remedy_NonManifold := function(data,points, shift_param)
+InstallGlobalFunction(RemedyNonManifold := function(data,points, shift_param)
 	local surf, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
 	#
 	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2, shift_param: norm of the vectors that will be added to shift vertices

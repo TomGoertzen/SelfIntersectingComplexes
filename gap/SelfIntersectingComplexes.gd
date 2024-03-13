@@ -56,4 +56,11 @@ DeclareGlobalFunction("calculate_intersections_groups");
 
 DeclareGlobalFunction("TwoTriangleIntersection");
 
+DeclareGlobalFunction("OrderNMEdges");
+
+DeclareGlobalFunction("FixNMEdgePath");
+
+DeclareGlobalFunction("FixNMVerts");
+
+DeclareGlobalFunction("RemedyNonManifold");
 
