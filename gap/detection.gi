@@ -481,7 +481,6 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 								fi;
 							od;
 							if Size(cur_line)=1 then
-								#Error();
 								#test if point of j from edge l1 lies inside i
 									if l1[1] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([l[j][1][l1[1]]],cur_line),eps))=2 then
 										Add(l[i][1],cur_line[1]);
@@ -500,17 +499,6 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
 							fi;
 						od;
-					#elif Size(inside_points)=1 then
-						# one inside point
-					#	Add(l[i][1],l[j][1][inside_points[1]]);
-					#if Size(inside_points)=2 then
-					#	Add(l[i][1],l[j][1][inside_points[1]]);
-					#	Add(l[i][1],l[j][1][inside_points[2]]);
-					#elif Size(inside_points)=3 then
-					#	Add(l[i][1],l[j][1][inside_points[1]]);
-					#	Add(l[i][1],l[j][1][inside_points[2]]);
-					#	Add(l[i][1],l[j][1][inside_points[3]]);
-					#fi;
 					continue;
 				fi;
 				intersection:=TwoTriangleIntersection(l[i][1]{[1..3]},l[j][1]{[1..3]},eps);
