@@ -16,7 +16,7 @@ end);
 
 # Create Simplicial Surface from Coordinate List
 # Input is of type [IsList,IsFloat]
-BingGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
+BindGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
         local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
         Coords := params[1];
         faces := params[2];
