@@ -266,24 +266,6 @@ BindGlobal("NumericalPosition", function(list,entry,epsilon)
     end
 );
 
-
-BindGlobal( "NumericalUniqueListOfLists", function(list, eps)
-        local n, I, i, unique;
-        
-        n := Length(list);
-        I := [2..n];
-        unique := [];
-        unique[1] := list[1];
-        
-        for i in I do
-            if ForAll(unique, x-> not FlVEq(x,list[i],eps)) then
-                unique[Length(unique)+1] := list[i];
-            fi;
-        od;
-        return unique;
-    end
-);
-
 # creates a triangular complex from coordinate data
 BindGlobal( "TriangularComplexFromCoordinates", function(params,eps)
         local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
