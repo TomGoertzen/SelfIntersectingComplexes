@@ -253,4 +253,307 @@ BindGlobal("Sublist", function(list, positions)
     return new_list; # Return the newly formed sublist
 end);
 
+########## new
 
+
+# check if x is greater or equal to y with a numerical error margin
+BindGlobal( "FlGeq", function(x,y,epsilon)
+	return y <= x+epsilon;
+    end
+);
+
+
+BindGlobal( "FlLeq", function(x,y,epsilon)
+	return x <= y+epsilon;
+    end
+);
+
+
+# check if List x is equal to List y with a numerical error margin, equivalent to being both FlLeq and FlGeq
+BindGlobal( "FlVEq", function(x,y,epsilon)
+        return MyNorm(x-y) <= epsilon
+    end
+);
+
+BindGlobal("NumericalPosition", function(list,entry,epsilon)
+        local i, n;
+
+        n := Length(list);
+        i := 1;
+        
+        while i <= n do
+            if FlVEq(list[i],entry, epsilon) then
+                return i;
+            fi;
+            i := i + 1;
+        od;
+        
+        return fail;
+    end
+);
+
+
+BindGlobal( "NumericalUniqueListOfLists", function(list, eps)
+        local n, I, i, unique;
+        
+        n := Length(list);
+        I := [2..n];
+        unique := [];
+        unique[1] := list[1];
+        
+        for i in I do
+            if ForAll(unique, x-> not FlVEq(x,list[i],eps)) then
+                unique[Length(unique)+1] := list[i];
+            fi;
+        od;
+        return unique;
+    end
+);
+
+# creates a triangular complex from coordinate data
+BindGlobal( "TriangularComplexFromCoordinates", function(params,eps)
+        local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
+        Coords := params[1];
+        faces := params[2];
+        
+        # vertex counter
+        i := 1;
+
+        # face counter
+        j := 1;
+        
+        VerticesInFaces := [];
+        VerticesCoords := [];
+        
+        for f in faces do
+            verts := [];
+
+            for l in [1,2,3] do 
+                pos := NumericalPosition(VerticesCoords,Coords[f][l],eps);
+            
+                if pos = fail then
+                    # vertex coord. is new
+                    VerticesCoords[i] := Coords[f][l];
+                    
+                    verts[l] := i;
+
+                    i := i + 1;
+                
+                else
+                    verts[l] := pos;
+                fi;
+
+                
+            od;
+
+            VerticesInFaces[j] := verts;
+            j := j + 1;
+        od;
+        
+        surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
+
+        return [surf,VerticesCoords];
+    end
+);;
+
+
+# Create a simplicial surface from changed coordinates and a previous simplicial surface (that determines the faces of the new simplicial surface
+# Input is of type[IsList,IsFloat], where List = [Coordinates,SimplicialSurface]
+BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
+        local Coords, faces, f, i, j, l, pos, old_surf, VerticesInFaces, VerticesCoords, verts, surf;
+        Coords := params[1];
+        old_surf := params[2];
+        faces := ShallowCopy(Faces(old_surf));
+        
+        VerticesInFaces := [];
+        
+        
+        for f in faces do
+            verts := Coords[f][5];
+
+            VerticesInFaces[f] := verts;
+
+        od;
+        
+        surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
+
+        return [surf];
+    end
+);
+
+
+
+BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
+	local faces,new_face,edges,edge,old_face;
+	faces:=[];
+	new_face:=f;
+	edge:=Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face))[2];
+	while not new_face in faces do
+		Add(faces,new_face);
+		# this way you only find one butterfly part of the non-manifold edge
+		old_face:=new_face;
+		if IsRamifiedEdge(t,edge) then
+			new_face:=UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
+		else
+			new_face:=Difference(FacesOfEdge(t,edge),[new_face])[1];
+		fi;
+		edge:=Difference(Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face)),EdgesOfFace(t,old_face))[1];
+	od;
+	return faces;
+end);;
+
+# outputs local umbrellas at vertex v
+BindGlobal("UmbrellaComponents",function(t,v)
+	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges;;
+	
+	u_comps := [];
+	v_faces := ShallowCopy(FacesOfVertex(t,v));
+	v_edges := ShallowCopy(EdgesOfVertex(t,v));
+	edges_of_faces := [];
+	for f in v_faces do
+		 edges := ShallowCopy(EdgesOfFace(t,f));
+		 edges_of_faces[f] := Intersection(edges,v_edges);
+	od;
+	while v_faces <> [] do
+		fa := v_faces[1];
+		Remove(v_faces,Position(v_faces,fa));
+		comp := [fa];
+		cur_edges := [edges_of_faces[fa][1]];
+		
+		available_edges := Unique(Flat(ShallowCopy(edges_of_faces)));
+		# so that we dont land in an infinite loop
+		Remove(available_edges,Position(available_edges,edges_of_faces[fa][2]));
+		
+		while Intersection(cur_edges,available_edges) <> [] do
+			# while we can still reach a face on our side of the umbrella, continue
+			for f in v_faces do
+				connection := Intersection(edges_of_faces[f],cur_edges);
+				if connection <> [] then
+					Add(comp,f);
+					cur_edges := Union(cur_edges,edges_of_faces[f]);
+					Remove(v_faces,Position(v_faces,f));
+					for e in connection do
+						if e in available_edges then
+							Remove(available_edges,Position(available_edges,e));
+						fi;
+					od;
+				fi;
+			od;
+		od;
+		Add(u_comps,comp);
+	od;
+	return u_comps;
+end);;
+
+# reads a stl file and creates a complex / simplicial surface (depending on the regularity of the object)
+BindGlobal("ReadSTL", function(fileName)
+	# reads a file from the current dir
+	local surf, file, name, r, r2, eps, filesepr, faces, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
+	eps := 1./10^6;
+	filesepr := SplitString(fileName, ".");
+        name := filesepr[1];
+        file := Filename( DirectoryCurrent(), Concatenation(name,".stl") );
+        points := [];
+        Coords:=[];
+        i := 1;
+       	# test file name
+	if IsReadableFile(file) then
+		
+        	input := InputTextFile(file);
+		r := ReadLine(input);
+		Print(r);
+		endsign := SplitString(ShallowCopy(r), " ")[1];
+		
+		while not endsign = "endsolid" do
+			
+			
+			r := ReadLine(input);
+			r2 := SplitString(ShallowCopy(r), " ");
+			endsign := r2[1];
+			if not endsign = "endsolid" then
+				Coords[i]:=[];
+				# TODO:  maybe find way to round less?
+				
+				normal := [Float(r2[3]),Float(r2[4]),Float(r2[5])];
+				Coords[i][4]:=normal;
+				
+				r := ReadLine(input);
+				
+				j := 1;
+				verts := [];
+				while j < 4 do
+					r := ReadLine(input);
+					r2 := SplitString(ShallowCopy(r), " ");
+					coords := [Float(r2[2]),Float(r2[3]),Float(r2[4])];
+					
+					test := ShallowCopy(points);
+					Add(test,coords);
+					if Length(NumericalUniqueListOfLists(test,eps)) > Length(points) then
+						Add(points,coords);
+						index := Length(points); 
+					else
+						index := NumericalPosition(points,coords,eps);
+					fi;
+					verts[j] := index;
+					Coords[i][j] := coords;
+					j := j+1;
+				od;
+				Coords[i][5] := verts;
+				r := ReadLine(input);
+				r := ReadLine(input);
+				i := i + 1;
+			fi;
+			
+		od;
+		
+	else
+		Print("file does not exist");
+		return 0;
+	fi;
+	
+	faces := [1..Length(Coords)];
+	data := TriangularComplexFromCoordinates([Coords,faces],eps);
+	return [data[1],Coords,points];
+end);;
+
+
+
+BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
+    local faces, f, Coords, verts, c_verts;
+
+    faces := Faces(surf);
+    Coords := [];
+    for f in faces do
+        Coords[f] := [];
+        verts := ShallowCopy(VerticesOfFace(surf,f));
+        c_verts := [points[verts[1]],points[verts[2]],points[verts[3]]];
+
+        Coords[f][1] := c_verts[1];
+        Coords[f][2] := c_verts[2];
+        Coords[f][3] := c_verts[3];
+        Coords[f][4] := normals[f];
+        Coords[f][5] := verts;
+    od;
+    return Coords;
+end);;
+
+
+BindGlobal("ConvertDataFormatCtP", function(surf,Coords)
+    local f, faces, points, normals, c_p, normal, v;
+
+    faces := Faces(surf);
+    points := [];
+    normals := [];
+
+    for f in faces do
+        c_p := [Coords[f][1],Coords[f][2],Coords[f][3]];
+        normal := Coords[f][4];
+        v := Coords[f][5];
+        
+        points[v[1]] := c_p[1];
+        points[v[2]] := c_p[2];
+        points[v[3]] := c_p[3];
+        normals[f] := normal;
+    od;
+    return [points,normals];
+end);;
