@@ -125,18 +125,12 @@ end);
 
 # Floating point less than or equal check
 BindGlobal("FlLeq",function(x,y,epsilon)
-    if x-y <= epsilon then
-        return true;
-    fi;
-    return false;
+    return x-y <= epsilon;
 end);
 
 # Floating point greater than or equal check
 BindGlobal("FlGeq",function(x,y,epsilon)
-    if y-x <= epsilon then
-        return true;
-    fi;
-    return false;
+    return y-x <= epsilon;
 end);
 
 # Check if two lines lie on the same plane
@@ -253,27 +247,7 @@ BindGlobal("Sublist", function(list, positions)
     return new_list; # Return the newly formed sublist
 end);
 
-########## new
 
-
-# check if x is greater or equal to y with a numerical error margin
-BindGlobal( "FlGeq", function(x,y,epsilon)
-	return y <= x+epsilon;
-    end
-);
-
-
-BindGlobal( "FlLeq", function(x,y,epsilon)
-	return x <= y+epsilon;
-    end
-);
-
-
-# check if List x is equal to List y with a numerical error margin, equivalent to being both FlLeq and FlGeq
-BindGlobal( "FlVEq", function(x,y,epsilon)
-        return MyNorm(x-y) <= epsilon
-    end
-);
 
 BindGlobal("NumericalPosition", function(list,entry,epsilon)
         local i, n;
