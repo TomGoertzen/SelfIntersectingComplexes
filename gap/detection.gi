@@ -401,23 +401,27 @@ InstallGlobalFunction(calculate_intersections_groups,function(t,coordinates,inte
 			fi;
 		od;
 	od;
-	#Print("Retriangulation of triangles. \n");
-	data_triangulated:=[];
-	# transfer triangulations to all other triangles
-	for k in [1..Size(orbs)] do
-		i:=orbs[k][1];
-		#Print("Triangulation for face ",String(i),"\n");
-		data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
-		while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
-			Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
+	if intersections_only then
+		return l;
+	else
+		#Print("Retriangulation of triangles. \n");
+		data_triangulated:=[];
+		# transfer triangulations to all other triangles
+		for k in [1..Size(orbs)] do
+			i:=orbs[k][1];
+			#Print("Triangulation for face ",String(i),"\n");
 			data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+			while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
+				Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
+				data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+			od;
+			for h in [2..Size(orbs[k])] do
+				j:=orbs[k][h];
+				data_triangulated[j]:=SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
+			od;
 		od;
-		for h in [2..Size(orbs[k])] do
-			j:=orbs[k][h];
-			data_triangulated[j]:=SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
-		od;
-	od;
-	return join_triangles(data_triangulated);
+		return join_triangles(data_triangulated);
+	fi;
 end);
 
 # version without group in orthogonal group
@@ -435,7 +439,7 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 		for j in [1..Size(vof)] do
 			# output of the form [vertices,intersection_edges]
 			if i<>j then
-				#check if triangles are coplanar
+				#check if triangles are coplanar and fix cases
 				n:=Crossproduct(l[i][1][2]-l[i][1][1],l[i][1][3]-l[i][1][1]);
 				if (Dot(n,l[j][1][1])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][2])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][3])-Dot(n,l[i][1][1]))^2<eps then
 					inside_points:=[];
@@ -444,7 +448,19 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 							Add(inside_points,m);
 						fi;
 					od;
-					if Size(inside_points)=0 then
+					if Size(inside_points)=2 then
+						Add(l[i][1],l[j][1][inside_points[1]]);
+						Add(l[i][1],l[j][1][inside_points[2]]);
+						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
+					elif Size(inside_points)=3 then
+						Add(l[i][1],l[j][1][inside_points[1]]);
+						Add(l[i][1],l[j][1][inside_points[2]]);
+						Add(l[i][1],l[j][1][inside_points[3]]);
+						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
+						AddSet(l[i][2],[Size(l[i][1])-2,Size(l[i][1])-1]);
+						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
+					fi;
+					#if Size(inside_points)=0 then
 						# no inside points check for line intersections
 						for l1 in Combinations([1..3],2) do
 							cur_line:=[];
@@ -452,7 +468,9 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
 								if res[1] then
 									if Size(res[2])=3 then
-										Add(cur_line,res[2]);
+										if MyNumericalPosition(l[i][1]{[1,2,3]},res[2],eps)=fail then
+											Add(cur_line,res[2]);
+										fi;
 									elif Size(res[2])=2 then
 										Error();
 										Add(l[i][1],res[2][1]);
@@ -463,24 +481,36 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 								fi;
 							od;
 							if Size(cur_line)=1 then
-								Add(l[i][1],cur_line[1]);
+								#Error();
+								#test if point of j from edge l1 lies inside i
+									if l1[1] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([l[j][1][l1[1]]],cur_line),eps))=2 then
+										Add(l[i][1],cur_line[1]);
+										Add(l[i][1],l[j][1][l1[1]]);
+										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
+									elif l1[2] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([l[j][1][l1[2]]],cur_line),eps))=2 then
+										Add(l[i][1],cur_line[1]);
+										Add(l[i][1],l[j][1][l1[2]]);
+										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
+									else
+										Add(l[i][1],cur_line[1]);
+									fi;
 							elif Size(cur_line)=2 then
 								Add(l[i][1],cur_line[1]);
 								Add(l[i][1],cur_line[2]);
 								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
 							fi;
 						od;
-					elif Size(inside_points)=1 then
+					#elif Size(inside_points)=1 then
 						# one inside point
-						Add(l[i][1],l[j][1][inside_points[1]]);
-					elif Size(inside_points)=2 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-					elif Size(inside_points)=3 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						Add(l[i][1],l[j][1][inside_points[3]]);
-					fi;
+					#	Add(l[i][1],l[j][1][inside_points[1]]);
+					#if Size(inside_points)=2 then
+					#	Add(l[i][1],l[j][1][inside_points[1]]);
+					#	Add(l[i][1],l[j][1][inside_points[2]]);
+					#elif Size(inside_points)=3 then
+					#	Add(l[i][1],l[j][1][inside_points[1]]);
+					#	Add(l[i][1],l[j][1][inside_points[2]]);
+					#	Add(l[i][1],l[j][1][inside_points[3]]);
+					#fi;
 					continue;
 				fi;
 				intersection:=TwoTriangleIntersection(l[i][1]{[1..3]},l[j][1]{[1..3]},eps);
@@ -499,20 +529,27 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 					Add(l[i][1],intersection[2]);
 					AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
 				fi;
+				if Size(intersection)=1 then
+					Add(l[i][1],intersection[1]);
+				fi;
 			fi;
 		od;
 	od;
-	data_triangulated:=[];
-	# transfer triangulations to all other triangles
-	for k in [1..Size(orbs_vof)] do
-		i:=Position(vof,orbs_vof[k][1]);
-		data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
-		for h in [2..Size(orbs_vof[k])] do
-			j:=Position(vof,orbs_vof[k][h]);
-			data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
+	if intersections_only then
+		return l;
+	else
+		data_triangulated:=[];
+		# transfer triangulations to all other triangles
+		for k in [1..Size(orbs_vof)] do
+			i:=Position(vof,orbs_vof[k][1]);
+			data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+			for h in [2..Size(orbs_vof[k])] do
+				j:=Position(vof,orbs_vof[k][h]);
+				data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
+			od;
 		od;
-	od;
-	return join_triangles(data_triangulated);
+		return join_triangles(data_triangulated);
+	fi;
 end);
 
 InstallGlobalFunction(calculate_intersections_comp,function(s,coordinates,intersections_only)
@@ -739,7 +776,7 @@ InstallGlobalFunction(fix_intersections_planar,function(data)
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
 		while check_edges<>[] do
-			e:=Remove(check_edges);		
+			e:=Remove(check_edges);
 			if LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
 				orig_j:=ShallowCopy(e);
 				if not Set([e[1],i]) in data[2] or not Set([e[2],i]) in data[2] then
@@ -790,16 +827,17 @@ InstallGlobalFunction(fix_intersections_planar,function(data)
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
 		while check_edges<>[] do
-			e:=Remove(check_edges);		
+			e:=Remove(check_edges);
 			if LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
 				orig_j:=ShallowCopy(e);
+				Remove(data[2],Position(data[2],orig_j));
 				if not Set([e[1],i]) in data[2] or not Set([e[2],i]) in data[2] then
 					data[2]:=Concatenation(data[2],Set([Set([e[1],i]),Set([e[2],i])]));
-					Remove(data[2],Position(data[2],orig_j));
 					check_edges:=Concatenation(check_edges,Set([Set([e[1],i]),Set([e[2],i])]));
 				fi;
 			fi;
 		od;
+
 	od;
 	return clean_data(data,eps);;
 end);
