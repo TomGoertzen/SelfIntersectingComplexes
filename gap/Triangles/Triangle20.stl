@@ -1,0 +1,58 @@
+solid Triangles/Triangle20
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 0. 0. 0. 
+			vertex 1. 1.5 0. 
+			vertex 2. 0. 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 0. 0. 0. 
+			vertex 0.8571428571428571 1.7142857142857142 0. 
+			vertex 1. 1.5 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 2. 0. 0. 
+			vertex 1. 1.5 0. 
+			vertex 1.1428571428571428 1.7142857142857142 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 1. 2. 0. 
+			vertex 1.1428571428571428 1.7142857142857142 0. 
+			vertex 0.8571428571428571 1.7142857142857142 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 1. 2. 0. 
+			vertex 0.8571428571428571 1.7142857142857142 0. 
+			vertex 0. 3. 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 1. 2. 0. 
+			vertex 2. 3. 0. 
+			vertex 1.1428571428571428 1.7142857142857142 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 1. 2. 0. 
+			vertex 0. 3. 0. 
+			vertex 2. 3. 0. 
+		endloop
+	endfacet
+	facet normal -0. -0. 1. 
+		outer loop
+			vertex 0.8571428571428571 1.7142857142857142 0. 
+			vertex 1.1428571428571428 1.7142857142857142 0. 
+			vertex 1. 1.5 0. 
+		endloop
+	endfacet
+endsolid Triangles/Triangle20

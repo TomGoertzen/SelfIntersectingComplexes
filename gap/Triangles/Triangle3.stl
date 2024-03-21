@@ -1,0 +1,16 @@
+solid Triangles/Triangle3
+	facet normal -0. 0.70710678118654746 -0.70710678118654746 
+		outer loop
+			vertex -1. 0. 0. 
+			vertex 0. 0. 0. 
+			vertex 0. 1. 1. 
+		endloop
+	endfacet
+	facet normal -0. 0.70710678118654746 -0.70710678118654746 
+		outer loop
+			vertex 1. 0. 0. 
+			vertex 0. 1. 1. 
+			vertex 0. 0. 0. 
+		endloop
+	endfacet
+endsolid Triangles/Triangle3
