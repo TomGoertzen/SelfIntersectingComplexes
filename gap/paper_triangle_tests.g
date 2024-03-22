@@ -33,9 +33,11 @@ list:=[
 for i in [1..Size(list)] do
 	coordinates:=list[i];
 	pr:=SetVertexCoordinates3D(s,coordinates);
+	pr:=ActivateLineWidth(s,pr);
 	DrawComplexToJavaScript(s,Concatenation("Triangles/TriangleRaw",String(i)),pr);
 	data:=PrintableOuterHull(s,coordinates*1.,Concatenation("Triangles/Triangle",String(i)),eps,0.1,Group(()),true,false);;
 	t:=data[1];
 	pr:=SetVertexCoordinates3D(t,data[3]);
+	pr:=ActivateLineWidth(t,pr);
 	DrawComplexToJavaScript(t,Concatenation("Triangles/TriangleTriangulated",String(i)),pr);
 od;
