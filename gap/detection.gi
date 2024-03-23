@@ -124,6 +124,88 @@ InstallGlobalFunction(TwoTriangleIntersection,function(coords_j,coords_k,eps)
                         return ints_points;
 end);
 
+# output of the form [vertices,intersection_edges]
+BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
+	local edges,n,m,inside_points,cur_line,l1,l2,res,intersection;
+	edges:=[];
+	#check if triangles are coplanar and fix cases
+	n:=Crossproduct(triangle1[2]-triangle1[1],triangle1[3]-triangle1[1]);
+	if (Dot(n,triangle2[1])-Dot(n,triangle1[1]))^2<eps and (Dot(n,triangle2[2])-Dot(n,triangle1[1]))^2<eps and (Dot(n,triangle2[3])-Dot(n,triangle1[1]))^2<eps then
+		inside_points:=[];
+		for m in [1..3] do
+			if MyPointInTriangle(triangle1[1],triangle1[2],triangle1[3],triangle2[m],eps) then
+				Add(inside_points,m);
+			fi;
+		od;
+		if Size(inside_points)=2 then
+			Add(triangle1,triangle2[inside_points[1]]);
+			Add(triangle1,triangle2[inside_points[2]]);
+			AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+		elif Size(inside_points)=3 then
+			Add(triangle1,triangle2[inside_points[1]]);
+			Add(triangle1,triangle2[inside_points[2]]);
+			Add(triangle1,triangle2[inside_points[3]]);
+			AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+			AddSet(edges,[Size(triangle1)-2,Size(triangle1)-1]);
+			AddSet(edges,[Size(triangle1),Size(triangle1)-2]);
+		fi;
+		#if Size(inside_points)=0 then
+			# no inside points check for line intersections
+			for l1 in Combinations([1..3],2) do
+				cur_line:=[];
+				for l2 in Combinations([1..3],2) do
+					res:=LineSegmentIntersection(triangle1{l2},triangle2{l1},eps);
+					if res[1] then
+						if Size(res[2])=3 then
+							if MyNumericalPosition(triangle1{[1,2,3]},res[2],eps)=fail then
+								Add(cur_line,res[2]);
+							fi;
+						fi;
+					fi;
+				od;
+				if Size(cur_line)=1 then
+					#test if point of j from edge l1 lies inside i
+						if l1[1] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([triangle2[l1[1]]],cur_line),eps))=2 then
+							Add(triangle1,cur_line[1]);
+							Add(triangle1,triangle2[l1[1]]);
+							AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+						elif l1[2] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([triangle2[l1[2]]],cur_line),eps))=2 then
+							Add(triangle1,cur_line[1]);
+							Add(triangle1,triangle2[l1[2]]);
+							AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+						else
+							Add(triangle1,cur_line[1]);
+						fi;
+				elif Size(cur_line)=2 then
+					Add(triangle1,cur_line[1]);
+					Add(triangle1,cur_line[2]);
+					AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+				fi;
+			od;
+	else
+		intersection:=TwoTriangleIntersection(triangle1{[1..3]},triangle2{[1..3]},eps);
+		#test if both intersection and intersection2 are the same
+		#otherwise join for lines
+		intersection2:=TwoTriangleIntersection(triangle2{[1..3]},triangle1{[1..3]},eps);
+		if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then
+			if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
+				intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
+			fi;
+		fi;
+		if Size(intersection)=2 then
+			# add intersection informations only to triangle1
+			# triangle2 will be obtained later
+			Add(triangle1,intersection[1]);
+			Add(triangle1,intersection[2]);
+			AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
+		fi;
+		if Size(intersection)=1 then
+			Add(triangle1,intersection[1]);
+		fi;
+	fi;
+	return edges;
+end);
+
 # Computes intersection of two Line Segments in 3D
 # https://math.stackexchange.com/questions/270767/find-intersection-of-two-3d-lines
 BindGlobal("LineSegmentIntersection",function(l1,l2,eps)
@@ -439,87 +521,9 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 		for j in [1..Size(vof)] do
 			# output of the form [vertices,intersection_edges]
 			if i<>j then
-				#check if triangles are coplanar and fix cases
-				n:=Crossproduct(l[i][1][2]-l[i][1][1],l[i][1][3]-l[i][1][1]);
-				if (Dot(n,l[j][1][1])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][2])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][3])-Dot(n,l[i][1][1]))^2<eps then
-					inside_points:=[];
-					for m in [1..3] do
-						if MyPointInTriangle(l[i][1][1],l[i][1][2],l[i][1][3],l[j][1][m],eps) then
-							Add(inside_points,m);
-						fi;
-					od;
-					if Size(inside_points)=2 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-					elif Size(inside_points)=3 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						Add(l[i][1],l[j][1][inside_points[3]]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-						AddSet(l[i][2],[Size(l[i][1])-2,Size(l[i][1])-1]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
-					fi;
-					#if Size(inside_points)=0 then
-						# no inside points check for line intersections
-						for l1 in Combinations([1..3],2) do
-							cur_line:=[];
-							for l2 in Combinations([1..3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									if Size(res[2])=3 then
-										if MyNumericalPosition(l[i][1]{[1,2,3]},res[2],eps)=fail then
-											Add(cur_line,res[2]);
-										fi;
-									elif Size(res[2])=2 then
-										Error();
-										Add(l[i][1],res[2][1]);
-										Add(l[i][1],res[2][2]);
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-										continue;
-									fi;
-								fi;
-							od;
-							if Size(cur_line)=1 then
-								#test if point of j from edge l1 lies inside i
-									if l1[1] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([l[j][1][l1[1]]],cur_line),eps))=2 then
-										Add(l[i][1],cur_line[1]);
-										Add(l[i][1],l[j][1][l1[1]]);
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-									elif l1[2] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([l[j][1][l1[2]]],cur_line),eps))=2 then
-										Add(l[i][1],cur_line[1]);
-										Add(l[i][1],l[j][1][l1[2]]);
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-									else
-										Add(l[i][1],cur_line[1]);
-									fi;
-							elif Size(cur_line)=2 then
-								Add(l[i][1],cur_line[1]);
-								Add(l[i][1],cur_line[2]);
-								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-							fi;
-						od;
-					continue;
-				fi;
-				intersection:=TwoTriangleIntersection(l[i][1]{[1..3]},l[j][1]{[1..3]},eps);
-				#test if both intersection and intersection2 are the same
-				#otherwise join for lines
-				intersection2:=TwoTriangleIntersection(l[j][1]{[1..3]},l[i][1]{[1..3]},eps);
-				if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then
-					if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
-						intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
-					fi;
-				fi;
-				if Size(intersection)=2 then
-					# add intersection informations only to l[i]
-					# l[j] will be obtained later
-					Add(l[i][1],intersection[1]);
-					Add(l[i][1],intersection[2]);
-					AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-				fi;
-				if Size(intersection)=1 then
-					Add(l[i][1],intersection[1]);
-				fi;
+				# call by reference: add intersection points
+				# return values add edges
+				l[i][2]:=Concatenation(l[i][2],TwoTriangleIntersectionAllCases(l[i][1],l[j][1]));
 			fi;
 		od;
 	od;
