@@ -32,7 +32,7 @@ jobs:
       - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "SimplicialSurfaces"
-          GAP_PKGS_TO_CLONE: "gap-packages/SimplicialSurfaces.git"
+          GAP_PKGS_TO_CLONE: "sebasguts/AttributeScheduler.git gap-packages/SimplicialSurfaces.git"
           GAPBRANCH: ${{ matrix.gap-branch }}
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v2
