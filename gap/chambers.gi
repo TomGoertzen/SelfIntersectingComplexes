@@ -255,7 +255,7 @@ InstallGlobalFunction(DrawSTLwithNormals,function(s,fileName, vC,normals,visuali
                 fi;
         od;
         AppendTo(output, Concatenation("endsolid ", name));
-        Print("\n Saved file");
+        #Print("\n Saved file");
         CloseStream(output);
         return;
 end);
@@ -301,7 +301,7 @@ InstallGlobalFunction(DrawSurfaceToObj,function(s,fileName, vC)
         	od;
         	AppendTo(output,"\n");            
         od;
-        Print("\n Saved file");
+        #Print("\n Saved file");
         CloseStream(output);
         return;
 end);
@@ -412,7 +412,7 @@ InstallGlobalFunction(DrawSTLwithNormalsVOF,function(vof,fileName, vC,normals,vi
                 fi;
         od;
         AppendTo(output, Concatenation("endsolid ", name));
-        Print("\n Saved file");
+        #Print("\n Saved file");
         CloseStream(output);
         return;
 end);
