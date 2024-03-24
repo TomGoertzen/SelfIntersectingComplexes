@@ -1,8 +1,8 @@
-InstallGlobalFunction(my_triangle_fix, function(data)
+InstallGlobalFunction(DiscTriangulation, function(data)
     local map, i, edge, poss_edges, no_poss_edges, new_edges, ok, e, res, data_tri, t, boundary_vertices, count_new, j, count, v;
     # fix intersections of intersection
     # Print("Fix planar intersections \n");
-    data := fix_intersections_planar(data);
+    data := RectifyDiscIntersections(data);
     poss_edges := [];
     count := 0;
     data_tri := triangulate_comb(data);
@@ -77,5 +77,5 @@ InstallGlobalFunction(my_triangle_fix, function(data)
         fi;
     od;
     # Print("In the end we got ", count, " loops \n");
-    return clean_data(data, eps);
+    return CleanData(data, eps);
 end);

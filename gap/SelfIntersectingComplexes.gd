@@ -32,9 +32,9 @@ DeclareGlobalFunction("ComputeChambers");
 
 DeclareGlobalFunction("AnimateChamberExplode");
 
-DeclareGlobalFunction("fix_intersections_planar");
+DeclareGlobalFunction("RectifyDiscIntersections");
 
-DeclareGlobalFunction("my_triangle_fix");
+DeclareGlobalFunction("DiscTriangulation");
 
 DeclareGlobalFunction("MergeOuterHull");
 

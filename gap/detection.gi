@@ -492,10 +492,10 @@ InstallGlobalFunction(calculate_intersections_groups,function(t,coordinates,inte
 		for k in [1..Size(orbs)] do
 			i:=orbs[k][1];
 			#Print("Triangulation for face ",String(i),"\n");
-			data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+			data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
 			while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
 				Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
-				data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+				data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
 			od;
 			for h in [2..Size(orbs[k])] do
 				j:=orbs[k][h];
@@ -534,7 +534,7 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 		# transfer triangulations to all other triangles
 		for k in [1..Size(orbs_vof)] do
 			i:=Position(vof,orbs_vof[k][1]);
-			data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+			data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
 			for h in [2..Size(orbs_vof[k])] do
 				j:=Position(vof,orbs_vof[k][h]);
 				data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
@@ -722,7 +722,7 @@ InstallGlobalFunction(calculate_intersections_comp,function(s,coordinates,inters
 	data_triangulated:=[];
 	for i in Faces(s) do
 		#Print(i,"\n");
-		data_triangulated[i]:=triangulate(my_triangle_fix(l[i]));
+		data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
 	od;
 	data:=[];
 	for c in ConnectedComponents(s) do
@@ -732,7 +732,7 @@ InstallGlobalFunction(calculate_intersections_comp,function(s,coordinates,inters
 end);
 
 # Clean the data by removing duplicate vertices and edges
-BindGlobal("clean_data", function(data, eps)
+BindGlobal("CleanData", function(data, eps)
     local map, i, new_edges, new_vertices, map2;
     data[1] := 1. * data[1]; # Ensure vertices are in floating-point format
     # Delete multiple occurrences of vertices
@@ -761,9 +761,9 @@ end);
 
 
 
-InstallGlobalFunction(fix_intersections_planar,function(data)
+InstallGlobalFunction(RectifyDiscIntersections,function(data)
 	local i,j,res,entry,entry1,entry2,entry_in_i,entry_in_j,addy,check_edges,orig_j,orig_i,cur,k,remove,e,l,n;
-	data:=clean_data(data,eps);
+	data:=CleanData(data,eps);
 	data[2]:=List(data[2]);
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
@@ -780,7 +780,7 @@ InstallGlobalFunction(fix_intersections_planar,function(data)
 		od;
 	od;
 	# check for non-paralel intersecting lines
-	data:=clean_data(data,eps);
+	data:=CleanData(data,eps);
 	data[2]:=List(data[2]);
 	check_edges:=Combinations([1..Size(data[2])],2);;
 	while check_edges<>[] do
@@ -814,7 +814,7 @@ InstallGlobalFunction(fix_intersections_planar,function(data)
 			fi;
 		od;
 	od;
-	data:=clean_data(data,eps);
+	data:=CleanData(data,eps);
 	data[2]:=List(data[2]);
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
@@ -831,7 +831,7 @@ InstallGlobalFunction(fix_intersections_planar,function(data)
 		od;
 
 	od;
-	return clean_data(data,eps);;
+	return CleanData(data,eps);;
 end);
 
 
