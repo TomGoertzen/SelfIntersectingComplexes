@@ -234,58 +234,55 @@ InstallGlobalFunction(TwoTriangleIntersection,function(coords_j,coords_k,eps)
         fi;
         t_coords := ShallowCopy(coords_k{[1..3]});
         # cant intersect if incident                       
-                        t_normal := coords_k[4];
-                        d2 := coords_k[1]*t_normal;
-
-                        orthog := [Crossproduct(c_coords[2]-c_coords[1],c_normal),Crossproduct(c_coords[3]-c_coords[2],c_normal),Crossproduct(c_coords[1]-c_coords[3],c_normal)];
-                        
-                        orthog[1] := orthog[1] / Sqrt(orthog[1]*orthog[1]);
-                        orthog[2] := orthog[2] / Sqrt(orthog[2]*orthog[2]);
-                        orthog[3] := orthog[3] / Sqrt(orthog[3]*orthog[3]);
-                        
-                        # must be right of planes, need to have the orthogonal vectors point to the inside of the triangle
-                        orthog[1] := orthog[1] * ((orthog[1]*c_coords[3]-orthog[1]*c_coords[1]) / AbsoluteValue(orthog[1]*c_coords[3]-orthog[1]*c_coords[1]));
-                        orthog[2] := orthog[2] * ((orthog[2]*c_coords[1]-orthog[2]*c_coords[2]) / AbsoluteValue(orthog[2]*c_coords[1]-orthog[2]*c_coords[2]));
-                        orthog[3] := orthog[3] * ((orthog[3]*c_coords[2]-orthog[3]*c_coords[3]) / AbsoluteValue(orthog[3]*c_coords[2]-orthog[3]*c_coords[3]));
-                        # check if triangle k intersects with j
-                        numb_int := 0;
-                        ints_points := [];
-                        # use this to compute if both of the intersection points lie on an edge
-                        not_on_edge := [true, true, true];
-                        for l in [1..3] do
-                                vOedge := [coords_k[l],coords_k[l mod 3 + 1]];
-                                # if two faces share a edge than this edge cant be an intersection
-                                if Length(NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
-                                    edge_param := coords_k[l mod 3 + 1]-coords_k[l];                                  
-                                    # find point that intersects with plane
-                                    res := ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
-                                    p := res[1];
-                                    lambda := res[2];                                  
-                                    o := [orthog[1]*p-orthog[1]*c_coords[1], orthog[2]*p-orthog[2]*c_coords[2], orthog[3]*p-orthog[3]*c_coords[3]];
-                                    
-                                    # check if point inside triangle
-                                     
-                                    if FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and FlGeq(lambda,0.,eps) and FlLeq(lambda,1.,eps) then
-                                    
-                                        not_on_edge[1] := not_on_edge[1] and FlEq(0.,o[1],eps); 
-                                        not_on_edge[2] := not_on_edge[2] and FlEq(0.,o[2],eps); 
-                                        not_on_edge[3] := not_on_edge[3] and FlEq(0.,o[3],eps); 
-                                        
-                                        ints := true;
-                                        possb_intersec := possb_intersec + 1;
-                                        numb_int := numb_int + 1;
-                                        ints_points[numb_int] := p; 	
-                                    fi;                                   
-                                fi;                            
-                        od;
-                        not_on_edges := not( not_on_edge[1] or not_on_edge[2] or not_on_edge[3]);                        
-                        if Length(ints_points) > 0 then
-                            ints_points := NumericalUniqueListOfLists(ints_points,eps);
-                            diff := numb_int - Length(ints_points);
-                            possb_intersec := possb_intersec - diff;
-                        fi;                        
-                        numb_int := Length(ints_points);
-                        return ints_points;
+		t_normal := coords_k[4];
+		d2 := coords_k[1]*t_normal;
+		orthog := [Crossproduct(c_coords[2]-c_coords[1],c_normal),Crossproduct(c_coords[3]-c_coords[2],c_normal),Crossproduct(c_coords[1]-c_coords[3],c_normal)];
+		
+		orthog[1] := orthog[1] / Sqrt(orthog[1]*orthog[1]);
+		orthog[2] := orthog[2] / Sqrt(orthog[2]*orthog[2]);
+		orthog[3] := orthog[3] / Sqrt(orthog[3]*orthog[3]);
+		
+		# must be right of planes, need to have the orthogonal vectors point to the inside of the triangle
+		orthog[1] := orthog[1] * ((orthog[1]*c_coords[3]-orthog[1]*c_coords[1]) / AbsoluteValue(orthog[1]*c_coords[3]-orthog[1]*c_coords[1]));
+		orthog[2] := orthog[2] * ((orthog[2]*c_coords[1]-orthog[2]*c_coords[2]) / AbsoluteValue(orthog[2]*c_coords[1]-orthog[2]*c_coords[2]));
+		orthog[3] := orthog[3] * ((orthog[3]*c_coords[2]-orthog[3]*c_coords[3]) / AbsoluteValue(orthog[3]*c_coords[2]-orthog[3]*c_coords[3]));
+		# check if triangle k intersects with j
+		numb_int := 0;
+		ints_points := [];
+		# use this to compute if both of the intersection points lie on an edge
+		not_on_edge := [true, true, true];
+		for l in [1..3] do
+		    vOedge := [coords_k[l],coords_k[l mod 3 + 1]];
+		    # if two faces share a edge then this edge cant be an intersection
+		    if Length(NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
+		        edge_param := coords_k[l mod 3 + 1]-coords_k[l];                                  
+		        # find point that intersects with plane
+		        res := ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
+		        p := res[1];
+		        lambda := res[2];                                  
+		        o := [orthog[1]*p-orthog[1]*c_coords[1], orthog[2]*p-orthog[2]*c_coords[2], orthog[3]*p-orthog[3]*c_coords[3]];		        
+		        # check if point inside triangle		         
+		        if FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and FlGeq(lambda,0.,eps) and FlLeq(lambda,1.,eps) then		        
+		            not_on_edge[1] := not_on_edge[1] and FlEq(0.,o[1],eps); 
+		            not_on_edge[2] := not_on_edge[2] and FlEq(0.,o[2],eps); 
+		            not_on_edge[3] := not_on_edge[3] and FlEq(0.,o[3],eps);           
+		            ints := true;
+		            possb_intersec := possb_intersec + 1;
+		            if EqFloat(p[1]+0.0,p[1]) and EqFloat(p[2]+0.0,p[2]) and EqFloat(p[3]+0.0,p[3]) then
+		            	numb_int := numb_int + 1;
+		            	ints_points[numb_int] := p; 
+		            fi;	
+		        fi;                                   
+		    fi;                            
+		od;
+		not_on_edges := not( not_on_edge[1] or not_on_edge[2] or not_on_edge[3]);                        
+		if Length(ints_points) > 0 then
+		    ints_points := NumericalUniqueListOfLists(ints_points,eps);
+		    diff := numb_int - Length(ints_points);
+		    possb_intersec := possb_intersec - diff;
+		fi;                        
+		numb_int := Length(ints_points);
+		return ints_points;
 end);
 
 # output of the form [vertices,intersection_edges]
