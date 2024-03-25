@@ -399,7 +399,7 @@ InstallGlobalFunction(OrderNMEdges, function(surf, data)
 	while e <> [] do
 		found := false;
 		cur_verts := ShallowCopy(VertsOfNMEdges[l]);
-		cur_path := OrderPath(e,VertsOfNMEdges,[l,cur_verts,0],[]);
+		cur_path := _OrderPath(e,VertsOfNMEdges,[l,cur_verts,0],[]);
 		path[i] := ShallowCopy(cur_path);
 		
 		cur_path := Flat(cur_path);
@@ -412,26 +412,6 @@ InstallGlobalFunction(OrderNMEdges, function(surf, data)
 		i := i + 1;
 	od;
     return [path,info[2],info[3]];
-end);;
-
-
-BindGlobal("_FixNMIntersection",function(surf,order,info,data,points,Coords,shift_param)
-	local l, int_v, branches, not_split, data_fix, b;
-	int_v := info[1];
-	branches := info[2];
-	not_split := [];
-	for b in branches do
-		data_fix := _FixVertOfOuterNMEdge(surf,b[1],Coords,points,data,shift_param,not_split);
-		Coords:=data_fix[1];
-		points:=data_fix[2];
-		if Length(b[2]) > 1 then
-			# the path continues in this direction
-			data_fix := _FixNMPathRec(surf,[b[2],order[2],order[3]],data,points,Coords,shift_param);
-			points := data_fix[1];
-			Coords := data_fix[2];
-		fi;
-	od;
-	return [points,Coords];
 end);;
 
 
@@ -489,7 +469,7 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 					fi;
 					if e in Edges(surf) then
 						if inner[e] or is_circle then
-							data_fix:=FixVertOfInnerNMEdge(surf,e,Coords,points,data,shift_param,not_split);
+							data_fix:=_FixVertOfInnerNMEdge(surf,e,Coords,points,data,shift_param,not_split);
 							Coords:=data_fix[1];
 							points:=data_fix[2];
 							not_split := [];
@@ -528,7 +508,24 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 end);;
 
 
-
+BindGlobal("_FixNMIntersection",function(surf,order,info,data,points,Coords,shift_param)
+	local l, int_v, branches, not_split, data_fix, b;
+	int_v := info[1];
+	branches := info[2];
+	not_split := [];
+	for b in branches do
+		data_fix := _FixVertOfOuterNMEdge(surf,b[1],Coords,points,data,shift_param,not_split);
+		Coords:=data_fix[1];
+		points:=data_fix[2];
+		if Length(b[2]) > 1 then
+			# the path continues in this direction
+			data_fix := _FixNMPathRec(surf,[b[2],order[2],order[3]],data,points,Coords,shift_param);
+			points := data_fix[1];
+			Coords := data_fix[2];
+		fi;
+	od;
+	return [points,Coords];
+end);;
 
 
 
