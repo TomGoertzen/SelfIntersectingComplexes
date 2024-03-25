@@ -533,7 +533,7 @@ end);;
 
 
 
-InstallGlobalFunction(FixNMEdgePath := function(surf,data,points,Coords,shift_param)
+InstallGlobalFunction(FixNMEdgePath, function(surf,data,points,Coords,shift_param)
 	local l, comp, path, order_data, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
 		
 	order_data := OrderNMEdges(surf,ShallowCopy(data));
@@ -560,7 +560,7 @@ end);;
 
 
 
-InstallGlobalFunction(FixNMVerts := function(surf, data, points, Coords, shift_param)
+InstallGlobalFunction(FixNMVerts, function(surf, data, points, Coords, shift_param)
 	local NM_verts, v, new_data, s_data;
 	
 	# to be executed after fixing the non-manifold edges
@@ -582,7 +582,7 @@ InstallGlobalFunction(FixNMVerts := function(surf, data, points, Coords, shift_p
 end);;
 
 
-InstallGlobalFunction(RemedyNonManifold := function(data,points, shift_param)
+InstallGlobalFunction(RemedyNonManifold, function(data,points, shift_param)
 	local surf, normals, Coords, order_data, m_data, m_surf, m_points, m_coords, fully_m_data;
 	#
 	# input structure is data=[surf1,surf2,faces,normals_coordinates] (output of outer hull function), points: coordinates of the points of surf2, shift_param: norm of the vectors that will be added to shift vertices
