@@ -1,11 +1,26 @@
-BindGlobal("_ChooseIsolatedVertex", function(t,e,points,data)
-	local voe,foe;
+BindGlobal("_ChooseIsolatedVertex", function(t,e,path,points,data)
+	local voe,foe, at_end, pos, next, voenext;
 	voe:=VerticesOfEdge(t,e);
 	foe:=FacesOfEdge(t,e);
-	if IsSubset(Set(foe),Set(UmbrellaPathFaceVertex(t,foe[1],voe[1],data,points))) then
-		return voe[1];
+	pos := Position(path,e);
+	at_end := false;
+	if Length(path) = 1 then
+		Print("error");
+	else
+		if not pos = Length(path) then
+			next := path[pos+1];
+			
+		else
+			next := path[pos-1];
+			at_end := true;
+		fi;
+		while not IsInt(next) do
+				next := next[1];
+		od;
 	fi;
-	return voe[2];
+	vonext := VerticesOfEdge(t,next);
+	
+	return [Difference(voe,Intersection(vonext,voe))[1],at_end];
 end);;
 
 
@@ -67,7 +82,8 @@ BindGlobal("_FixVertOfOuterNMEdge", function(t,e,Coords,points,data,shift_param,
 	v_index:=Size(points_fix);
 
 	    
-    	# need to change all verts on umbrella
+    	# need to change all verts on (partial) umbrella
+    	# TOOD: does this fail if we have three or more partial umbrellas?
 	    	
 	    
     	u := UmbrellaPathFaceVertex(t,f,v,data,points);
@@ -414,18 +430,26 @@ InstallGlobalFunction(OrderNMEdges, function(surf, data)
     return [path,info[2],info[3]];
 end);;
 
+#34 outer  [8,9]
+#37 inner  [9,10]
+#28 inner 
+#29 inner 
+#45 inner 
+#42 outer
 
 BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 	local l, comp, path, not_split, data_fix, inner, is_circle, points_fix, s_data, branches, branch, verts_current, verts_comp, same, info,j, e, v, i, len, s,t;
-
+	# wrong somewhere: not_split is issue
 	is_circle := order[2];
 	inner := order[3];
+	not_split := [];
+	Print(order[1]);
 	for comp in order[1] do
 		path := comp;
-		not_split := [];
+		
 		if IsInt(path) then
 			if path in Edges(surf) then
-				if inner[path] or is_circle then			
+				if inner[path] or is_circle then
 						data_fix:=_FixVertOfInnerNMEdge(surf,path,Coords,points,data,shift_param,not_split);
 						Coords:=data_fix[1];
 						points:=data_fix[2];
@@ -433,11 +457,18 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 				else
 						verts_current := VerticesOfEdge(surf,path);
 						
-						same := _ChooseIsolatedVertex(surf,path,points,data);
-						Add(not_split,same);
-						data_fix := _FixVertOfOuterNMEdge(surf,path,Coords,points,data,shift_param,not_split);
-			      			Coords:=data_fix[1];
-						points:=data_fix[2];
+						same := _ChooseIsolatedVertex(surf,path,order[1],points,data);
+						if not same[2] then
+							Add(not_split,same[1]);
+							data_fix := _FixVertOfOuterNMEdge(surf,path,Coords,points,data,shift_param,not_split);
+							Print("split");
+							
+				      			Coords:=data_fix[1];
+							points:=data_fix[2];
+							not_split := data_fix[3];
+						else
+							Print("End\n");
+						fi;
 			
 				fi;
 			else 
@@ -464,9 +495,9 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 					points := data_fix[1];
 					Coords := data_fix[2];
 				else
-					if not IsInt(e) then
+					while not IsInt(e) do
 						e := e[1];
-					fi;
+					od;
 					if e in Edges(surf) then
 						if inner[e] or is_circle then
 							data_fix:=_FixVertOfInnerNMEdge(surf,e,Coords,points,data,shift_param,not_split);
@@ -474,9 +505,10 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 							points:=data_fix[2];
 							not_split := [];
 						elif Length(path) = 1 then
+							# this might have unwanted behavior
 							verts_current := VerticesOfEdge(surf,e);
 							
-							same := _ChooseIsolatedVertex(surf,e,points,data);
+							same := _ChooseIsolatedVertex(surf,e,path,points,data);
 							data_fix := _FixVertOfOuterNMEdge(surf,e,Coords,points,data,shift_param,not_split);
 				      			Coords:=data_fix[1];
 							points:=data_fix[2];
@@ -532,25 +564,28 @@ end);;
 
 InstallGlobalFunction(FixNMEdgePath, function(surf,data,points,Coords,shift_param)
 	local l, comp, path, order_data, not_split, data_fix, inner, is_circle, NM_verts, points_fix, s_data, verts_current, verts_comp, same, e, s,t; 
+	if RamifiedEdges(surf) <> [] then
+		order_data := OrderNMEdges(surf,ShallowCopy(data));
 		
-	order_data := OrderNMEdges(surf,ShallowCopy(data));
-	
-	not_split := [];
-	is_circle := order_data[2];
-	inner := order_data[3];
-	
-	for comp in order_data[1] do
-		path := comp;
-		data_fix := _FixNMPathRec(surf,[comp,is_circle,inner],data,points,Coords,shift_param);
-		points := data_fix[1];
-		Coords:= data_fix[2];
+		not_split := [];
+		is_circle := order_data[2];
+		inner := order_data[3];
 		
-	od;
-	
-	s_data := SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
-	surf := s_data[1];
-	points_fix := points;
-	
+		for comp in order_data[1] do
+			path := comp;
+			data_fix := _FixNMPathRec(surf,[comp,is_circle,inner],data,points,Coords,shift_param);
+			points := data_fix[1];
+			Coords:= data_fix[2];
+			
+		od;
+		
+		s_data := SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
+		surf := s_data[1];
+		points_fix := points;
+	else
+		points_fix := points;
+		order_data := [false];
+	fi;
 	
     	return [surf,points_fix,Coords,order_data];
 end);;
@@ -596,15 +631,12 @@ InstallGlobalFunction(RemedyNonManifold, function(data,points, shift_param)
 	normals := ShallowCopy(data[4]);
 	
 	Coords := ConvertDataFormatPtC(surf,points,normals);
-	
+	# investigate path based
 	m_data := FixNMEdgePath(surf, ShallowCopy(data),points,Coords,shift_param);
-	
 	m_surf := m_data[1];
 	m_points := m_data[2];
 	m_coords := m_data[3];
 	order_data := m_data[4];
-
-
 	fully_m_data := FixNMVerts(m_surf,data,ShallowCopy(m_points),m_coords,shift_param);
 	fully_m_data[4] := order_data;
 	

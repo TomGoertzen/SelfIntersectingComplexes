@@ -338,7 +338,7 @@ BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
 );
 
 
-
+# output umbrella around vertex v (with possible non-manifold edges present)
 BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
 	local faces,new_face,edges,edge,old_face;
 	faces:=[];
@@ -359,13 +359,15 @@ BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
 end);;
 
 # outputs local umbrellas at vertex v
+# TODO: what should output be exactly?
 BindGlobal("UmbrellaComponents",function(t,v)
-	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges;;
+	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges, used_edges;;
 	
 	u_comps := [];
 	v_faces := ShallowCopy(FacesOfVertex(t,v));
 	v_edges := ShallowCopy(EdgesOfVertex(t,v));
 	edges_of_faces := [];
+	used_edges := [];
 	for f in v_faces do
 		 edges := ShallowCopy(EdgesOfFace(t,f));
 		 edges_of_faces[f] := Intersection(edges,v_edges);
@@ -384,7 +386,8 @@ BindGlobal("UmbrellaComponents",function(t,v)
 			# while we can still reach a face on our side of the umbrella, continue
 			for f in v_faces do
 				connection := Intersection(edges_of_faces[f],cur_edges);
-				if connection <> [] then
+				if connection <> [] and not connection in used_edges then
+					used_edges := Concatenation(used_edges,connection);
 					Add(comp,f);
 					cur_edges := Union(cur_edges,edges_of_faces[f]);
 					Remove(v_faces,Position(v_faces,f));
@@ -473,7 +476,7 @@ BindGlobal("ReadSTL", function(fileName)
 end);;
 
 
-
+# if normals not set just defaults the normal vectors without any orientation
 BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
     local faces, f, Coords, verts, c_verts;
 
@@ -487,7 +490,11 @@ BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
         Coords[f][1] := c_verts[1];
         Coords[f][2] := c_verts[2];
         Coords[f][3] := c_verts[3];
-        Coords[f][4] := normals[f];
+        if IsBound(normals[f]) then
+        	Coords[f][4] := normals[f];
+        else
+        	Coords[f][4] := Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/MyNorm(Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
+        fi;
         Coords[f][5] := verts;
     od;
     return Coords;
@@ -513,3 +520,107 @@ BindGlobal("ConvertDataFormatCtP", function(surf,Coords)
     od;
     return [points,normals];
 end);;
+
+
+BindGlobal("_RemoveDuplicateFaces",function(Coords,eps)
+        local r, l, Copy_Coords, coords, test_coords,w, t;
+        Copy_Coords := [];
+        t := 1;
+        w := 0;
+
+        for r in [1..Length(Coords)] do
+            if IsBound(Coords[r]) and Coords[r] <> [] then
+                Copy_Coords[t] := ShallowCopy(Coords[r]);
+                t := t + 1;
+            fi;
+        od;
+        
+        for r in [1..Length(Copy_Coords)] do
+            if IsBound(Copy_Coords[r]) and Copy_Coords[r] <> [] then
+                coords := [Copy_Coords[r][1],Copy_Coords[r][2],Copy_Coords[r][3]];
+                for l in [1..Length(Copy_Coords)] do
+                    if IsBound(Copy_Coords[l]) and Copy_Coords[l] <> [] and l <> r then
+                        test_coords := [Copy_Coords[l][1],Copy_Coords[l][2],Copy_Coords[l][3]];
+                        if Length(NumericalUniqueListOfLists([coords[1],coords[2],coords[3],test_coords[1],test_coords[2],test_coords[3]],eps)) < 4 then
+                            Copy_Coords[l] := [];
+                            w := w + 1;
+                        fi;
+                    fi;
+                od;
+            fi;
+        od;
+        return Copy_Coords;
+    end
+);
+
+
+BindGlobal("_DrawSTL", function(fileName, Coords)
+        local file, filesepr, name, output, x,y, i, j, k, r,l, coords, Copy_Coords, normal, eps;
+
+        #######################################################################################################################################################################
+        #   INPUTS
+        ##
+        # This method takes a string and a list l in the coordinate format (l=[face1,face2,,face3,....]). The faces are also lists in the format 
+        # face1 = [vertex1,vertex2,vertex3,normal,vertexNumbs]. The vertices and normal then are lists as well: vertex1 = [x,y,z] where x,y,z are floats
+        # and vertexNumbs = [v1,v2,v3] where v1,v2,v3 are integers corresponding to the vertex indices in the simplicial face. Since those change quite a lot when fixing self-
+        # intersections, vertexNumbs is !depricated!
+        #
+        ##
+        #   METHOD
+        ##
+        # The method iself saves a STL file corresponding to the object with name specified by fileName
+        #
+        #######################################################################################################################################################################
+
+        eps := 1.0/(10^(12));
+
+        filesepr := SplitString(fileName, ".");
+        name := filesepr[1];
+        # test file name
+        file := Filename( DirectoryCurrent(), Concatenation(name,".stl") );
+        output := OutputTextFile( file, false ); # override other files
+            
+        if output = fail then
+            Error(Concatenation("File ", String(file), " can't be opened.") );
+        fi;        
+
+        AppendTo(output, Concatenation("solid ", name, "\n"));
+
+        Coords := _RemoveDuplicateFaces(Coords,eps);
+        
+        for i in [1..Length(Coords)] do 
+            if IsBound(Coords[i]) and Coords[i] <> [] then
+            
+                # get coords of vertices
+                coords := [Coords[i][1],Coords[i][2],Coords[i][3]];
+                x := Coords[i][2]-Coords[i][1];
+                y := Coords[i][3]-Coords[i][1];
+                normal := Crossproduct(x,y);
+                normal := normal / Sqrt(normal*normal);
+                
+                # write normal
+                AppendTo(output, "\tfacet normal ");
+                for j in [1..3] do
+                    AppendTo(output, Concatenation(String(normal[j])," "));
+                od;
+                AppendTo(output, "\n");
+                    
+                # write vertex coords
+                AppendTo(output, "\t\touter loop\n");
+                for j in [1..3] do
+                    AppendTo(output,"\t\t\tvertex ");
+                       
+                    for k in [1..3] do
+                        AppendTo(output, Concatenation(String(coords[j][k])," "));
+                    od;
+                    AppendTo(output,"\n");
+                od;
+                AppendTo(output, "\t\tendloop\n");
+            AppendTo(output,"\tendfacet\n");
+            fi;
+        od;
+        AppendTo(output, Concatenation("endsolid ", name));
+        CloseStream(output);
+        return;
+    end
+);;

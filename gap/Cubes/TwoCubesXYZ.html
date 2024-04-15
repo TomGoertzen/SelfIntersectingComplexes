@@ -36,7 +36,7 @@
 
 	//start scene and camera
 	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100 );
+	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100 );
 
 	const renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -224,53 +224,53 @@
 			1.,1.,1.,
 			1.,0.,1.,
 
-			1.,1.,1.,
-			1.,1.,0.,
-			1.,2.,0.,
+			0.5,0.5,1.5,
+			0.5,0.5,0.5,
+			0.5,1.5,0.5,
 
-			1.,1.,1.,
-			1.,2.,0.,
-			1.,2.,1.,
+			0.5,0.5,1.5,
+			0.5,1.5,0.5,
+			0.5,1.5,1.5,
 
-			2.,2.,1.,
-			2.,1.,0.,
-			2.,1.,1.,
+			1.5,1.5,1.5,
+			1.5,0.5,0.5,
+			1.5,0.5,1.5,
 
-			2.,2.,1.,
-			2.,2.,0.,
-			2.,1.,0.,
+			1.5,1.5,1.5,
+			1.5,1.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,1.,1.,
-			1.,1.,0.,
-			2.,1.,0.,
+			0.5,0.5,1.5,
+			0.5,0.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,1.,1.,
-			2.,1.,0.,
-			2.,1.,1.,
+			0.5,0.5,1.5,
+			1.5,0.5,0.5,
+			1.5,0.5,1.5,
 
-			1.,2.,0.,
-			1.,2.,1.,
-			2.,2.,1.,
+			0.5,1.5,0.5,
+			0.5,1.5,1.5,
+			1.5,1.5,1.5,
 
-			1.,2.,0.,
-			2.,2.,1.,
-			2.,2.,0.,
+			0.5,1.5,0.5,
+			1.5,1.5,1.5,
+			1.5,1.5,0.5,
 
-			1.,1.,0.,
-			1.,2.,0.,
-			2.,1.,0.,
+			0.5,0.5,0.5,
+			0.5,1.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,2.,0.,
-			2.,2.,0.,
-			2.,1.,0.,
+			0.5,1.5,0.5,
+			1.5,1.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,1.,1.,
-			1.,2.,1.,
-			2.,1.,1.,
+			0.5,0.5,1.5,
+			0.5,1.5,1.5,
+			1.5,0.5,1.5,
 
-			1.,2.,1.,
-			2.,2.,1.,
-			2.,1.,1.,
+			0.5,1.5,1.5,
+			1.5,1.5,1.5,
+			1.5,0.5,1.5,
 
 					] ); 
 
@@ -313,7 +313,7 @@
 
     const edgeMaterial1 = new THREE.LineBasicMaterial( {
         color: 0x000000,
-        lineWidth: 3.,
+        linewidth: 3.,
     } );
         
 	function getEdges1(){
@@ -372,59 +372,59 @@
 			1.,0.,0.,
 			1.,0.,1.,
 
-			1.,1.,1.,
-			1.,1.,0.,
+			0.5,0.5,1.5,
+			0.5,0.5,0.5,
 
-			1.,1.,1.,
-			1.,2.,0.,
+			0.5,0.5,1.5,
+			0.5,1.5,0.5,
 
-			1.,1.,1.,
-			1.,2.,1.,
+			0.5,0.5,1.5,
+			0.5,1.5,1.5,
 
-			1.,1.,1.,
-			2.,1.,0.,
+			0.5,0.5,1.5,
+			1.5,0.5,0.5,
 
-			1.,1.,1.,
-			2.,1.,1.,
+			0.5,0.5,1.5,
+			1.5,0.5,1.5,
 
-			1.,1.,0.,
-			1.,2.,0.,
+			0.5,0.5,0.5,
+			0.5,1.5,0.5,
 
-			1.,1.,0.,
-			2.,1.,0.,
+			0.5,0.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,2.,0.,
-			1.,2.,1.,
+			0.5,1.5,0.5,
+			0.5,1.5,1.5,
 
-			1.,2.,0.,
-			2.,2.,1.,
+			0.5,1.5,0.5,
+			1.5,1.5,1.5,
 
-			1.,2.,0.,
-			2.,2.,0.,
+			0.5,1.5,0.5,
+			1.5,1.5,0.5,
 
-			1.,2.,0.,
-			2.,1.,0.,
+			0.5,1.5,0.5,
+			1.5,0.5,0.5,
 
-			1.,2.,1.,
-			2.,2.,1.,
+			0.5,1.5,1.5,
+			1.5,1.5,1.5,
 
-			1.,2.,1.,
-			2.,1.,1.,
+			0.5,1.5,1.5,
+			1.5,0.5,1.5,
 
-			2.,2.,1.,
-			2.,2.,0.,
+			1.5,1.5,1.5,
+			1.5,1.5,0.5,
 
-			2.,2.,1.,
-			2.,1.,0.,
+			1.5,1.5,1.5,
+			1.5,0.5,0.5,
 
-			2.,2.,1.,
-			2.,1.,1.,
+			1.5,1.5,1.5,
+			1.5,0.5,1.5,
 
-			2.,2.,0.,
-			2.,1.,0.,
+			1.5,1.5,0.5,
+			1.5,0.5,0.5,
 
-			2.,1.,0.,
-			2.,1.,1.,
+			1.5,0.5,0.5,
+			1.5,0.5,1.5,
 
 		]);
 		return edges1;
@@ -440,87 +440,12 @@
     edgeRoot.add(edgeLine1);
         
 	// update function to be called every frame 
+	// generate labels and spheres for the vertices
 
 
 	function getVertex1(){
 		return [0.,0.,1.,];
 	}
-
-
-	function getVertex2(){
-		return [0.,0.,0.,];
-	}
-
-
-	function getVertex3(){
-		return [0.,1.,0.,];
-	}
-
-
-	function getVertex4(){
-		return [0.,1.,1.,];
-	}
-
-
-	function getVertex5(){
-		return [1.,1.,1.,];
-	}
-
-
-	function getVertex6(){
-		return [1.,1.,0.,];
-	}
-
-
-	function getVertex7(){
-		return [1.,0.,0.,];
-	}
-
-
-	function getVertex8(){
-		return [1.,0.,1.,];
-	}
-
-
-	function getVertex9(){
-		return [1.,1.,1.,];
-	}
-
-
-	function getVertex10(){
-		return [1.,1.,0.,];
-	}
-
-
-	function getVertex11(){
-		return [1.,2.,0.,];
-	}
-
-
-	function getVertex12(){
-		return [1.,2.,1.,];
-	}
-
-
-	function getVertex13(){
-		return [2.,2.,1.,];
-	}
-
-
-	function getVertex14(){
-		return [2.,2.,0.,];
-	}
-
-
-	function getVertex15(){
-		return [2.,1.,0.,];
-	}
-
-
-	function getVertex16(){
-		return [2.,1.,1.,];
-	}
-	// generate labels and spheres for the vertices
 	const sphereMaterial1 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere1 = new THREE.Mesh( sphereGeometry, sphereMaterial1 );
 	vertexRoot.add(sphere1);
@@ -535,7 +460,12 @@
     vertexLabel1.position.set(getVertex1()[0],getVertex1()[1],getVertex1()[2]);
     vertexlabelRoot.add( vertexLabel1 );
             
-            	const sphereMaterial2 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex2(){
+		return [0.,0.,0.,];
+	}
+	const sphereMaterial2 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere2 = new THREE.Mesh( sphereGeometry, sphereMaterial2 );
 	vertexRoot.add(sphere2);
 	sphere2.position.set(getVertex2()[0],getVertex2()[1],getVertex2()[2]);
@@ -549,7 +479,12 @@
     vertexLabel2.position.set(getVertex2()[0],getVertex2()[1],getVertex2()[2]);
     vertexlabelRoot.add( vertexLabel2 );
             
-            	const sphereMaterial3 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex3(){
+		return [0.,1.,0.,];
+	}
+	const sphereMaterial3 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere3 = new THREE.Mesh( sphereGeometry, sphereMaterial3 );
 	vertexRoot.add(sphere3);
 	sphere3.position.set(getVertex3()[0],getVertex3()[1],getVertex3()[2]);
@@ -563,7 +498,12 @@
     vertexLabel3.position.set(getVertex3()[0],getVertex3()[1],getVertex3()[2]);
     vertexlabelRoot.add( vertexLabel3 );
             
-            	const sphereMaterial4 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex4(){
+		return [0.,1.,1.,];
+	}
+	const sphereMaterial4 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere4 = new THREE.Mesh( sphereGeometry, sphereMaterial4 );
 	vertexRoot.add(sphere4);
 	sphere4.position.set(getVertex4()[0],getVertex4()[1],getVertex4()[2]);
@@ -577,7 +517,12 @@
     vertexLabel4.position.set(getVertex4()[0],getVertex4()[1],getVertex4()[2]);
     vertexlabelRoot.add( vertexLabel4 );
             
-            	const sphereMaterial5 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex5(){
+		return [1.,1.,1.,];
+	}
+	const sphereMaterial5 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere5 = new THREE.Mesh( sphereGeometry, sphereMaterial5 );
 	vertexRoot.add(sphere5);
 	sphere5.position.set(getVertex5()[0],getVertex5()[1],getVertex5()[2]);
@@ -591,7 +536,12 @@
     vertexLabel5.position.set(getVertex5()[0],getVertex5()[1],getVertex5()[2]);
     vertexlabelRoot.add( vertexLabel5 );
             
-            	const sphereMaterial6 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex6(){
+		return [1.,1.,0.,];
+	}
+	const sphereMaterial6 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere6 = new THREE.Mesh( sphereGeometry, sphereMaterial6 );
 	vertexRoot.add(sphere6);
 	sphere6.position.set(getVertex6()[0],getVertex6()[1],getVertex6()[2]);
@@ -605,7 +555,12 @@
     vertexLabel6.position.set(getVertex6()[0],getVertex6()[1],getVertex6()[2]);
     vertexlabelRoot.add( vertexLabel6 );
             
-            	const sphereMaterial7 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex7(){
+		return [1.,0.,0.,];
+	}
+	const sphereMaterial7 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere7 = new THREE.Mesh( sphereGeometry, sphereMaterial7 );
 	vertexRoot.add(sphere7);
 	sphere7.position.set(getVertex7()[0],getVertex7()[1],getVertex7()[2]);
@@ -619,7 +574,12 @@
     vertexLabel7.position.set(getVertex7()[0],getVertex7()[1],getVertex7()[2]);
     vertexlabelRoot.add( vertexLabel7 );
             
-            	const sphereMaterial8 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex8(){
+		return [1.,0.,1.,];
+	}
+	const sphereMaterial8 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere8 = new THREE.Mesh( sphereGeometry, sphereMaterial8 );
 	vertexRoot.add(sphere8);
 	sphere8.position.set(getVertex8()[0],getVertex8()[1],getVertex8()[2]);
@@ -633,7 +593,12 @@
     vertexLabel8.position.set(getVertex8()[0],getVertex8()[1],getVertex8()[2]);
     vertexlabelRoot.add( vertexLabel8 );
             
-            	const sphereMaterial9 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex9(){
+		return [0.5,0.5,1.5,];
+	}
+	const sphereMaterial9 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere9 = new THREE.Mesh( sphereGeometry, sphereMaterial9 );
 	vertexRoot.add(sphere9);
 	sphere9.position.set(getVertex9()[0],getVertex9()[1],getVertex9()[2]);
@@ -647,7 +612,12 @@
     vertexLabel9.position.set(getVertex9()[0],getVertex9()[1],getVertex9()[2]);
     vertexlabelRoot.add( vertexLabel9 );
             
-            	const sphereMaterial10 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex10(){
+		return [0.5,0.5,0.5,];
+	}
+	const sphereMaterial10 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere10 = new THREE.Mesh( sphereGeometry, sphereMaterial10 );
 	vertexRoot.add(sphere10);
 	sphere10.position.set(getVertex10()[0],getVertex10()[1],getVertex10()[2]);
@@ -661,7 +631,12 @@
     vertexLabel10.position.set(getVertex10()[0],getVertex10()[1],getVertex10()[2]);
     vertexlabelRoot.add( vertexLabel10 );
             
-            	const sphereMaterial11 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex11(){
+		return [0.5,1.5,0.5,];
+	}
+	const sphereMaterial11 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere11 = new THREE.Mesh( sphereGeometry, sphereMaterial11 );
 	vertexRoot.add(sphere11);
 	sphere11.position.set(getVertex11()[0],getVertex11()[1],getVertex11()[2]);
@@ -675,7 +650,12 @@
     vertexLabel11.position.set(getVertex11()[0],getVertex11()[1],getVertex11()[2]);
     vertexlabelRoot.add( vertexLabel11 );
             
-            	const sphereMaterial12 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex12(){
+		return [0.5,1.5,1.5,];
+	}
+	const sphereMaterial12 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere12 = new THREE.Mesh( sphereGeometry, sphereMaterial12 );
 	vertexRoot.add(sphere12);
 	sphere12.position.set(getVertex12()[0],getVertex12()[1],getVertex12()[2]);
@@ -689,7 +669,12 @@
     vertexLabel12.position.set(getVertex12()[0],getVertex12()[1],getVertex12()[2]);
     vertexlabelRoot.add( vertexLabel12 );
             
-            	const sphereMaterial13 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex13(){
+		return [1.5,1.5,1.5,];
+	}
+	const sphereMaterial13 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere13 = new THREE.Mesh( sphereGeometry, sphereMaterial13 );
 	vertexRoot.add(sphere13);
 	sphere13.position.set(getVertex13()[0],getVertex13()[1],getVertex13()[2]);
@@ -703,7 +688,12 @@
     vertexLabel13.position.set(getVertex13()[0],getVertex13()[1],getVertex13()[2]);
     vertexlabelRoot.add( vertexLabel13 );
             
-            	const sphereMaterial14 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex14(){
+		return [1.5,1.5,0.5,];
+	}
+	const sphereMaterial14 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere14 = new THREE.Mesh( sphereGeometry, sphereMaterial14 );
 	vertexRoot.add(sphere14);
 	sphere14.position.set(getVertex14()[0],getVertex14()[1],getVertex14()[2]);
@@ -717,7 +707,12 @@
     vertexLabel14.position.set(getVertex14()[0],getVertex14()[1],getVertex14()[2]);
     vertexlabelRoot.add( vertexLabel14 );
             
-            	const sphereMaterial15 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex15(){
+		return [1.5,0.5,0.5,];
+	}
+	const sphereMaterial15 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere15 = new THREE.Mesh( sphereGeometry, sphereMaterial15 );
 	vertexRoot.add(sphere15);
 	sphere15.position.set(getVertex15()[0],getVertex15()[1],getVertex15()[2]);
@@ -731,7 +726,12 @@
     vertexLabel15.position.set(getVertex15()[0],getVertex15()[1],getVertex15()[2]);
     vertexlabelRoot.add( vertexLabel15 );
             
-            	const sphereMaterial16 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            
+
+	function getVertex16(){
+		return [1.5,0.5,1.5,];
+	}
+	const sphereMaterial16 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere16 = new THREE.Mesh( sphereGeometry, sphereMaterial16 );
 	vertexRoot.add(sphere16);
 	sphere16.position.set(getVertex16()[0],getVertex16()[1],getVertex16()[2]);
@@ -1272,7 +1272,7 @@
 	function setCircleRotation13(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,1.],[ 1.,1.,0.],[1.,2.,0.]);
+        var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,0.5,0.5],[0.5,1.5,0.5]);
 
         ringMesh13.position.setX(incenter[0]);
         ringMesh13.position.setY(incenter[1]);
@@ -1285,9 +1285,9 @@
         ringMesh13.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A13 = new THREE.Vector3(1.,1.,1.);
-        const B13 = new THREE.Vector3(1.,1.,0.);
-        const C13 = new THREE.Vector3(1.,2.,0.);
+        const A13 = new THREE.Vector3(0.5,0.5,1.5);
+        const B13 = new THREE.Vector3(0.5,0.5,0.5);
+        const C13 = new THREE.Vector3(0.5,1.5,0.5);
 
         const normalVec13 = new THREE.Vector3();
         normalVec13.crossVectors(B13.sub(A13), C13.sub(A13));
@@ -1315,7 +1315,7 @@
 	function setCircleRotation14(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,1.],[ 1.,2.,0.],[1.,2.,1.]);
+        var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,1.5,0.5],[0.5,1.5,1.5]);
 
         ringMesh14.position.setX(incenter[0]);
         ringMesh14.position.setY(incenter[1]);
@@ -1328,9 +1328,9 @@
         ringMesh14.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A14 = new THREE.Vector3(1.,1.,1.);
-        const B14 = new THREE.Vector3(1.,2.,0.);
-        const C14 = new THREE.Vector3(1.,2.,1.);
+        const A14 = new THREE.Vector3(0.5,0.5,1.5);
+        const B14 = new THREE.Vector3(0.5,1.5,0.5);
+        const C14 = new THREE.Vector3(0.5,1.5,1.5);
 
         const normalVec14 = new THREE.Vector3();
         normalVec14.crossVectors(B14.sub(A14), C14.sub(A14));
@@ -1358,7 +1358,7 @@
 	function setCircleRotation15(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([2.,2.,1.],[ 2.,1.,0.],[2.,1.,1.]);
+        var incenter = calulateIncenter([1.5,1.5,1.5],[ 1.5,0.5,0.5],[1.5,0.5,1.5]);
 
         ringMesh15.position.setX(incenter[0]);
         ringMesh15.position.setY(incenter[1]);
@@ -1371,9 +1371,9 @@
         ringMesh15.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A15 = new THREE.Vector3(2.,2.,1.);
-        const B15 = new THREE.Vector3(2.,1.,0.);
-        const C15 = new THREE.Vector3(2.,1.,1.);
+        const A15 = new THREE.Vector3(1.5,1.5,1.5);
+        const B15 = new THREE.Vector3(1.5,0.5,0.5);
+        const C15 = new THREE.Vector3(1.5,0.5,1.5);
 
         const normalVec15 = new THREE.Vector3();
         normalVec15.crossVectors(B15.sub(A15), C15.sub(A15));
@@ -1401,7 +1401,7 @@
 	function setCircleRotation16(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([2.,2.,1.],[ 2.,2.,0.],[2.,1.,0.]);
+        var incenter = calulateIncenter([1.5,1.5,1.5],[ 1.5,1.5,0.5],[1.5,0.5,0.5]);
 
         ringMesh16.position.setX(incenter[0]);
         ringMesh16.position.setY(incenter[1]);
@@ -1414,9 +1414,9 @@
         ringMesh16.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A16 = new THREE.Vector3(2.,2.,1.);
-        const B16 = new THREE.Vector3(2.,2.,0.);
-        const C16 = new THREE.Vector3(2.,1.,0.);
+        const A16 = new THREE.Vector3(1.5,1.5,1.5);
+        const B16 = new THREE.Vector3(1.5,1.5,0.5);
+        const C16 = new THREE.Vector3(1.5,0.5,0.5);
 
         const normalVec16 = new THREE.Vector3();
         normalVec16.crossVectors(B16.sub(A16), C16.sub(A16));
@@ -1444,7 +1444,7 @@
 	function setCircleRotation17(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,1.],[ 1.,1.,0.],[2.,1.,0.]);
+        var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,0.5,0.5],[1.5,0.5,0.5]);
 
         ringMesh17.position.setX(incenter[0]);
         ringMesh17.position.setY(incenter[1]);
@@ -1457,9 +1457,9 @@
         ringMesh17.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A17 = new THREE.Vector3(1.,1.,1.);
-        const B17 = new THREE.Vector3(1.,1.,0.);
-        const C17 = new THREE.Vector3(2.,1.,0.);
+        const A17 = new THREE.Vector3(0.5,0.5,1.5);
+        const B17 = new THREE.Vector3(0.5,0.5,0.5);
+        const C17 = new THREE.Vector3(1.5,0.5,0.5);
 
         const normalVec17 = new THREE.Vector3();
         normalVec17.crossVectors(B17.sub(A17), C17.sub(A17));
@@ -1487,7 +1487,7 @@
 	function setCircleRotation18(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,1.],[ 2.,1.,0.],[2.,1.,1.]);
+        var incenter = calulateIncenter([0.5,0.5,1.5],[ 1.5,0.5,0.5],[1.5,0.5,1.5]);
 
         ringMesh18.position.setX(incenter[0]);
         ringMesh18.position.setY(incenter[1]);
@@ -1500,9 +1500,9 @@
         ringMesh18.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A18 = new THREE.Vector3(1.,1.,1.);
-        const B18 = new THREE.Vector3(2.,1.,0.);
-        const C18 = new THREE.Vector3(2.,1.,1.);
+        const A18 = new THREE.Vector3(0.5,0.5,1.5);
+        const B18 = new THREE.Vector3(1.5,0.5,0.5);
+        const C18 = new THREE.Vector3(1.5,0.5,1.5);
 
         const normalVec18 = new THREE.Vector3();
         normalVec18.crossVectors(B18.sub(A18), C18.sub(A18));
@@ -1530,7 +1530,7 @@
 	function setCircleRotation19(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,2.,0.],[ 1.,2.,1.],[2.,2.,1.]);
+        var incenter = calulateIncenter([0.5,1.5,0.5],[ 0.5,1.5,1.5],[1.5,1.5,1.5]);
 
         ringMesh19.position.setX(incenter[0]);
         ringMesh19.position.setY(incenter[1]);
@@ -1543,9 +1543,9 @@
         ringMesh19.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A19 = new THREE.Vector3(1.,2.,0.);
-        const B19 = new THREE.Vector3(1.,2.,1.);
-        const C19 = new THREE.Vector3(2.,2.,1.);
+        const A19 = new THREE.Vector3(0.5,1.5,0.5);
+        const B19 = new THREE.Vector3(0.5,1.5,1.5);
+        const C19 = new THREE.Vector3(1.5,1.5,1.5);
 
         const normalVec19 = new THREE.Vector3();
         normalVec19.crossVectors(B19.sub(A19), C19.sub(A19));
@@ -1573,7 +1573,7 @@
 	function setCircleRotation20(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,2.,0.],[ 2.,2.,1.],[2.,2.,0.]);
+        var incenter = calulateIncenter([0.5,1.5,0.5],[ 1.5,1.5,1.5],[1.5,1.5,0.5]);
 
         ringMesh20.position.setX(incenter[0]);
         ringMesh20.position.setY(incenter[1]);
@@ -1586,9 +1586,9 @@
         ringMesh20.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A20 = new THREE.Vector3(1.,2.,0.);
-        const B20 = new THREE.Vector3(2.,2.,1.);
-        const C20 = new THREE.Vector3(2.,2.,0.);
+        const A20 = new THREE.Vector3(0.5,1.5,0.5);
+        const B20 = new THREE.Vector3(1.5,1.5,1.5);
+        const C20 = new THREE.Vector3(1.5,1.5,0.5);
 
         const normalVec20 = new THREE.Vector3();
         normalVec20.crossVectors(B20.sub(A20), C20.sub(A20));
@@ -1616,7 +1616,7 @@
 	function setCircleRotation21(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,0.],[ 1.,2.,0.],[2.,1.,0.]);
+        var incenter = calulateIncenter([0.5,0.5,0.5],[ 0.5,1.5,0.5],[1.5,0.5,0.5]);
 
         ringMesh21.position.setX(incenter[0]);
         ringMesh21.position.setY(incenter[1]);
@@ -1629,9 +1629,9 @@
         ringMesh21.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A21 = new THREE.Vector3(1.,1.,0.);
-        const B21 = new THREE.Vector3(1.,2.,0.);
-        const C21 = new THREE.Vector3(2.,1.,0.);
+        const A21 = new THREE.Vector3(0.5,0.5,0.5);
+        const B21 = new THREE.Vector3(0.5,1.5,0.5);
+        const C21 = new THREE.Vector3(1.5,0.5,0.5);
 
         const normalVec21 = new THREE.Vector3();
         normalVec21.crossVectors(B21.sub(A21), C21.sub(A21));
@@ -1659,7 +1659,7 @@
 	function setCircleRotation22(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,2.,0.],[ 2.,2.,0.],[2.,1.,0.]);
+        var incenter = calulateIncenter([0.5,1.5,0.5],[ 1.5,1.5,0.5],[1.5,0.5,0.5]);
 
         ringMesh22.position.setX(incenter[0]);
         ringMesh22.position.setY(incenter[1]);
@@ -1672,9 +1672,9 @@
         ringMesh22.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A22 = new THREE.Vector3(1.,2.,0.);
-        const B22 = new THREE.Vector3(2.,2.,0.);
-        const C22 = new THREE.Vector3(2.,1.,0.);
+        const A22 = new THREE.Vector3(0.5,1.5,0.5);
+        const B22 = new THREE.Vector3(1.5,1.5,0.5);
+        const C22 = new THREE.Vector3(1.5,0.5,0.5);
 
         const normalVec22 = new THREE.Vector3();
         normalVec22.crossVectors(B22.sub(A22), C22.sub(A22));
@@ -1702,7 +1702,7 @@
 	function setCircleRotation23(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,1.,1.],[ 1.,2.,1.],[2.,1.,1.]);
+        var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,1.5,1.5],[1.5,0.5,1.5]);
 
         ringMesh23.position.setX(incenter[0]);
         ringMesh23.position.setY(incenter[1]);
@@ -1715,9 +1715,9 @@
         ringMesh23.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A23 = new THREE.Vector3(1.,1.,1.);
-        const B23 = new THREE.Vector3(1.,2.,1.);
-        const C23 = new THREE.Vector3(2.,1.,1.);
+        const A23 = new THREE.Vector3(0.5,0.5,1.5);
+        const B23 = new THREE.Vector3(0.5,1.5,1.5);
+        const C23 = new THREE.Vector3(1.5,0.5,1.5);
 
         const normalVec23 = new THREE.Vector3();
         normalVec23.crossVectors(B23.sub(A23), C23.sub(A23));
@@ -1745,7 +1745,7 @@
 	function setCircleRotation24(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([1.,2.,1.],[ 2.,2.,1.],[2.,1.,1.]);
+        var incenter = calulateIncenter([0.5,1.5,1.5],[ 1.5,1.5,1.5],[1.5,0.5,1.5]);
 
         ringMesh24.position.setX(incenter[0]);
         ringMesh24.position.setY(incenter[1]);
@@ -1758,9 +1758,9 @@
         ringMesh24.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A24 = new THREE.Vector3(1.,2.,1.);
-        const B24 = new THREE.Vector3(2.,2.,1.);
-        const C24 = new THREE.Vector3(2.,1.,1.);
+        const A24 = new THREE.Vector3(0.5,1.5,1.5);
+        const B24 = new THREE.Vector3(1.5,1.5,1.5);
+        const C24 = new THREE.Vector3(1.5,0.5,1.5);
 
         const normalVec24 = new THREE.Vector3();
         normalVec24.crossVectors(B24.sub(A24), C24.sub(A24));
@@ -2052,158 +2052,158 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (1.)-(1.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (0.5)-(0.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (1.)-(1.);
-		vector2[1] = (2.)-(1.);
-		vector2[2] = (0.)-(1.);
+		vector2[0] = (0.5)-(0.5);
+		vector2[1] = (1.5)-(0.5);
+		vector2[2] = (0.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,1.,1.],[ 1.,1.,0.],[1.,2.,0.]);
+		var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,0.5,0.5],[0.5,1.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (2.)-(1.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (1.5)-(0.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (1.)-(1.);
-		vector2[1] = (2.)-(1.);
-		vector2[2] = (1.)-(1.);
+		vector2[0] = (0.5)-(0.5);
+		vector2[1] = (1.5)-(0.5);
+		vector2[2] = (1.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,1.,1.],[ 1.,2.,0.],[1.,2.,1.]);
+		var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,1.5,0.5],[0.5,1.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(2.);
-		vector1[1] = (1.)-(2.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (1.5)-(1.5);
+		vector1[1] = (0.5)-(1.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (2.)-(2.);
-		vector2[1] = (1.)-(2.);
-		vector2[2] = (1.)-(1.);
+		vector2[0] = (1.5)-(1.5);
+		vector2[1] = (0.5)-(1.5);
+		vector2[2] = (1.5)-(1.5);
 
-		var incenter = calulateIncenter([2.,2.,1.],[ 2.,1.,0.],[2.,1.,1.]);
+		var incenter = calulateIncenter([1.5,1.5,1.5],[ 1.5,0.5,0.5],[1.5,0.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(2.);
-		vector1[1] = (2.)-(2.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (1.5)-(1.5);
+		vector1[1] = (1.5)-(1.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (2.)-(2.);
-		vector2[1] = (1.)-(2.);
-		vector2[2] = (0.)-(1.);
+		vector2[0] = (1.5)-(1.5);
+		vector2[1] = (0.5)-(1.5);
+		vector2[2] = (0.5)-(1.5);
 
-		var incenter = calulateIncenter([2.,2.,1.],[ 2.,2.,0.],[2.,1.,0.]);
+		var incenter = calulateIncenter([1.5,1.5,1.5],[ 1.5,1.5,0.5],[1.5,0.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (1.)-(1.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (0.5)-(0.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(1.);
-		vector2[2] = (0.)-(1.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(0.5);
+		vector2[2] = (0.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,1.,1.],[ 1.,1.,0.],[2.,1.,0.]);
+		var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,0.5,0.5],[1.5,0.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(1.);
-		vector1[1] = (1.)-(1.);
-		vector1[2] = (0.)-(1.);
+		vector1[0] = (1.5)-(0.5);
+		vector1[1] = (0.5)-(0.5);
+		vector1[2] = (0.5)-(1.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(1.);
-		vector2[2] = (1.)-(1.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(0.5);
+		vector2[2] = (1.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,1.,1.],[ 2.,1.,0.],[2.,1.,1.]);
+		var incenter = calulateIncenter([0.5,0.5,1.5],[ 1.5,0.5,0.5],[1.5,0.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (2.)-(2.);
-		vector1[2] = (1.)-(0.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (1.5)-(1.5);
+		vector1[2] = (1.5)-(0.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (2.)-(2.);
-		vector2[2] = (1.)-(0.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (1.5)-(1.5);
+		vector2[2] = (1.5)-(0.5);
 
-		var incenter = calulateIncenter([1.,2.,0.],[ 1.,2.,1.],[2.,2.,1.]);
+		var incenter = calulateIncenter([0.5,1.5,0.5],[ 0.5,1.5,1.5],[1.5,1.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(1.);
-		vector1[1] = (2.)-(2.);
-		vector1[2] = (1.)-(0.);
+		vector1[0] = (1.5)-(0.5);
+		vector1[1] = (1.5)-(1.5);
+		vector1[2] = (1.5)-(0.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (2.)-(2.);
-		vector2[2] = (0.)-(0.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (1.5)-(1.5);
+		vector2[2] = (0.5)-(0.5);
 
-		var incenter = calulateIncenter([1.,2.,0.],[ 2.,2.,1.],[2.,2.,0.]);
+		var incenter = calulateIncenter([0.5,1.5,0.5],[ 1.5,1.5,1.5],[1.5,1.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (2.)-(1.);
-		vector1[2] = (0.)-(0.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (1.5)-(0.5);
+		vector1[2] = (0.5)-(0.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(1.);
-		vector2[2] = (0.)-(0.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(0.5);
+		vector2[2] = (0.5)-(0.5);
 
-		var incenter = calulateIncenter([1.,1.,0.],[ 1.,2.,0.],[2.,1.,0.]);
+		var incenter = calulateIncenter([0.5,0.5,0.5],[ 0.5,1.5,0.5],[1.5,0.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(1.);
-		vector1[1] = (2.)-(2.);
-		vector1[2] = (0.)-(0.);
+		vector1[0] = (1.5)-(0.5);
+		vector1[1] = (1.5)-(1.5);
+		vector1[2] = (0.5)-(0.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(2.);
-		vector2[2] = (0.)-(0.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(1.5);
+		vector2[2] = (0.5)-(0.5);
 
-		var incenter = calulateIncenter([1.,2.,0.],[ 2.,2.,0.],[2.,1.,0.]);
+		var incenter = calulateIncenter([0.5,1.5,0.5],[ 1.5,1.5,0.5],[1.5,0.5,0.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (1.)-(1.);
-		vector1[1] = (2.)-(1.);
-		vector1[2] = (1.)-(1.);
+		vector1[0] = (0.5)-(0.5);
+		vector1[1] = (1.5)-(0.5);
+		vector1[2] = (1.5)-(1.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(1.);
-		vector2[2] = (1.)-(1.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(0.5);
+		vector2[2] = (1.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,1.,1.],[ 1.,2.,1.],[2.,1.,1.]);
+		var incenter = calulateIncenter([0.5,0.5,1.5],[ 0.5,1.5,1.5],[1.5,0.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (2.)-(1.);
-		vector1[1] = (2.)-(2.);
-		vector1[2] = (1.)-(1.);
+		vector1[0] = (1.5)-(0.5);
+		vector1[1] = (1.5)-(1.5);
+		vector1[2] = (1.5)-(1.5);
 
-		vector2[0] = (2.)-(1.);
-		vector2[1] = (1.)-(2.);
-		vector2[2] = (1.)-(1.);
+		vector2[0] = (1.5)-(0.5);
+		vector2[1] = (0.5)-(1.5);
+		vector2[2] = (1.5)-(1.5);
 
-		var incenter = calulateIncenter([1.,2.,1.],[ 2.,2.,1.],[2.,1.,1.]);
+		var incenter = calulateIncenter([0.5,1.5,1.5],[ 1.5,1.5,1.5],[1.5,0.5,1.5]);
 		normals.push([vector1, vector2, incenter]);
 
 	return normals;
@@ -2255,22 +2255,18 @@
 
     
 	// generate automatic ranges for the intersections if the surface is not parameterized 
-	guiParameters.maxX = 2.;
-	guiParameters.maxY = 2.;
-	guiParameters.maxZ = 1.;
+	guiParameters.maxX = 1.5;
+	guiParameters.maxY = 1.5;
+	guiParameters.maxZ = 1.5;
 	guiParameters.minX = 0.;
 	guiParameters.minY = 0.;
 	guiParameters.minZ = 0.;
 
-	guiParameters.planeX = 1.;
-	guiParameters.planeY = 1.;
-	guiParameters.planeZ = 0.5;
-	var performanceOverlayEnabled = false;
+	guiParameters.planeX = 0.75;
+	guiParameters.planeY = 0.75;
+	guiParameters.planeZ = 0.75;
 	// --- end of generated output --- //
 
-    const center = new THREE.Vector3(guiParameters.planeX, guiParameters.planeY, guiParameters.planeZ);
-    controls.target = center;
-    
     const planeFolder = gui.addFolder("Intersection Planes");
     planeFolder.add(guiParameters, 'planeXactive');
     planeFolder.add(guiParameters, 'planeX', guiParameters.minX*1.1, guiParameters.maxX*1.1);
@@ -2279,10 +2275,8 @@
     planeFolder.add(guiParameters, 'planeZactive');
     planeFolder.add(guiParameters, 'planeZ', guiParameters.minZ*1.1, guiParameters.maxZ*1.1);
     
-    camera.position.x = Math.min((1.1)*Math.abs(guiParameters.minX), -1)
-    camera.position.y = Math.min((1.1)*Math.abs(guiParameters.minY), -1)
-    camera.position.z = Math.min((1.1)*Math.abs(guiParameters.minZ), -1)
-    camera.lookAt(guiParameters.planeX,guiParameters.planeY,guiParameters.planeZ);
+    camera.position.z = Math.min((1.5)*guiParameters.minZ, -1)
+    camera.lookAt(0,0,-1);
 
     scene.background = new THREE.Color( 'white' );
 
@@ -2431,13 +2425,7 @@
             updateNormals();
         }
 
-        //update controls
         controls.update();
-
-        //update performance overlay of enabled
-        if(performanceOverlayEnabled){
-            stats.update();
-        }
 
         renderer.localClippingEnabled = true;
 
