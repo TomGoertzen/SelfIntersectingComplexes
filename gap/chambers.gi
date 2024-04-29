@@ -503,7 +503,6 @@ InstallGlobalFunction(AnimateChamberExplode,function(data_tri,name)
     data_big:=ChambersMergeSurfacesCoordinates(comps);;
     s_assembly:=data_big[1];;
     coordinates_assembly:=data_big[2];;
-    LoadPackage("GapIC");
     explode_vector_trans:=function(s,points,strength)
       local center,new_points,c,v,center_comp,vector;
       center:=Sum(points)/Size(points);

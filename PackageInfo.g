@@ -92,8 +92,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.12",
-  NeededOtherPackages := [["SimplicialSurfaces",">=0.6"]],
-  SuggestedOtherPackages := [["GAPic",">=0.1"]],
+  NeededOtherPackages := [["SimplicialSurfaces",">=0.6"],["GAPic",">=0.1"]],
+  SuggestedOtherPackages := [],
   ExternalConditions := [ ],
 ),
 

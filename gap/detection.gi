@@ -8,7 +8,7 @@ BindGlobal("triangulate", function(data)
             if Set([i, e[1]]) in data[2] and Set([i, e[2]]) in data[2] then
                 is_triangle := true;
                 for j in [1..Size(data[1])] do
-                    if j <> i and j <> e[1] and j <> e[2] and MyPointInTriangle(data[1][e[1]], data[1][e[2]], data[1][i], data[1][j], eps) then
+                    if j <> i and j <> e[1] and j <> e[2] and MyPointInTriangle(data[1][e[1]], data[1][e[2]], data[1][i], data[1][j], _SelfIntersectingComplexesParameters.eps) then
                         is_triangle := false;
                     fi;
                 od;
@@ -29,7 +29,7 @@ BindGlobal("join_triangles", function(list)
     for data in list do
         map := [];
         for i in [1..Size(data[1])] do
-            pos := MyNumericalPosition(vertices, data[1][i], eps);
+            pos := MyNumericalPosition(vertices, data[1][i], _SelfIntersectingComplexesParameters.eps);
             if pos = fail then
                 Add(vertices, data[1][i]);
                 map[i] := Size(vertices);
@@ -287,7 +287,8 @@ end);
 
 # output of the form [vertices,intersection_edges]
 BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
-	local edges,n,m,inside_points,cur_line,l1,l2,res,intersection,intersection2;
+	local edges,n,m,inside_points,cur_line,l1,l2,res,intersection,intersection2,eps;
+	eps:=_SelfIntersectingComplexesParameters.eps;
 	edges:=[];
 	#check if triangles are coplanar and fix cases
 	n:=Crossproduct(triangle1[2]-triangle1[1],triangle1[3]-triangle1[1]);
@@ -368,7 +369,8 @@ BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
 end);
 
 InstallGlobalFunction(calculate_intersections_groups,function(t,coordinates,intersections_only,group,group_orthogonal)
-	local l,k,i,j,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,vof,inside_points,orbs,g,shift,new_data,cur_line,res,pairs_reps,m,l1,l2,p,n,orb,orbs_pairs;
+	local l,k,i,j,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,vof,inside_points,orbs,g,shift,new_data,cur_line,res,pairs_reps,m,l1,l2,p,n,orb,orbs_pairs,eps;
+	eps:=_SelfIntersectingComplexesParameters.eps;
 	vof:=VerticesOfFaces(t);
 	orbs:=Orbits(group,Faces(t));
 	# calculate representatives for faces that intersect with face representatives
@@ -542,7 +544,8 @@ InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersect
 end);
 
 InstallGlobalFunction(calculate_intersections_comp,function(s,coordinates,intersections_only)
-	local l,k,i,j,data,check,c,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,inside_points,cur_line,res,m,vof,l2,l1,n;
+	local l,k,i,j,data,check,c,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,inside_points,cur_line,res,m,vof,l2,l1,n,eps;
+	eps:=_SelfIntersectingComplexesParameters.eps;
 	vof:=VerticesOfFaces(s);
 	l:=[];
 	for i in Faces(s) do
@@ -759,7 +762,8 @@ end);
 
 
 InstallGlobalFunction(RectifyDiscIntersections,function(data)
-	local i,j,res,entry,entry1,entry2,entry_in_i,entry_in_j,addy,check_edges,orig_j,orig_i,cur,k,remove,e,l,n;
+	local i,j,res,entry,entry1,entry2,entry_in_i,entry_in_j,addy,check_edges,orig_j,orig_i,cur,k,remove,e,l,n,eps;
+	eps:=_SelfIntersectingComplexesParameters.eps;
 	data:=CleanData(data,eps);
 	data[2]:=List(data[2]);
 	for i in [1..Size(data[1])] do

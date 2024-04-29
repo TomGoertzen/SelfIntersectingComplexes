@@ -17,8 +17,8 @@
 #############################################################################
 
 ReadPackage( "SelfIntersectingComplexes", "gap/helper.gi");
-ReadPackage( "SelfIntersectingComplexes", "gap/main.gi");
 ReadPackage( "SelfIntersectingComplexes", "gap/detection.gi");
 ReadPackage( "SelfIntersectingComplexes", "gap/retriangulation.gi");
 ReadPackage( "SelfIntersectingComplexes", "gap/chambers.gi");
 ReadPackage( "SelfIntersectingComplexes", "gap/nonmanifold.gi");
+ReadPackage( "SelfIntersectingComplexes", "gap/main.gi");

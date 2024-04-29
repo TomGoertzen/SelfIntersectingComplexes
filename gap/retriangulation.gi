@@ -1,5 +1,6 @@
 InstallGlobalFunction(DiscTriangulation, function(data)
-    local map, i, edge, poss_edges, no_poss_edges, new_edges, ok, e, res, data_tri, t, boundary_vertices, count_new, j, count, v;
+    local map, i, edge, poss_edges, no_poss_edges, new_edges, ok, e, res, data_tri, t, boundary_vertices, count_new, j, count, v, eps;
+    eps:=_SelfIntersectingComplexesParameters.eps;
     # fix intersections of intersection
     # Print("Fix planar intersections \n");
     data := RectifyDiscIntersections(data);

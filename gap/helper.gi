@@ -1,3 +1,22 @@
+# Record for internal parameters
+BindGlobal("_SelfIntersectingComplexesParameters",rec(
+    eps:=1.*10^-6,
+    non_manifold_edge_shift:=0.01,
+    non_manifold_vertex_shift:=0.01,
+));
+
+InstallGlobalFunction(SetPrecisionForIntersections,function(eps)
+    _SelfIntersectingComplexesParameters.eps:=eps;
+end);
+
+InstallGlobalFunction(SetNonManifoldEdgeShift,function(shift)
+    _SelfIntersectingComplexesParameters.non_manifold_edge_shift:=shift;
+end);
+
+InstallGlobalFunction(SetNonManifoldVertexShift,function(shift)
+    _SelfIntersectingComplexesParameters.non_manifold_vertex_shift:=shift;
+end);
+
 # Dot Product
 BindGlobal("Dot",function(a,b)
         return a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
@@ -13,7 +32,7 @@ BindGlobal("SurfaceTriangle",function(x,y,z)
         a := MyNorm(x-y);
         b := MyNorm(x-z);
         c := MyNorm(y-z);      
-        if AbsoluteValue((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c))<eps then
+        if AbsoluteValue((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c))<_SelfIntersectingComplexesParameters.eps then
         	# bc of numerical errors, expression can be negative instead of 0
         	return 0.;
         else
@@ -309,8 +328,7 @@ BindGlobal( "TriangularComplexFromCoordinates", function(params,eps)
         surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
 
         return [surf,VerticesCoords];
-    end
-);;
+end);;
 
 
 # Create a simplicial surface from changed coordinates and a previous simplicial surface (that determines the faces of the new simplicial surface
@@ -334,81 +352,13 @@ BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
         surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
 
         return [surf];
-    end
-);
-
-
-# output umbrella around vertex v (with possible non-manifold edges present)
-BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
-	local faces,new_face,edges,edge,old_face;
-	faces:=[];
-	new_face:=f;
-	edge:=Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face))[2];
-	while not new_face in faces do
-		Add(faces,new_face);
-		# this way you only find one butterfly part of the non-manifold edge
-		old_face:=new_face;
-		if IsRamifiedEdge(t,edge) then
-			new_face:=UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
-		else
-			new_face:=Difference(FacesOfEdge(t,edge),[new_face])[1];
-		fi;
-		edge:=Difference(Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face)),EdgesOfFace(t,old_face))[1];
-	od;
-	return faces;
-end);;
-
-# outputs local umbrellas at vertex v
-# TODO: what should output be exactly?
-BindGlobal("UmbrellaComponents",function(t,v)
-	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges, used_edges;;
-	
-	u_comps := [];
-	v_faces := ShallowCopy(FacesOfVertex(t,v));
-	v_edges := ShallowCopy(EdgesOfVertex(t,v));
-	edges_of_faces := [];
-	used_edges := [];
-	for f in v_faces do
-		 edges := ShallowCopy(EdgesOfFace(t,f));
-		 edges_of_faces[f] := Intersection(edges,v_edges);
-	od;
-	while v_faces <> [] do
-		fa := v_faces[1];
-		Remove(v_faces,Position(v_faces,fa));
-		comp := [fa];
-		cur_edges := [edges_of_faces[fa][1]];
-		
-		available_edges := Unique(Flat(ShallowCopy(edges_of_faces)));
-		# so that we dont land in an infinite loop
-		Remove(available_edges,Position(available_edges,edges_of_faces[fa][2]));
-		
-		while Intersection(cur_edges,available_edges) <> [] do
-			# while we can still reach a face on our side of the umbrella, continue
-			for f in v_faces do
-				connection := Intersection(edges_of_faces[f],cur_edges);
-				if connection <> [] and not connection in used_edges then
-					used_edges := Concatenation(used_edges,connection);
-					Add(comp,f);
-					cur_edges := Union(cur_edges,edges_of_faces[f]);
-					Remove(v_faces,Position(v_faces,f));
-					for e in connection do
-						if e in available_edges then
-							Remove(available_edges,Position(available_edges,e));
-						fi;
-					od;
-				fi;
-			od;
-		od;
-		Add(u_comps,comp);
-	od;
-	return u_comps;
-end);;
+end);
 
 # reads a stl file and creates a complex / simplicial surface (depending on the regularity of the object)
 BindGlobal("ReadSTL", function(fileName)
 	# reads a file from the current dir
 	local surf, file, name, r, r2, eps, filesepr, faces, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
-	eps := 1./10^6;
+	eps := _SelfIntersectingComplexesParameters.eps;
 	filesepr := SplitString(fileName, ".");
         name := filesepr[1];
         file := Filename( DirectoryCurrent(), Concatenation(name,".stl") );
@@ -550,8 +500,7 @@ BindGlobal("_RemoveDuplicateFaces",function(Coords,eps)
             fi;
         od;
         return Copy_Coords;
-    end
-);
+end);
 
 
 BindGlobal("_DrawSTL", function(fileName, Coords)
@@ -572,7 +521,7 @@ BindGlobal("_DrawSTL", function(fileName, Coords)
         #
         #######################################################################################################################################################################
 
-        eps := 1.0/(10^(12));
+        eps := _SelfIntersectingComplexesParameters.eps;
 
         filesepr := SplitString(fileName, ".");
         name := filesepr[1];
@@ -622,5 +571,4 @@ BindGlobal("_DrawSTL", function(fileName, Coords)
         AppendTo(output, Concatenation("endsolid ", name));
         CloseStream(output);
         return;
-    end
-);;
+end);;

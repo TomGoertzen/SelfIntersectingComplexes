@@ -58,8 +58,7 @@ BindGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
         surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
 
         return [surf,VerticesCoords];
-    end
-);
+end);
 
 InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name, eps, shift_param, group, group_ort, has_intersections, has_ram_edges)
     local data, f, n, order_data, unramified_data, unram_surf, unram_points;
@@ -73,14 +72,14 @@ InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name, eps
     n := data[2];
     data := OuterHull(t, points, f, n);
     t := ShallowCopy(data[2]);
-    if has_ram_edges and Size(RamifiedEdges(t)) > 0 then
-        order_data := OrderRamifiedEdges(t, ShallowCopy(data));
-        unramified_data := FixRamPath(t, order_data, data, ShallowCopy(points), shift_param);
-        t := unramified_data[1];
-        points := unramified_data[2];
-        DrawSTLwithNormals(t, name, points, -data[4], []);
-        return [data[1], t, points, data[4]];
-    fi;
+    #if has_ram_edges and Size(RamifiedEdges(t)) > 0 then
+    #    order_data := OrderRamifiedEdges(t, ShallowCopy(data));
+    #    unramified_data := FixRamPath(t, order_data, data, ShallowCopy(points), shift_param);
+    #    t := unramified_data[1];
+    #    points := unramified_data[2];
+    #    DrawSTLwithNormals(t, name, points, -data[4], []);
+    #    return [data[1], t, points, data[4]];
+    #fi;
     DrawSTLwithNormals(t, name, points, -data[4], []);
     return [data[1], t, points, data[4]];
 end);
@@ -97,14 +96,14 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name, eps, shift_p
     n := data[2];
     data := OuterHull(t, points, f, n);
     t := ShallowCopy(data[2]);
-    if has_ram_edges and Size(RamifiedEdges(t)) > 0 then
-        order_data := OrderRamifiedEdges(t, ShallowCopy(data));
-        unramified_data := FixRamPath(t, order_data, data, ShallowCopy(points), shift_param);
-        t := unramified_data[1];
-        points := unramified_data[2];
-        DrawSTLwithNormals(t, name, points, -data[4], []);
-        return [data[1], t, points, data[4]];
-    fi;
+    #if has_ram_edges and Size(RamifiedEdges(t)) > 0 then
+    #    order_data := OrderRamifiedEdges(t, ShallowCopy(data));
+    #    unramified_data := FixRamPath(t, order_data, data, ShallowCopy(points), shift_param);
+    #    t := unramified_data[1];
+    #    points := unramified_data[2];
+    #    DrawSTLwithNormals(t, name, points, -data[4], []);
+    #    return [data[1], t, points, data[4]];
+    #fi;
     DrawSTLwithNormals(t, name, points, -data[4], []);
     return [data[1], t, points, data[4]];
 end);

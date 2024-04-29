@@ -1,5 +1,71 @@
+# output umbrella around vertex v (with possible non-manifold edges present)
+BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
+	local faces,new_face,edges,edge,old_face;
+	faces:=[];
+	new_face:=f;
+	edge:=Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face))[2];
+	while not new_face in faces do
+		Add(faces,new_face);
+		# this way you only find one butterfly part of the non-manifold edge
+		old_face:=new_face;
+		if IsRamifiedEdge(t,edge) then
+			new_face:=UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
+		else
+			new_face:=Difference(FacesOfEdge(t,edge),[new_face])[1];
+		fi;
+		edge:=Difference(Intersection(EdgesOfVertex(t,v),EdgesOfFace(t,new_face)),EdgesOfFace(t,old_face))[1];
+	od;
+	return faces;
+end);;
+
+# outputs local umbrellas at vertex v
+# TODO: what should output be exactly?
+BindGlobal("UmbrellaComponents",function(t,v)
+	local u_comps, available_edges, v_faces, v_edges, edges_of_faces, f, e, fa, edges, avaiable_edges, comp, connection, cur_edges, used_edges;;
+	
+	u_comps := [];
+	v_faces := ShallowCopy(FacesOfVertex(t,v));
+	v_edges := ShallowCopy(EdgesOfVertex(t,v));
+	edges_of_faces := [];
+	used_edges := [];
+	for f in v_faces do
+		 edges := ShallowCopy(EdgesOfFace(t,f));
+		 edges_of_faces[f] := Intersection(edges,v_edges);
+	od;
+	while v_faces <> [] do
+		fa := v_faces[1];
+		Remove(v_faces,Position(v_faces,fa));
+		comp := [fa];
+		cur_edges := [edges_of_faces[fa][1]];
+		
+		available_edges := Unique(Flat(ShallowCopy(edges_of_faces)));
+		# so that we dont land in an infinite loop
+		Remove(available_edges,Position(available_edges,edges_of_faces[fa][2]));
+		
+		while Intersection(cur_edges,available_edges) <> [] do
+			# while we can still reach a face on our side of the umbrella, continue
+			for f in v_faces do
+				connection := Intersection(edges_of_faces[f],cur_edges);
+				if connection <> [] and not connection in used_edges then
+					used_edges := Concatenation(used_edges,connection);
+					Add(comp,f);
+					cur_edges := Union(cur_edges,edges_of_faces[f]);
+					Remove(v_faces,Position(v_faces,f));
+					for e in connection do
+						if e in available_edges then
+							Remove(available_edges,Position(available_edges,e));
+						fi;
+					od;
+				fi;
+			od;
+		od;
+		Add(u_comps,comp);
+	od;
+	return u_comps;
+end);;
+
 BindGlobal("_ChooseIsolatedVertex", function(t,e,path,points,data)
-	local voe,foe, at_end, pos, next, voenext;
+	local voe,foe, at_end, pos, next, vonext;
 	voe:=VerticesOfEdge(t,e);
 	foe:=FacesOfEdge(t,e);
 	pos := Position(path,e);
@@ -310,7 +376,7 @@ BindGlobal("_DetectCircle", function(Edges,VertsOfEdges,start,next)
 	return false;
 end);; 
 
-BindGlobal("_OrderPath", function(NMEdges,VertsOfNMEdges,start,path)
+InstallGlobalFunction(_OrderPath, function(NMEdges,VertsOfNMEdges,start,path)
 	local found, cur_verts, coincident_vert, circle_in_direction, q, c_numb, p, l, i, numb, next, next_verts, next_edges, next_edge_verts, comp;
 	numb := 0;
 	c_numb := 0;
@@ -540,7 +606,7 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 end);;
 
 
-BindGlobal("_FixNMIntersection",function(surf,order,info,data,points,Coords,shift_param)
+InstallGlobalFunction(_FixNMIntersection,function(surf,order,info,data,points,Coords,shift_param)
 	local l, int_v, branches, not_split, data_fix, b;
 	int_v := info[1];
 	branches := info[2];

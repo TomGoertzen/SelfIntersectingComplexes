@@ -16,6 +16,12 @@
 ##
 #############################################################################
 
+DeclareGlobalFunction("SetNonManifoldVertexShift");
+
+DeclareGlobalFunction("SetNonManifoldEdgeShift");
+
+DeclareGlobalFunction("SetPrecisionForIntersections");
+
 DeclareGlobalFunction("OuterHull");
 
 DeclareGlobalFunction("DrawSTLScratch");
@@ -63,4 +69,8 @@ DeclareGlobalFunction("FixNMEdgePath");
 DeclareGlobalFunction("FixNMVerts");
 
 DeclareGlobalFunction("RemedyNonManifold");
+
+DeclareGlobalFunction("_OrderPath");
+
+DeclareGlobalFunction("_FixNMIntersection");
 
