@@ -84,6 +84,9 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
     n := data[2];
     data := ExtractChamber(t, points, f, n);
     t := ShallowCopy(data[2]);
+    
+    #f := RemedyNonManifold(data,data[3],shift_param);
+    
     DrawSTLwithNormals(t, name, points, -data[4], []);
     return [data[1], t, points, data[4]];
 end);

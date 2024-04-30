@@ -1,8 +1,8 @@
 # Record for internal parameters
 BindGlobal("_SelfIntersectingComplexesParameters",rec(
     eps:=1.*10^-6,
-    non_manifold_edge_shift:=0.01,
-    non_manifold_vertex_shift:=0.01,
+    non_manifold_edge_shift:=0.04,
+    non_manifold_vertex_shift:=0.04,
 ));
 
 InstallGlobalFunction(SetPrecisionForIntersections,function(eps)
