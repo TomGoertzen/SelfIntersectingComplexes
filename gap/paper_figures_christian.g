@@ -1,13 +1,5 @@
-eps:=1.*10^-6;
 LoadPackage("GAPic");
-Read("SelfIntersectingComplexes.gd");
-Read("helper.gi");
-
-Read("detection.gi");
-Read("retriangulation.gi");
-Read("chambers.gi");
-Read("main.gi");
-Read("nonmanifold.gi");
+LoadPackage("SelfIntersectingComplexes");
 coordinates:=[ [ 0, 0, 1 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [ 0, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 0 ], [ 1, 0, 0 ], [ 1, 0, 1 ] ];
 
 faces:=[
@@ -34,7 +26,7 @@ pr:=SetVertexCoordinates3D(cubes_two,coordinates_two);
 DrawComplexToJavaScript(cubes_two,"Cubes/TwoCubesXY",pr);
 
 eps:=1.*10^-6;
-r := PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubes",eps,0.1,Group(()),true,false);
+r := PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubes");
 surf := r[1];
 pr2 := SetVertexCoordinates3D(surf,r[3]);
 DrawComplexToJavaScript(surf,"Cubes/TwoCubesXY_intersc_free",pr2);
@@ -60,7 +52,7 @@ Coord3_2:= [
 pr3 := SetVertexCoordinates3D(ico,Coord3_2);
 
 DrawComplexToJavaScript(ico,"ico_3_2_raw",pr3);
-data := PrintableOuterHull(ico,Coord3_2,"ico_3_2",eps,0.1,Group(()),true,false);
+data := PrintableOuterHull(ico,Coord3_2,"ico_3_2");
 
 surf := data[1];
 pts := data[3];
@@ -83,7 +75,7 @@ DrawComplexToJavaScript(surf,"ico_3_2_red",pr3);
 
 outer_triangle:=FindOuterTriangle(data[1],data[3]);
 
-data_outer:=OuterHull(data[1],data[3],outer_triangle[1],outer_triangle[2]);
+data_outer:=ExtractChamber(data[1],data[3],outer_triangle[1],outer_triangle[2]);
 
 shift_param:=0.1;
 
