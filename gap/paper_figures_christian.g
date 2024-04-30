@@ -67,19 +67,21 @@ for e in RamifiedEdges(surf) do
 	SetEdgeColour(surf,e,"0xFF0000",pr3);
 	ActivateEdge(surf,e,pr3);
 od;
-#ActivateLineWidth(surf,pr3);
+pr3 := ActivateLineWidth(surf,pr3);
 
 
-pr3.edgeThickness := 0.15;
+
 DrawComplexToJavaScript(surf,"ico_3_2_red",pr3);
 
 outer_triangle:=FindOuterTriangle(data[1],data[3]);
-
 data_outer:=ExtractChamber(data[1],data[3],outer_triangle[1],outer_triangle[2]);
 
-shift_param:=0.1;
+shift_param:=0.05;
 
 f := RemedyNonManifold(data_outer,data[3],shift_param);
+
+
+
 
 unram_surf := f[1];
 pts := f[2];
@@ -95,6 +97,4 @@ od;
 DeactivateEdge(unram_surf,76,pr4);
 DrawComplexToJavaScript(unram_surf,"ico_3_2_unram_red",pr4);
 
-
-coords := [[0.,0.,0.],[0.,0.5,0.],[-0.5,0.3,0.]]
 

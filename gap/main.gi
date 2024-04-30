@@ -70,12 +70,21 @@ InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,grou
     n := data[2];
     data := ExtractChamber(t, points, f, n);
     t := ShallowCopy(data[2]);
-    DrawSTLwithNormals(t, name, points, -data[4], []);
-    return [data[1], t, points, data[4]];
+    
+    
+    f := RemedyNonManifold(data,points,shift_param);
+    unram_surf := f[1];
+    unram_points := f[2];
+    coords := f[3];
+    order_data := f[4];
+    
+    DrawSTLwithNormals(unram_surf, name, unram_points, -data[4], []);
+    # TODO: normals wont be completely correct after we remedy the mfd
+    return [data[1], unram_surf, unram_points, data[4]];
 end);
 
 InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
-    local data, f, n, order_data, unramified_data, unram_surf, unram_points;
+    local data, f, n, coords, order_data, unramified_data, unram_surf, unram_points;
     data := Retriangulation(t, points);
     points := data[1];
     t := TriangularComplexByVerticesInFaces(data[2]);
@@ -85,10 +94,16 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
     data := ExtractChamber(t, points, f, n);
     t := ShallowCopy(data[2]);
     
-    #f := RemedyNonManifold(data,data[3],shift_param);
     
-    DrawSTLwithNormals(t, name, points, -data[4], []);
-    return [data[1], t, points, data[4]];
+    f := RemedyNonManifold(data,points,shift_param);
+    unram_surf := f[1];
+    unram_points := f[2];
+    coords := f[3];
+    order_data := f[4];
+    
+    DrawSTLwithNormals(unram_surf, name, unram_points, -data[4], []);
+    # TODO: normals wont be completely correct after we remedy the mfd
+    return [data[1], unram_surf, unram_points, data[4]];
 end);
 
 

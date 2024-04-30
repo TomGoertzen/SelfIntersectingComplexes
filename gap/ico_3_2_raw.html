@@ -32,11 +32,11 @@
 	import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 	import { Line2 } from 'three/addons/lines/Line2.js';
 	import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-	import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+	import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 	//start scene and camera
 	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100 );
+	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 
 	const renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -1925,7 +1925,7 @@
     planeFolder.add(guiParameters, 'planeZactive');
     planeFolder.add(guiParameters, 'planeZ', guiParameters.minZ*1.1, guiParameters.maxZ*1.1);
     
-    camera.position.z = Math.min((1.5)*guiParameters.minZ, -1)
+    camera.position.z = Math.max((1.5)*guiParameters.minZ, 1)
     camera.lookAt(0,0,-1);
 
     scene.background = new THREE.Color( 'white' );
