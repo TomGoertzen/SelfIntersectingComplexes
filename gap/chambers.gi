@@ -104,7 +104,7 @@ end);
 # Algorithm from Paper by M. Attene Title: As-exact-as-possible repair of unprintable stl files
 # Input: a triangular complex s with coordinates vC and an outer face f with normal vector n
 # Output: s, Restricted Complex to outer faces, Outer Faces, and correctly oriented normal vectors
-InstallGlobalFunction(OuterHull,function(s,vC,f,n)
+InstallGlobalFunction(ExtractChamber,function(s,vC,f,n)
 	local B, e, OuterTriangles, InnerTriangles, NormalVectors, b, edge, t, t_new, eps;
 	eps := 1.0/(10^(12));
 	B:=[];
@@ -135,8 +135,10 @@ end);
 InstallGlobalFunction(DrawSTLScratch,function(t,fileName,vC)
 	local f,normals,normal,x,y,ccoords,vof;
 	normals:=[];
-	if IsOrientable(t) then
-		vof:=VerticesOfFaces(t);
+    if IsSimplicialSurface(t) then
+        if IsOrientable(t) then
+		  vof:=VerticesOfFaces(t);
+        fi;
 	else
 		vof:=List(Orientation(t), f->VerticesAsList(f){[1,2,3]});
 	fi;
@@ -417,12 +419,20 @@ InstallGlobalFunction(DrawSTLwithNormalsVOF,function(vof,fileName, vC,normals,vi
         return;
 end);
 
+InstallGlobalFunction(OuterHull,function(t,points)
+    local data,f,n;
+    data:=FindOuterTriangle(t,Sublist(points,Vertices(t)));
+    f:=data[1];
+    n:=data[2];
+    return ExtractChamber(t,points,f,n);
+end);
+
 BindGlobal("NormalsOuterHull",function(t,points)
     local data,f,n;
     data:=FindOuterTriangle(t,Sublist(points,Vertices(t)));
     f:=data[1];
     n:=data[2];
-    return OuterHull(t,points,f,n)[4];
+    return ExtractChamber(t,points,f,n)[4];
 end);
 
 # computing all the chambers of the given triangular complex t
@@ -444,13 +454,13 @@ InstallGlobalFunction(ComputeChambers,function(t,points)
             vof:=VerticesOfFace(t,current_face);
             n:=Crossproduct(points[vof[2]]-points[vof[1]],points[vof[3]]-points[vof[1]]);
             n:=n/MyNorm(n);
-            data:=OuterHull(t,points,current_face,n);
+            data:=ExtractChamber(t,points,current_face,n);
             if not data[2] in components[1] then
                 Add(components[1],data[2]);
                 Add(components[2],data[4]);
                 faces:=Difference(faces,Faces(data[2]));
             fi;
-            data:=OuterHull(t,points,current_face,-n);
+            data:=ExtractChamber(t,points,current_face,-n);
             if not data[2] in components[1] then
                 Add(components[1],data[2]);
                 Add(components[2],data[4]);
@@ -472,4 +482,3 @@ BindGlobal("ChambersMergeSurfacesCoordinates",function(data)
     od;
     return [TriangularComplexByVerticesInFaces(vof),coordinates];
 end);
-

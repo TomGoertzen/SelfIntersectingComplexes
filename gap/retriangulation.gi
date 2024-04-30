@@ -80,3 +80,161 @@ InstallGlobalFunction(DiscTriangulation, function(data)
     # Print("In the end we got ", count, " loops \n");
     return CleanData(data, eps);
 end);
+
+
+
+InstallGlobalFunction(Retriangulation,function(t,coordinates)
+    local l,i,data_triangulated;
+    l:=ComputeSelfIntersections(t,coordinates);
+    data_triangulated:=[];
+    for i in Faces(t) do
+            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+    od;
+    return join_triangles(data_triangulated);
+end);
+
+InstallGlobalFunction(ComponentsRetriangulation,function(t,coordinates)
+    local l,components,data_triangulated,c,i;
+    l:=ComputeSelfIntersections(t,coordinates);
+    components:=[];
+    data_triangulated:=[];
+    for c in ConnectedComponents(t) do
+        for i in Faces(c) do
+            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+        od;
+        Add(components,join_triangles(data_triangulated{Faces(c)}));
+    od;
+    return components;
+end);
+
+# Gets args[1] triangular complex
+# args[2] coordinates
+# args[3] combinatorial group on vertices
+# args[4] symmetry group respecting coordinates as subgroup of O(3)
+InstallGlobalFunction(SymmetricRetriangulation,function(args...)
+    local l,k,i,j,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,res,cur_line,inside_points,m,l1,l2,n,vof,coordinates,group,group_orthogonal,orbs,shift,new_data,g,eps,t,pairs_reps,orbs_pairs,p,orb;
+    if Size(args)=3 then
+        t:=args[1];
+        vof:=VerticesOfFaces(args[1]);
+        coordinates:=args[2];
+        group:=args[3];
+        orbs_vof:=Orbits(group,vof,OnSets);
+        l:=[];
+        for i in [1..Size(vof)] do
+            l[i]:=[List([1..3],j->coordinates[vof[i][j]]),Set([Set([1,2]),Set([2,3]),Set([3,1])])];
+        od;
+        #for each representative find self intersections
+        for k in [1..Size(orbs_vof)] do
+            orb_rep:=orbs_vof[k][1];
+            i:=Position(vof,orb_rep);
+            for j in [1..Size(vof)] do
+                # output of the form [vertices,intersection_edges]
+                if i<>j then
+                    # call by reference: add intersection points
+                    # return values add edges
+                    l[i][2]:=Concatenation(l[i][2],TwoTriangleIntersection(l[i][1],l[j][1]));
+                fi;
+            od;
+        od;
+        # add stabilizer
+        for k in [1..Size(orbs)] do
+            i:=orbs[k][1];
+            new_data:=[StructuralCopy(l[i][1]),StructuralCopy(l[i][2])];
+            shift:=Size(l[1]);
+            j:=1;
+            for g in Stabilizer(group,i) do
+                if Size(Stabilizer(group,i))=1 then
+                    break;
+                fi;
+                if g<>() then
+                    l[i][1]:=Concatenation(l[i][1],new_data[1]*group_orthogonal[Position(Elements(group),g)]);
+                    l[i][2]:=Concatenation(l[i][2],new_data[2]+j*Size(new_data[1]));
+                    j:=j+1;
+                fi;
+            od;
+        od;
+        data_triangulated:=[];
+        # transfer triangulations to all other triangles
+        for k in [1..Size(orbs_vof)] do
+            i:=Position(vof,orbs_vof[k][1]);
+            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            for h in [2..Size(orbs_vof[k])] do
+                j:=Position(vof,orbs_vof[k][h]);
+                data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
+            od;
+        od;
+        return join_triangles(data_triangulated);
+    elif Size(args)=4 then
+        t:=args[1];
+        vof:=VerticesOfFaces(args[1]);
+        coordinates:=args[2];
+        group:=args[3];
+        group_orthogonal:=args[4];
+        eps:=_SelfIntersectingComplexesParameters.eps;
+        vof:=VerticesOfFaces(t);
+        orbs:=Orbits(group,Faces(t));
+        # calculate representatives for faces that intersect with face representatives
+        orbs_pairs:=Orbits(group,Combinations(Faces(t),2),OnSets);
+        pairs_reps:=List(Faces(t),f->[]);
+        for k in [1..Size(orbs)] do
+            i:=orbs[k][1];
+            for orb in orbs_pairs do
+                for p in Orbits(Stabilizer(group,i),orb,OnSets) do
+                    if i in p[1] then
+                        Add(pairs_reps[i],Other(p[1],i));
+                    fi;
+                od;
+            od; 
+        od;
+        l:=[];
+        for i in [1..Size(vof)] do
+            l[i]:=[List([1..3],j->coordinates[vof[i][j]]),Set([Set([1,2]),Set([2,3]),Set([3,1])])];
+        od;
+        #for each representative find self intersections
+        for k in [1..Size(orbs)] do
+            i:=orbs[k][1];
+            for j in pairs_reps[i] do
+                # output of the form [vertices,intersection_edges]
+                if i<>j then
+                    l[i][2]:=Concatenation(l[i][2],TwoTriangleIntersection(l[i][1],l[j][1]));
+                fi;
+            od;
+        od;
+        # add stabilizer
+        for k in [1..Size(orbs)] do
+            i:=orbs[k][1];
+            new_data:=[StructuralCopy(l[i][1]),StructuralCopy(l[i][2])];
+            shift:=Size(l[1]);
+            j:=1;
+            for g in Stabilizer(group,i) do
+                if Size(Stabilizer(group,i))=1 then
+                    break;
+                fi;
+                if g<>() then
+                    l[i][1]:=Concatenation(l[i][1],new_data[1]*group_orthogonal[Position(Elements(group),g)]);
+                    l[i][2]:=Concatenation(l[i][2],new_data[2]+j*Size(new_data[1]));
+                    j:=j+1;
+                fi;
+            od;
+        od;
+        data_triangulated:=[];
+        # transfer triangulations to all other triangles
+        for k in [1..Size(orbs)] do
+            i:=orbs[k][1];
+            #Print("Triangulation for face ",String(i),"\n");
+            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
+                Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
+                data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            od;
+            for h in [2..Size(orbs[k])] do
+                j:=orbs[k][h];
+                data_triangulated[j]:=SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
+            od;
+        od;
+        return join_triangles(data_triangulated);
+    else
+        Print("Unknown Number of arguments. Should be either 3 or 4.");
+        return fail;
+    fi;
+end);

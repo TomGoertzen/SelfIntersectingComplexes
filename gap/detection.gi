@@ -206,7 +206,7 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 	return [false];
 end);
 
-InstallGlobalFunction(TwoTriangleIntersection,function(coords_j,coords_k,eps)
+BindGlobal("TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
         local l,ccoords,x,y,normal,t_coords,t_normal,ints,different,Compared,orthog,c_coords,numb_int,not_on_edge,ints_points,o,p,res,c_normal,d1,diff,not_on_edges,possb_intersec,lambda,edge_param,vOedge,d2;
         ccoords:=coords_j;
         x := ccoords[2]-ccoords[1];
@@ -228,65 +228,65 @@ InstallGlobalFunction(TwoTriangleIntersection,function(coords_j,coords_k,eps)
         # set coords again since the coordinate matrix may change every iteration
         different := true;
         if coords_j <> [] then
-		    c_normal := coords_j[4];
-		    d1 := coords_j[1]*c_normal;
-		    c_coords := coords_j{[1..3]};
+        c_normal := coords_j[4];
+        d1 := coords_j[1]*c_normal;
+        c_coords := coords_j{[1..3]};
         fi;
         t_coords := ShallowCopy(coords_k{[1..3]});
         # cant intersect if incident                       
-		t_normal := coords_k[4];
-		d2 := coords_k[1]*t_normal;
-		orthog := [Crossproduct(c_coords[2]-c_coords[1],c_normal),Crossproduct(c_coords[3]-c_coords[2],c_normal),Crossproduct(c_coords[1]-c_coords[3],c_normal)];
-		
-		orthog[1] := orthog[1] / Sqrt(orthog[1]*orthog[1]);
-		orthog[2] := orthog[2] / Sqrt(orthog[2]*orthog[2]);
-		orthog[3] := orthog[3] / Sqrt(orthog[3]*orthog[3]);
-		
-		# must be right of planes, need to have the orthogonal vectors point to the inside of the triangle
-		orthog[1] := orthog[1] * ((orthog[1]*c_coords[3]-orthog[1]*c_coords[1]) / AbsoluteValue(orthog[1]*c_coords[3]-orthog[1]*c_coords[1]));
-		orthog[2] := orthog[2] * ((orthog[2]*c_coords[1]-orthog[2]*c_coords[2]) / AbsoluteValue(orthog[2]*c_coords[1]-orthog[2]*c_coords[2]));
-		orthog[3] := orthog[3] * ((orthog[3]*c_coords[2]-orthog[3]*c_coords[3]) / AbsoluteValue(orthog[3]*c_coords[2]-orthog[3]*c_coords[3]));
-		# check if triangle k intersects with j
-		numb_int := 0;
-		ints_points := [];
-		# use this to compute if both of the intersection points lie on an edge
-		not_on_edge := [true, true, true];
-		for l in [1..3] do
-		    vOedge := [coords_k[l],coords_k[l mod 3 + 1]];
-		    # if two faces share a edge then this edge cant be an intersection
-		    if Length(NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
-		        edge_param := coords_k[l mod 3 + 1]-coords_k[l];                                  
-		        # find point that intersects with plane
-		        res := ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
-		        p := res[1];
-		        lambda := res[2];                                  
-		        o := [orthog[1]*p-orthog[1]*c_coords[1], orthog[2]*p-orthog[2]*c_coords[2], orthog[3]*p-orthog[3]*c_coords[3]];		        
-		        # check if point inside triangle		         
-		        if FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and FlGeq(lambda,0.,eps) and FlLeq(lambda,1.,eps) then		        
-		            not_on_edge[1] := not_on_edge[1] and FlEq(0.,o[1],eps); 
-		            not_on_edge[2] := not_on_edge[2] and FlEq(0.,o[2],eps); 
-		            not_on_edge[3] := not_on_edge[3] and FlEq(0.,o[3],eps);           
-		            ints := true;
-		            possb_intersec := possb_intersec + 1;
-		            if EqFloat(p[1]+0.0,p[1]) and EqFloat(p[2]+0.0,p[2]) and EqFloat(p[3]+0.0,p[3]) then
-		            	numb_int := numb_int + 1;
-		            	ints_points[numb_int] := p; 
-		            fi;	
-		        fi;                                   
-		    fi;                            
-		od;
-		not_on_edges := not( not_on_edge[1] or not_on_edge[2] or not_on_edge[3]);                        
-		if Length(ints_points) > 0 then
-		    ints_points := NumericalUniqueListOfLists(ints_points,eps);
-		    diff := numb_int - Length(ints_points);
-		    possb_intersec := possb_intersec - diff;
-		fi;                        
-		numb_int := Length(ints_points);
-		return ints_points;
+    t_normal := coords_k[4];
+    d2 := coords_k[1]*t_normal;
+    orthog := [Crossproduct(c_coords[2]-c_coords[1],c_normal),Crossproduct(c_coords[3]-c_coords[2],c_normal),Crossproduct(c_coords[1]-c_coords[3],c_normal)];
+    
+    orthog[1] := orthog[1] / Sqrt(orthog[1]*orthog[1]);
+    orthog[2] := orthog[2] / Sqrt(orthog[2]*orthog[2]);
+    orthog[3] := orthog[3] / Sqrt(orthog[3]*orthog[3]);
+    
+    # must be right of planes, need to have the orthogonal vectors point to the inside of the triangle
+    orthog[1] := orthog[1] * ((orthog[1]*c_coords[3]-orthog[1]*c_coords[1]) / AbsoluteValue(orthog[1]*c_coords[3]-orthog[1]*c_coords[1]));
+    orthog[2] := orthog[2] * ((orthog[2]*c_coords[1]-orthog[2]*c_coords[2]) / AbsoluteValue(orthog[2]*c_coords[1]-orthog[2]*c_coords[2]));
+    orthog[3] := orthog[3] * ((orthog[3]*c_coords[2]-orthog[3]*c_coords[3]) / AbsoluteValue(orthog[3]*c_coords[2]-orthog[3]*c_coords[3]));
+    # check if triangle k intersects with j
+    numb_int := 0;
+    ints_points := [];
+    # use this to compute if both of the intersection points lie on an edge
+    not_on_edge := [true, true, true];
+    for l in [1..3] do
+        vOedge := [coords_k[l],coords_k[l mod 3 + 1]];
+        # if two faces share a edge then this edge cant be an intersection
+        if Length(NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
+            edge_param := coords_k[l mod 3 + 1]-coords_k[l];                                  
+            # find point that intersects with plane
+            res := ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
+            p := res[1];
+            lambda := res[2];                                  
+            o := [orthog[1]*p-orthog[1]*c_coords[1], orthog[2]*p-orthog[2]*c_coords[2], orthog[3]*p-orthog[3]*c_coords[3]];           
+            # check if point inside triangle             
+            if FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and FlGeq(lambda,0.,eps) and FlLeq(lambda,1.,eps) then           
+                not_on_edge[1] := not_on_edge[1] and FlEq(0.,o[1],eps); 
+                not_on_edge[2] := not_on_edge[2] and FlEq(0.,o[2],eps); 
+                not_on_edge[3] := not_on_edge[3] and FlEq(0.,o[3],eps);           
+                ints := true;
+                possb_intersec := possb_intersec + 1;
+                if EqFloat(p[1]+0.0,p[1]) and EqFloat(p[2]+0.0,p[2]) and EqFloat(p[3]+0.0,p[3]) then
+                  numb_int := numb_int + 1;
+                  ints_points[numb_int] := p; 
+                fi; 
+            fi;                                   
+        fi;                            
+    od;
+    not_on_edges := not( not_on_edge[1] or not_on_edge[2] or not_on_edge[3]);                        
+    if Length(ints_points) > 0 then
+        ints_points := NumericalUniqueListOfLists(ints_points,eps);
+        diff := numb_int - Length(ints_points);
+        possb_intersec := possb_intersec - diff;
+    fi;                        
+    numb_int := Length(ints_points);
+    return ints_points;
 end);
 
 # output of the form [vertices,intersection_edges]
-BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
+InstallGlobalFunction(TwoTriangleIntersection,function(triangle1,triangle2)
 	local edges,n,m,inside_points,cur_line,l1,l2,res,intersection,intersection2,eps;
 	eps:=_SelfIntersectingComplexesParameters.eps;
 	edges:=[];
@@ -345,10 +345,10 @@ BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
 				fi;
 			od;
 	else
-		intersection:=TwoTriangleIntersection(triangle1{[1..3]},triangle2{[1..3]},eps);
+		intersection:=TwoTriangleIntersectionNonPlanar(triangle1{[1..3]},triangle2{[1..3]},eps);
 		#test if both intersection and intersection2 are the same
 		#otherwise join for lines
-		intersection2:=TwoTriangleIntersection(triangle2{[1..3]},triangle1{[1..3]},eps);
+		intersection2:=TwoTriangleIntersectionNonPlanar(triangle2{[1..3]},triangle1{[1..3]},eps);
 		if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then
 			if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
 				intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
@@ -368,368 +368,29 @@ BindGlobal("TwoTriangleIntersectionAllCases",function(triangle1,triangle2)
 	return edges;
 end);
 
-InstallGlobalFunction(calculate_intersections_groups,function(t,coordinates,intersections_only,group,group_orthogonal)
-	local l,k,i,j,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,vof,inside_points,orbs,g,shift,new_data,cur_line,res,pairs_reps,m,l1,l2,p,n,orb,orbs_pairs,eps;
-	eps:=_SelfIntersectingComplexesParameters.eps;
-	vof:=VerticesOfFaces(t);
-	orbs:=Orbits(group,Faces(t));
-	# calculate representatives for faces that intersect with face representatives
-	orbs_pairs:=Orbits(group,Combinations(Faces(t),2),OnSets);
-	pairs_reps:=List(Faces(t),f->[]);
-	for k in [1..Size(orbs)] do
-		i:=orbs[k][1];
-		for orb in orbs_pairs do
-			for p in Orbits(Stabilizer(group,i),orb,OnSets) do
-				if i in p[1] then
-					Add(pairs_reps[i],Other(p[1],i));
-				fi;
-			od;
-		od;	
-	od;
-	l:=[];
-	for i in [1..Size(vof)] do
-		l[i]:=[List([1..3],j->coordinates[vof[i][j]]),Set([Set([1,2]),Set([2,3]),Set([3,1])])];
-	od;
-	#for each representative find self intersections
-	for k in [1..Size(orbs)] do
-		i:=orbs[k][1];
-		for j in pairs_reps[i] do
-			# output of the form [vertices,intersection_edges]
-			if i<>j then
-				#check if triangles are coplanar
-				n:=Crossproduct(l[i][1][2]-l[i][1][1],l[i][1][3]-l[i][1][1]);
-				if (Dot(n,l[j][1][1])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][2])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][3])-Dot(n,l[i][1][1]))^2<eps then
-					continue;
-					inside_points:=[];
-					for m in [1..3] do
-						if MyPointInTriangle(l[i][1][1],l[i][1][2],l[i][1][3],l[j][1][m],eps) then
-							Add(inside_points,m);
-						fi;
-					od;
-					if Size(inside_points)=0 then
-						# no inside points check for line intersections
-						for l1 in Combinations([1..3],2) do
-							cur_line:=[];
-							for l2 in Combinations([1..3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									if Size(res[2])=3 then		
-										Add(cur_line,res[2]);
-									elif Size(res[2])=2 then
-										Error();
-										Add(l[i][1],res[2][1]);
-										Add(l[i][1],res[2][2]);
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-										continue;
-									fi;
-								fi;
-							od;
-							if Size(cur_line)=1 then
-								Error();
-								Add(l[i][1],cur_line[1]);
-							elif Size(cur_line)=2 then
-								Add(l[i][1],cur_line[1]);
-								Add(l[i][1],cur_line[2]);
-								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-							fi;
-						od;
-					elif Size(inside_points)=1 then
-						# one inside point
-						Add(l[i][1],l[j][1][inside_points[1]]);
-					elif Size(inside_points)=2 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-					elif Size(inside_points)=3 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						Add(l[i][1],l[j][1][inside_points[3]]);
-					fi;
-					continue;
-				fi;
-				intersection:=TwoTriangleIntersection(l[i][1]{[1..3]},l[j][1]{[1..3]},eps);
-				#test if both intersection and intersection2 are the same
-				#otherwise join for lines
-				intersection2:=TwoTriangleIntersection(l[j][1]{[1..3]},l[i][1]{[1..3]},eps);
-				if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then
-					if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
-						intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
-					fi;
-				fi;
-				if Size(intersection)=2 then
-					# add intersection informations only to l[i]
-					# l[j] will be obtained later
-					Add(l[i][1],intersection[1]);
-					Add(l[i][1],intersection[2]);
-					AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-				fi;
-			fi;
-		od;
-	od;
-	# add stabilizer
-	for k in [1..Size(orbs)] do
-		i:=orbs[k][1];
-		new_data:=[StructuralCopy(l[i][1]),StructuralCopy(l[i][2])];
-		shift:=Size(l[1]);
-		j:=1;
-		for g in Stabilizer(group,i) do
-			if Size(Stabilizer(group,i))=1 then
-				break;
-			fi;
-			if g<>() then
-				l[i][1]:=Concatenation(l[i][1],new_data[1]*group_orthogonal[Position(Elements(group),g)]);
-				l[i][2]:=Concatenation(l[i][2],new_data[2]+j*Size(new_data[1]));
-				j:=j+1;
-			fi;
-		od;
-	od;
-	if intersections_only then
-		return l;
-	else
-		#Print("Retriangulation of triangles. \n");
-		data_triangulated:=[];
-		# transfer triangulations to all other triangles
-		for k in [1..Size(orbs)] do
-			i:=orbs[k][1];
-			#Print("Triangulation for face ",String(i),"\n");
-			data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
-			while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
-				Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
-				data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
-			od;
-			for h in [2..Size(orbs[k])] do
-				j:=orbs[k][h];
-				data_triangulated[j]:=SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
-			od;
-		od;
-		return join_triangles(data_triangulated);
-	fi;
-end);
 
-# version without group in orthogonal group
-InstallGlobalFunction(calculate_intersections,function(vof,coordinates,intersections_only,group)
-	local l,k,i,j,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,res,cur_line,inside_points,m,l1,l2,n;
-	orbs_vof:=Orbits(group,vof,OnSets);
+InstallGlobalFunction(ComputeSelfIntersections,function(t,coordinates)
+	local vof,i,l,j;
+	vof:=VerticesOfFaces(t);
 	l:=[];
-	for i in [1..Size(vof)] do
+	for i in Faces(t) do
 		l[i]:=[List([1..3],j->coordinates[vof[i][j]]),Set([Set([1,2]),Set([2,3]),Set([3,1])])];
 	od;
 	#for each representative find self intersections
-	for k in [1..Size(orbs_vof)] do
-		orb_rep:=orbs_vof[k][1];
-		i:=Position(vof,orb_rep);
-		for j in [1..Size(vof)] do
+	for i in Faces(t) do
+		for j in Faces(t) do
 			# output of the form [vertices,intersection_edges]
 			if i<>j then
 				# call by reference: add intersection points
 				# return values add edges
-				l[i][2]:=Concatenation(l[i][2],TwoTriangleIntersectionAllCases(l[i][1],l[j][1]));
+				l[i][2]:=Concatenation(l[i][2],TwoTriangleIntersection(l[i][1],l[j][1]));
 			fi;
 		od;
 	od;
-	if intersections_only then
-		return l;
-	else
-		data_triangulated:=[];
-		# transfer triangulations to all other triangles
-		for k in [1..Size(orbs_vof)] do
-			i:=Position(vof,orbs_vof[k][1]);
-			data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
-			for h in [2..Size(orbs_vof[k])] do
-				j:=Position(vof,orbs_vof[k][h]);
-				data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
-			od;
-		od;
-		return join_triangles(data_triangulated);
-	fi;
+	return l;
 end);
 
-InstallGlobalFunction(calculate_intersections_comp,function(s,coordinates,intersections_only)
-	local l,k,i,j,data,check,c,intersection,intersection2,h,orbs_vof,data_triangulated,orb_rep,inside_points,cur_line,res,m,vof,l2,l1,n,eps;
-	eps:=_SelfIntersectingComplexesParameters.eps;
-	vof:=VerticesOfFaces(s);
-	l:=[];
-	for i in Faces(s) do
-		l[i]:=[List([1..3],j->coordinates[vof[i][j]]),Set([Set([1,2]),Set([2,3]),Set([3,1])])];
-	od;
-	#for each representative find self intersections
-	for i in Faces(s) do
-		for j in Faces(s) do
-			if j in NeighbourFacesOfFace(s,i) then
-				inside_points:=[];
-					for m in [1..3] do
-						if MyPointInTriangle(l[i][1][1],l[i][1][2],l[i][1][3],l[j][1][m],eps) then
-							Add(inside_points,m);
-						fi;
-					od;
-				if Size(inside_points)=2 then
-					continue;
-				fi;
-			fi;
-			# output of the form [vertices,intersection_edges]
-			if i<>j then
-				#check if triangles are coplanar
-				n:=Crossproduct(l[i][1][2]-l[i][1][1],l[i][1][3]-l[i][1][1]);
-				if (Dot(n,l[j][1][1])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][2])-Dot(n,l[i][1][1]))^2<eps and (Dot(n,l[j][1][3])-Dot(n,l[i][1][1]))^2<eps then
-					inside_points:=[];
-					for m in [1..3] do
-						if MyPointInTriangle(l[i][1][1],l[i][1][2],l[i][1][3],l[j][1][m],eps) then
-							Add(inside_points,m);
-						fi;
-					od;
-					if Size(inside_points)=0 then
-						# no inside points check for line intersections
-						for l1 in Combinations([1..3],2) do
-							cur_line:=[];
-							for l2 in Combinations([1..3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									if Size(res[2])=3 then
-										Add(cur_line,res[2]);
-									elif Size(res[2])=2 then
-										Error();
-										Add(l[i][1],res[2][1]);
-										Add(l[i][1],res[2][2]);
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-										continue;
-									fi;
-								fi;
-							od;
-							if cur_line<>[] then
-							if Size(NumericalUniqueListOfLists(cur_line,eps))=1 then
-								Add(l[i][1],cur_line[1]);
-							elif Size(NumericalUniqueListOfLists(cur_line,eps))=2 then
-								Add(l[i][1],cur_line[1]);
-								Add(l[i][1],cur_line[2]);
-								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-							fi;
-						fi;
-						od;
-					elif Size(inside_points)=1 then
-						# one inside point
-						if Size(NumericalUniqueListOfLists(Concatenation([l[j][1][inside_points[1]]],l[i][1]{[1,2,3]}),eps))=3 then
-							continue;
-						fi;
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						# check edges from inside point
-						check:=[1,2,3];
-						Remove(check,inside_points[1]);
-						for c in check do
-							l1:=[inside_points[1],c];
-							for l2 in Combinations([1,2,3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									Add(l[i][1],res[2]);
-								fi;
-							od;
-						od;
-						if Size(NumericalUniqueListOfLists(l[i][1]{[Size(l[i][1]),Size(l[i][1])-2]},eps))=2 then
-							AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
-						fi;
-						if Size(NumericalUniqueListOfLists(l[i][1]{[Size(l[i][1])-1,Size(l[i][1])-2]},eps))=2 then
-							AddSet(l[i][2],[Size(l[i][1])-1,Size(l[i][1])-2]);
-						fi;
-						# check other edge
-						l1:=[1,2,3];
-						Remove(l1,inside_points[1]);
-						cur_line:=[];
-						for l2 in Combinations([1..3],2) do
-							res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-							if res[1] then
-								if Size(res[2])=3 then	
-									Add(cur_line,res[2]);
-								elif Size(res[2])=2 then
-									Add(l[i][1],res[2][1]);
-									Add(l[i][1],res[2][2]);
-									if Size(NumericalUniqueListOfLists(l[i][1]{[Size(l[i][1])-1,Size(l[i][1])]},eps))=2 then
-										AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-									fi;
-									continue;
-								fi;
-							fi;
-						od;
-						if cur_line<>[] then
-							if Size(NumericalUniqueListOfLists(cur_line,eps))=1 then
-								Add(l[i][1],cur_line[1]);
-							elif Size(NumericalUniqueListOfLists(cur_line,eps))=2 then
-								Add(l[i][1],cur_line[1]);
-								Add(l[i][1],cur_line[2]);
-								AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-							fi;
-						fi;
-					elif Size(inside_points)=2 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-						check:=[1,2,3];
-						Remove(check,inside_points[1]);
-						Remove(check,inside_points[2]);
-						for c in check do
-							l1:=[inside_points[1],c];
-							for l2 in Combinations([1,2,3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									Add(l[i][1],res[2]);
-								fi;
-							od;
-						od;
-						if Size(NumericalUniqueListOfLists(l[i][1]{[Size(l[i][1]),Size(l[i][1])-2]},eps))=2 then
-							AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
-						fi;
-						check:=[1,2,3];
-						Remove(check,inside_points[1]);
-						Remove(check,inside_points[2]);
-						for c in check do
-							l1:=[inside_points[2],c];
-							for l2 in Combinations([1,2,3],2) do
-								res:=LineSegmentIntersection(l[i][1]{l2},l[j][1]{l1},eps);
-								if res[1] then
-									Add(l[i][1],res[2]);
-								fi;
-							od;
-						od;
-						if Size(NumericalUniqueListOfLists(l[i][1]{[Size(l[i][1]),Size(l[i][1])-2]},eps))=2 then
-							AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
-						fi;
-					elif Size(inside_points)=3 then
-						Add(l[i][1],l[j][1][inside_points[1]]);
-						Add(l[i][1],l[j][1][inside_points[2]]);
-						Add(l[i][1],l[j][1][inside_points[3]]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-						AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-2]);
-						AddSet(l[i][2],[Size(l[i][1])-2,Size(l[i][1])-1]);
-					fi;
-					continue;
-				fi;
-				intersection:=TwoTriangleIntersection(l[i][1]{[1..3]},l[j][1]{[1..3]},eps);
-				#test if both intersection and intersection2 are the same
-				#otherwise join for lines
-				intersection2:=TwoTriangleIntersection(l[j][1]{[1..3]},l[i][1]{[1..3]},eps);
-				if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then					
-					if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
-						intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
-					fi;
-				fi;
-				if Size(intersection)=2 then
-					# add intersection informations only to l[i]
-					# l[j] will be obtained later
-					Add(l[i][1],intersection[1]);
-					Add(l[i][1],intersection[2]);
-					AddSet(l[i][2],[Size(l[i][1]),Size(l[i][1])-1]);
-				fi;
-			fi;
-		od;
-	od;
-	data_triangulated:=[];
-	for i in Faces(s) do
-		#Print(i,"\n");
-		data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
-	od;
-	data:=[];
-	for c in ConnectedComponents(s) do
-		Add(data,join_triangles(data_triangulated{Faces(c)}));
-	od;
-	return data;
-end);
+
 
 # Clean the data by removing duplicate vertices and edges
 BindGlobal("CleanData", function(data, eps)

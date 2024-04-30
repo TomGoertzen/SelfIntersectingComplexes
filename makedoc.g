@@ -19,8 +19,12 @@ fi;
 
 AutoDoc( rec( scaffold := rec(
         includes := [
+            "intro.xml",
+            "functions.xml",
             "license.xml",
             ],
         ),
         extract_examples := true,
         autodoc := true ) );
+
+Exec("dev/processTests.sh");
