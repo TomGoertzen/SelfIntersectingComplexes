@@ -61,7 +61,7 @@ BindGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
 end);
 
 InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,group,group_ort)
-    local data, f, n, order_data, unramified_data, unram_surf, unram_points;
+    local data, f, n, order_data, unramified_data, unram_surf, unram_points,coords;
     data := SymmetricRetriangulation(t, points, group, group_ort);
     points := data[1];
     t := TriangularComplexByVerticesInFaces(data[2]);
@@ -72,7 +72,7 @@ InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,grou
     t := ShallowCopy(data[2]);
     
     
-    f := RemedyNonManifold(data,points,shift_param);
+    f := RemedyNonManifold(data,points,_SelfIntersectingComplexesParameters.non_manifold_edge_shift);
     unram_surf := f[1];
     unram_points := f[2];
     coords := f[3];
@@ -95,7 +95,7 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
     t := ShallowCopy(data[2]);
     
     
-    f := RemedyNonManifold(data,points,shift_param);
+    f := RemedyNonManifold(data,points,_SelfIntersectingComplexesParameters.non_manifold_edge_shift);
     unram_surf := f[1];
     unram_points := f[2];
     coords := f[3];
