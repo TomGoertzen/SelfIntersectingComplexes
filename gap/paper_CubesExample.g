@@ -31,8 +31,10 @@ cubes_two:=SimplicialSurfaceByVerticesInFaces(faces_two);
 pr:=SetVertexCoordinates3D(cubes_two,coordinates_two);
 DrawComplexToJavaScript(cubes_two,"Cubes/TwoCubesXY",pr);
 eps:=1.*10^-6;
-PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubes",eps,0.1,Group(()),true,false);
-
+r := PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubes",eps,0.1,Group(()),true,false);
+surf := r[1];
+pr2 := SetVertexCoordinates3D(surf,r[3]);
+DrawComplexToJavaScript(surf,"Cubes/TwoCubesXY_intersc_free",pr2);
 
 coordinates_two:=Concatenation(coordinates,coordinates+[0.5,0.5,0.5])*1.;
 cubes_two:=SimplicialSurfaceByVerticesInFaces(faces_two);
@@ -42,7 +44,7 @@ eps:=1.*10^-6;
 PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubesXYZ",eps,0.1,Group(()),true,false);
 
 
-extra_points:=5;
+extra_points:=11;
 
 coordinates:=[ [ 0, 0, 1 ], [ 0, 0, 0 ], [ 0, 1, 0 ], [ 0, 1, 1 ], [ 1, 1, 1 ], [ 1, 1, 0 ], [ 1, 0, 0 ], [ 1, 0, 1 ] ];
 
@@ -126,7 +128,7 @@ faces:=[
 ];
 cubes_two:=TriangularComplexByVerticesInFaces(faces);
 pr:=SetVertexCoordinates3D(cubes_two,coordinates);
-data:=PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubesEdge",eps,0.1,Group(()),true,false);;
+data:=PrintableOuterHull(cubes_two,coordinates,"Cubes/TwoCubesEdge",eps,0.1,Group(()),true,false);;
 outer_triangle:=FindOuterTriangle(data[1],data[3]);
 data_outer:=OuterHull(data[1],data[3],outer_triangle[1],outer_triangle[2]);
 DrawComplexToJavaScript(cubes_two,"Cubes/TwoCubesEdge0",pr);
