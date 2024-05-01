@@ -509,7 +509,7 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 	is_circle := order[2];
 	inner := order[3];
 	not_split := [];
-	Print(order[1]);
+	#Print(order[1]);
 	for comp in order[1] do
 		path := comp;
 		
@@ -527,13 +527,12 @@ BindGlobal("_FixNMPathRec", function(surf,order,data,points,Coords,shift_param)
 						if not same[2] then
 							Add(not_split,same[1]);
 							data_fix := _FixVertOfOuterNMEdge(surf,path,Coords,points,data,shift_param,not_split);
-							Print("split");
-							
-				      			Coords:=data_fix[1];
+							#Print("split");							
+				      		Coords:=data_fix[1];
 							points:=data_fix[2];
 							not_split := data_fix[3];
 						else
-							Print("End\n");
+							#Print("End\n");
 						fi;
 			
 				fi;
