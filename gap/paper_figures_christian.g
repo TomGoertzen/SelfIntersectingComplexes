@@ -26,10 +26,15 @@ pr:=SetVertexCoordinates3D(cubes_two,coordinates_two);
 DrawComplexToJavaScript(cubes_two,"Cubes/TwoCubesXY",pr);
 
 eps:=1.*10^-6;
+
+# figure 7 a.)
 r := PrintableOuterHull(cubes_two,coordinates_two,"Cubes/TwoCubes");
 surf := r[1];
 pr2 := SetVertexCoordinates3D(surf,r[3]);
+
+# figure 7 b.)
 DrawComplexToJavaScript(surf,"Cubes/TwoCubesXY_intersc_free",pr2);
+
 
 
 ico := Icosahedron();
@@ -71,6 +76,7 @@ pr3 := ActivateLineWidth(surf,pr3);
 
 
 
+# figure 15 a)
 DrawComplexToJavaScript(surf,"ico_3_2_red",pr3);
 
 outer_triangle:=FindOuterTriangle(data[1],data[3]);
@@ -95,6 +101,9 @@ for e in old_ram_edges do
 	ActivateEdge(unram_surf,e,pr4);
 od;
 DeactivateEdge(unram_surf,76,pr4);
+
+
+# figure 15 b.) - not in pdf
 DrawComplexToJavaScript(unram_surf,"ico_3_2_unram_red",pr4);
 
 
