@@ -26,7 +26,8 @@
 /doc/SelfIntersectingComplexes.fls
 /doc/SelfIntersectingComplexes.pdf
 /doc/SelfIntersectingComplexes.synctex.gz
-
+*.html
+*.stl
 /gh-pages/
 
 /tst/Triangles/
