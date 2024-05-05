@@ -1,23 +1,8 @@
-# GAP-Packet Self-Intersections
+# SelfIntersectingComplexes - GAP package
 
-## Overview of functionalities
+This package provides algorithms for retriangulating and computing outer hulls of self-intersecting complexes.  Moreover, non-manifold parts can be treated which lead to problems when 3D-printing surfaces. Additionally, symmetric properties of an underlying complex can be used to speed-up algorithms.
 
-- Detection of self-intersections
-- Given a complex $X$ with known self-intersections: retriangulate it to obtain a new complex $X'$ that is geometric equivalent without self-intersections
-- Compute outer hull and chambers
-- Remedying non-manifold parts
-- Compute STL files
-
-## Main functions/files
-
-- main.gi: top-level
-- detection.gi
-- retriangulation.gi
-- chambers.gi
-
-- nonmanifold.gi (example_fix_ram_edges)
-
-- mini manual
+The algorithms of this package are based on the work presented in <https://arxiv.org/abs/2312.02113/>.
 
 ## Installation
 
@@ -34,6 +19,10 @@ which creates a subdirectory called `SelfIntersectingComplexes/`.
 
 **4.** Now you can use the package within GAP by entering `LoadPackage("SelfIntersectingComplexes");` on the GAP prompt.
 
+## Documentation
+
+If you want to access it from within GAP by entering `?SelfIntersectingComplexes` on the GAP prompt,
+you first have to build the manual by using `gap makedoc.g` from within the `SelfIntersectingComplexes/` root directory.
 
 
 ## Bug reports
