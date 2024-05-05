@@ -1,5 +1,5 @@
 # Triangulate the data by finding all triangles formed by the vertices and edges
-BindGlobal("triangulate", function(data)
+BindGlobal("_triangulate", function(data)
     local e, faces, is_triangle, i, j;
     faces := [];
     data[2] := Set(List(data[2], i -> Set(i))); # Ensure edges are unique
@@ -8,7 +8,7 @@ BindGlobal("triangulate", function(data)
             if Set([i, e[1]]) in data[2] and Set([i, e[2]]) in data[2] then
                 is_triangle := true;
                 for j in [1..Size(data[1])] do
-                    if j <> i and j <> e[1] and j <> e[2] and MyPointInTriangle(data[1][e[1]], data[1][e[2]], data[1][i], data[1][j], _SelfIntersectingComplexesParameters.eps) then
+                    if j <> i and j <> e[1] and j <> e[2] and _MyPointInTriangle(data[1][e[1]], data[1][e[2]], data[1][i], data[1][j], _SelfIntersectingComplexesParameters.eps) then
                         is_triangle := false;
                     fi;
                 od;
@@ -22,14 +22,14 @@ BindGlobal("triangulate", function(data)
 end);
 
 # Join the data of all triangles into a single structure
-BindGlobal("join_triangles", function(list)
+BindGlobal("_join_triangles", function(list)
     local vertices, VerticesOfFaces, map, i, pos, data;
     vertices := [];
     VerticesOfFaces := [];
     for data in list do
         map := [];
         for i in [1..Size(data[1])] do
-            pos := MyNumericalPosition(vertices, data[1][i], _SelfIntersectingComplexesParameters.eps);
+            pos := _MyNumericalPosition(vertices, data[1][i], _SelfIntersectingComplexesParameters.eps);
             if pos = fail then
                 Add(vertices, data[1][i]);
                 map[i] := Size(vertices);
@@ -44,27 +44,27 @@ end);
 
 # Computes intersection of two Line Segments in 3D
 # https://math.stackexchange.com/questions/270767/find-intersection-of-two-3d-lines
-BindGlobal("LineSegmentIntersection",function(l1,l2,eps)
-	local C,D,e,f,g,sol,dotsol1,dotsol2,MyNorm_cross_e_f,cross_e_f,cross_f_g;
+BindGlobal("_LineSegmentIntersection",function(l1,l2,eps)
+	local C,D,e,f,g,sol,dotsol1,dotsol2,_MyNorm_cross_e_f,cross_e_f,cross_f_g;
 	e:=l1[2]-l1[1];
 	f:=l2[2]-l2[1];
-	cross_e_f:=Crossproduct(e,f);
-	MyNorm_cross_e_f:=MyNorm(cross_e_f);
-	if MyNorm_cross_e_f > eps then
-		if OnSamePlane(l1,l2,eps) then
+	cross_e_f:=_Crossproduct(e,f);
+	_MyNorm_cross_e_f:=_MyNorm(cross_e_f);
+	if _MyNorm_cross_e_f > eps then
+		if _OnSamePlane(l1,l2,eps) then
 			C:=l1[1];
 			D:=l2[1];
 			g:=D-C;
-			cross_f_g:=Crossproduct(f,g);
-			if Dot(cross_f_g,-cross_e_f) >= 0. then
-				sol := C + MyNorm(cross_f_g)/MyNorm_cross_e_f*e;
+			cross_f_g:=_Crossproduct(f,g);
+			if _Dot(cross_f_g,-cross_e_f) >= 0. then
+				sol := C + _MyNorm(cross_f_g)/_MyNorm_cross_e_f*e;
 			else
-				sol := C - MyNorm(cross_f_g)/MyNorm_cross_e_f*e;
+				sol := C - _MyNorm(cross_f_g)/_MyNorm_cross_e_f*e;
 			fi;
-			dotsol1 := Dot(l1[1]-l1[2],sol-l1[2]);
-			dotsol2 := Dot(l2[1]-l2[2],sol-l2[2]);
-			if MyNorm(l1[1]-sol)+MyNorm(l1[2]-sol)<=MyNorm(l1[1]-l1[2])+eps and MyNorm(l2[1]-sol)+MyNorm(l2[2]-sol)<=MyNorm(l2[1]-l2[2])+eps then
-				if not MyNumericalPosition(l1,sol,eps)<>fail or not MyNumericalPosition(l2,sol,eps)<> fail then
+			dotsol1 := _Dot(l1[1]-l1[2],sol-l1[2]);
+			dotsol2 := _Dot(l2[1]-l2[2],sol-l2[2]);
+			if _MyNorm(l1[1]-sol)+_MyNorm(l1[2]-sol)<=_MyNorm(l1[1]-l1[2])+eps and _MyNorm(l2[1]-sol)+_MyNorm(l2[2]-sol)<=_MyNorm(l2[1]-l2[2])+eps then
+				if not _MyNumericalPosition(l1,sol,eps)<>fail or not _MyNumericalPosition(l2,sol,eps)<> fail then
 					return [true,sol];
 				fi;
 			fi;
@@ -74,22 +74,22 @@ BindGlobal("LineSegmentIntersection",function(l1,l2,eps)
 end);
 
 
-BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
+BindGlobal("_LineSegmentIntersectionColinear",function(l1,l2,eps)
 	local v1,v2,x1,x2,y1,y2,r1,r2,s1,s2,i,j;
 	l1:=1.*l1;
 	l2:=1.*l2;
 	v1:=l1[2]-l1[1];
 	v2:=l2[2]-l2[1];
-	if not OnSamePlane(l1,l2,eps) then
+	if not _OnSamePlane(l1,l2,eps) then
 		return [false];
 	fi;
-	if not MyNorm(Crossproduct(v1,v2)) < eps then
+	if not _MyNorm(_Crossproduct(v1,v2)) < eps then
 		return [false];
 	fi;
-	if not PointsInOneLine(l1[1],l1[2],l2[1],eps) then
+	if not _PointsInOneLine(l1[1],l1[2],l2[1],eps) then
 		return [false];
 	fi;
-	if not PointsInOneLine(l1[1],l1[2],l2[2],eps) then
+	if not _PointsInOneLine(l1[1],l1[2],l2[2],eps) then
 		return [false];
 	fi;
 			x1:=l1[1];
@@ -170,7 +170,7 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 			fi;
 			# test if l1 contains l2 and a point of l2
 
-			if MyNorm(x1-x2)<eps then
+			if _MyNorm(x1-x2)<eps then
 				#r1=0 and s1=0
 				if eps<=r2 and r2 <=1-eps then
 					return [true,[[x2,y2],[y2,y1]],5];
@@ -178,7 +178,7 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 				if eps<=s2 and s2<=1-eps then
 					return [true,[[x1,y1],[y1,y2]],6];
 				fi;
-			elif MyNorm(y1-x2)<eps then
+			elif _MyNorm(y1-x2)<eps then
 				#s2=0 and r1=1
 				if eps<=r2 and r2 <=1-eps then
 					return [true,[[x1,y2],[y2,x2]],7];
@@ -186,7 +186,7 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 				if eps<=s1 and s1<=1-eps then
 					return [true,[[y1,x1],[x1,y2]],8];
 				fi;
-			elif MyNorm(y2-x1)<eps then
+			elif _MyNorm(y2-x1)<eps then
 				#r2=0 and s1=1
 				if eps<=r1 and r1 <=1-eps then
 					return [true,[[y2,x2],[x2,y1]],9];
@@ -194,7 +194,7 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 				if eps<=s2 and s2<=1-eps then
 					return [true,[[x2,y1],[y1,x1]],10];
 				fi;
-			elif MyNorm(y2-y1)<eps then
+			elif _MyNorm(y2-y1)<eps then
 				#r2=1 and s2=1
 				if eps<=r1 and r1 <=1-eps then
 					return [true,[[x1,x2],[x2,y2]],11];
@@ -206,18 +206,18 @@ BindGlobal("LineSegmentIntersectionColinear",function(l1,l2,eps)
 	return [false];
 end);
 
-BindGlobal("TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
+BindGlobal("_TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
         local l,ccoords,x,y,normal,t_coords,t_normal,ints,different,Compared,orthog,c_coords,numb_int,not_on_edge,ints_points,o,p,res,c_normal,d1,diff,not_on_edges,possb_intersec,lambda,edge_param,vOedge,d2;
         ccoords:=coords_j;
         x := ccoords[2]-ccoords[1];
         y := ccoords[3]-ccoords[1];
-        normal := Crossproduct(x,y);
+        normal := _Crossproduct(x,y);
         normal := normal / Sqrt(normal*normal);
         coords_j[4] := normal;
         ccoords:=coords_k;
         x := ccoords[2]-ccoords[1];
         y := ccoords[3]-ccoords[1];
-        normal := Crossproduct(x,y);
+        normal := _Crossproduct(x,y);
         normal := normal / Sqrt(normal*normal);
         coords_k[4] := normal;
         ints := false;
@@ -236,7 +236,7 @@ BindGlobal("TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
         # cant intersect if incident                       
     t_normal := coords_k[4];
     d2 := coords_k[1]*t_normal;
-    orthog := [Crossproduct(c_coords[2]-c_coords[1],c_normal),Crossproduct(c_coords[3]-c_coords[2],c_normal),Crossproduct(c_coords[1]-c_coords[3],c_normal)];
+    orthog := [_Crossproduct(c_coords[2]-c_coords[1],c_normal),_Crossproduct(c_coords[3]-c_coords[2],c_normal),_Crossproduct(c_coords[1]-c_coords[3],c_normal)];
     
     orthog[1] := orthog[1] / Sqrt(orthog[1]*orthog[1]);
     orthog[2] := orthog[2] / Sqrt(orthog[2]*orthog[2]);
@@ -254,18 +254,18 @@ BindGlobal("TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
     for l in [1..3] do
         vOedge := [coords_k[l],coords_k[l mod 3 + 1]];
         # if two faces share a edge then this edge cant be an intersection
-        if Length(NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
+        if Length(_NumericalUniqueListOfLists([c_coords[1],c_coords[2],c_coords[3],vOedge[1],vOedge[2]],eps)) >  3 then
             edge_param := coords_k[l mod 3 + 1]-coords_k[l];                                  
             # find point that intersects with plane
-            res := ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
+            res := _ProjectLineOnTriangle(coords_k[l],edge_param, d1, c_normal,[orthog,c_coords],eps);                                   
             p := res[1];
             lambda := res[2];                                  
             o := [orthog[1]*p-orthog[1]*c_coords[1], orthog[2]*p-orthog[2]*c_coords[2], orthog[3]*p-orthog[3]*c_coords[3]];           
             # check if point inside triangle             
-            if FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and FlGeq(lambda,0.,eps) and FlLeq(lambda,1.,eps) then           
-                not_on_edge[1] := not_on_edge[1] and FlEq(0.,o[1],eps); 
-                not_on_edge[2] := not_on_edge[2] and FlEq(0.,o[2],eps); 
-                not_on_edge[3] := not_on_edge[3] and FlEq(0.,o[3],eps);           
+            if _FlGeq(Minimum(o[1],o[2],o[3]),0.,eps) and _FlGeq(lambda,0.,eps) and _FlLeq(lambda,1.,eps) then           
+                not_on_edge[1] := not_on_edge[1] and _FlEq(0.,o[1],eps); 
+                not_on_edge[2] := not_on_edge[2] and _FlEq(0.,o[2],eps); 
+                not_on_edge[3] := not_on_edge[3] and _FlEq(0.,o[3],eps);           
                 ints := true;
                 possb_intersec := possb_intersec + 1;
                 if EqFloat(p[1]+0.0,p[1]) and EqFloat(p[2]+0.0,p[2]) and EqFloat(p[3]+0.0,p[3]) then
@@ -277,7 +277,7 @@ BindGlobal("TwoTriangleIntersectionNonPlanar",function(coords_j,coords_k,eps)
     od;
     not_on_edges := not( not_on_edge[1] or not_on_edge[2] or not_on_edge[3]);                        
     if Length(ints_points) > 0 then
-        ints_points := NumericalUniqueListOfLists(ints_points,eps);
+        ints_points := _NumericalUniqueListOfLists(ints_points,eps);
         diff := numb_int - Length(ints_points);
         possb_intersec := possb_intersec - diff;
     fi;                        
@@ -291,11 +291,11 @@ InstallGlobalFunction(TwoTriangleIntersection,function(triangle1,triangle2)
 	eps:=_SelfIntersectingComplexesParameters.eps;
 	edges:=[];
 	#check if triangles are coplanar and fix cases
-	n:=Crossproduct(triangle1[2]-triangle1[1],triangle1[3]-triangle1[1]);
-	if (Dot(n,triangle2[1])-Dot(n,triangle1[1]))^2<eps and (Dot(n,triangle2[2])-Dot(n,triangle1[1]))^2<eps and (Dot(n,triangle2[3])-Dot(n,triangle1[1]))^2<eps then
+	n:=_Crossproduct(triangle1[2]-triangle1[1],triangle1[3]-triangle1[1]);
+	if (_Dot(n,triangle2[1])-_Dot(n,triangle1[1]))^2<eps and (_Dot(n,triangle2[2])-_Dot(n,triangle1[1]))^2<eps and (_Dot(n,triangle2[3])-_Dot(n,triangle1[1]))^2<eps then
 		inside_points:=[];
 		for m in [1..3] do
-			if MyPointInTriangle(triangle1[1],triangle1[2],triangle1[3],triangle2[m],eps) then
+			if _MyPointInTriangle(triangle1[1],triangle1[2],triangle1[3],triangle2[m],eps) then
 				Add(inside_points,m);
 			fi;
 		od;
@@ -316,10 +316,10 @@ InstallGlobalFunction(TwoTriangleIntersection,function(triangle1,triangle2)
 			for l1 in Combinations([1..3],2) do
 				cur_line:=[];
 				for l2 in Combinations([1..3],2) do
-					res:=LineSegmentIntersection(triangle1{l2},triangle2{l1},eps);
+					res:=_LineSegmentIntersection(triangle1{l2},triangle2{l1},eps);
 					if res[1] then
 						if Size(res[2])=3 then
-							if MyNumericalPosition(triangle1{[1,2,3]},res[2],eps)=fail then
+							if _MyNumericalPosition(triangle1{[1,2,3]},res[2],eps)=fail then
 								Add(cur_line,res[2]);
 							fi;
 						fi;
@@ -327,11 +327,11 @@ InstallGlobalFunction(TwoTriangleIntersection,function(triangle1,triangle2)
 				od;
 				if Size(cur_line)=1 then
 					#test if point of j from edge l1 lies inside i
-						if l1[1] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([triangle2[l1[1]]],cur_line),eps))=2 then
+						if l1[1] in inside_points and Size(_NumericalUniqueListOfLists(Concatenation([triangle2[l1[1]]],cur_line),eps))=2 then
 							Add(triangle1,cur_line[1]);
 							Add(triangle1,triangle2[l1[1]]);
 							AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
-						elif l1[2] in inside_points and Size(NumericalUniqueListOfLists(Concatenation([triangle2[l1[2]]],cur_line),eps))=2 then
+						elif l1[2] in inside_points and Size(_NumericalUniqueListOfLists(Concatenation([triangle2[l1[2]]],cur_line),eps))=2 then
 							Add(triangle1,cur_line[1]);
 							Add(triangle1,triangle2[l1[2]]);
 							AddSet(edges,[Size(triangle1),Size(triangle1)-1]);
@@ -345,13 +345,13 @@ InstallGlobalFunction(TwoTriangleIntersection,function(triangle1,triangle2)
 				fi;
 			od;
 	else
-		intersection:=TwoTriangleIntersectionNonPlanar(triangle1{[1..3]},triangle2{[1..3]},eps);
+		intersection:=_TwoTriangleIntersectionNonPlanar(triangle1{[1..3]},triangle2{[1..3]},eps);
 		#test if both intersection and intersection2 are the same
 		#otherwise join for lines
-		intersection2:=TwoTriangleIntersectionNonPlanar(triangle2{[1..3]},triangle1{[1..3]},eps);
+		intersection2:=_TwoTriangleIntersectionNonPlanar(triangle2{[1..3]},triangle1{[1..3]},eps);
 		if (Size(intersection)=1 or Size(intersection)=0) and Size(intersection2)>0 then
-			if Size(NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
-				intersection:=NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
+			if Size(_NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps))=2 then
+				intersection:=_NumericalUniqueListOfLists(Concatenation(intersection,intersection2),eps);
 			fi;
 		fi;
 		if Size(intersection)=2 then
@@ -393,13 +393,13 @@ end);
 
 
 # Clean the data by removing duplicate vertices and edges
-BindGlobal("CleanData", function(data, eps)
+BindGlobal("_CleanData", function(data, eps)
     local map, i, new_edges, new_vertices, map2;
     data[1] := 1. * data[1]; # Ensure vertices are in floating-point format
     # Delete multiple occurrences of vertices
     map := [];
     for i in [1..Size(data[1])] do
-        map[i] := MyNumericalPosition(data[1], data[1][i], eps);
+        map[i] := _MyNumericalPosition(data[1], data[1][i], eps);
     od;
     new_vertices := [];
     map2 := [];
@@ -425,13 +425,13 @@ end);
 InstallGlobalFunction(RectifyDiscIntersections,function(data)
 	local i,j,res,entry,entry1,entry2,entry_in_i,entry_in_j,addy,check_edges,orig_j,orig_i,cur,k,remove,e,l,n,eps;
 	eps:=_SelfIntersectingComplexesParameters.eps;
-	data:=CleanData(data,eps);
+	data:=_CleanData(data,eps);
 	data[2]:=List(data[2]);
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
 		while check_edges<>[] do
 			e:=Remove(check_edges);
-			if LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
+			if _LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and _LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
 				orig_j:=ShallowCopy(e);
 				if not Set([e[1],i]) in data[2] or not Set([e[2],i]) in data[2] then
 					data[2]:=Concatenation(data[2],Set([Set([e[1],i]),Set([e[2],i])]));
@@ -442,7 +442,7 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 		od;
 	od;
 	# check for non-paralel intersecting lines
-	data:=CleanData(data,eps);
+	data:=_CleanData(data,eps);
 	data[2]:=List(data[2]);
 	check_edges:=Combinations([1..Size(data[2])],2);;
 	while check_edges<>[] do
@@ -450,9 +450,9 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 		i:=cur[1];
 		j:=cur[2];
 		if i <=Size(data[2]) and j<=Size(data[2]) and i in BoundPositions(data[2]) and j in BoundPositions(data[2]) then
-			res:=LineSegmentIntersection([data[1][data[2][i][1]],data[1][data[2][i][2]]],[data[1][data[2][j][1]],data[1][data[2][j][2]]],eps);
+			res:=_LineSegmentIntersection([data[1][data[2][i][1]],data[1][data[2][i][2]]],[data[1][data[2][j][1]],data[1][data[2][j][2]]],eps);
 			if res[1] then
-				entry:=MyNumericalPosition(data[1],res[2],eps);
+				entry:=_MyNumericalPosition(data[1],res[2],eps);
 				if entry = fail then
 					Add(data[1],res[2]);
 					entry:=Size(data[1]);
@@ -476,13 +476,13 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 			fi;
 		od;
 	od;
-	data:=CleanData(data,eps);
+	data:=_CleanData(data,eps);
 	data[2]:=List(data[2]);
 	for i in [1..Size(data[1])] do
 		check_edges:=ShallowCopy(data[2]);
 		while check_edges<>[] do
 			e:=Remove(check_edges);
-			if LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
+			if _LineSegmentIntersectionColinear([data[1][i],data[1][e[1]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and _LineSegmentIntersectionColinear([data[1][i],data[1][e[2]]],[data[1][e[1]],data[1][e[2]]],eps)[1] and not i in e then
 				orig_j:=ShallowCopy(e);
 				Remove(data[2],Position(data[2],orig_j));
 				if not Set([e[1],i]) in data[2] or not Set([e[2],i]) in data[2] then
@@ -493,11 +493,11 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 		od;
 
 	od;
-	return CleanData(data,eps);;
+	return _CleanData(data,eps);;
 end);
 
 
-BindGlobal("triangulate_comb",function(data)
+BindGlobal("_triangulate_comb",function(data)
 	local e,faces,is_triangle,i,j;
 	faces:=[];
 	data[2]:=Set(List(data[2],i->Set(i)));

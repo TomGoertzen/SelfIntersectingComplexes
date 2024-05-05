@@ -6,7 +6,7 @@ InstallGlobalFunction(DiscTriangulation, function(data)
     data := RectifyDiscIntersections(data);
     poss_edges := [];
     count := 0;
-    data_tri := triangulate_comb(data);
+    data_tri := _triangulate_comb(data);
     t := TriangularComplexByVerticesInFaces(data_tri);
     # find number of boundary edges = boundary vertices
     boundary_vertices := [];
@@ -23,7 +23,7 @@ InstallGlobalFunction(DiscTriangulation, function(data)
                 Add(boundary_vertices, i);
                 break;
             fi;
-            if LineSegmentIntersectionColinear([data[1][i], data[1][e[1]]], [data[1][e[1]], data[1][e[2]]], eps)[1] and LineSegmentIntersectionColinear([data[1][i], data[1][e[2]]], [data[1][e[1]], data[1][e[2]]], eps)[1] then
+            if _LineSegmentIntersectionColinear([data[1][i], data[1][e[1]]], [data[1][e[1]], data[1][e[2]]], eps)[1] and _LineSegmentIntersectionColinear([data[1][i], data[1][e[2]]], [data[1][e[1]], data[1][e[2]]], eps)[1] then
                 Add(boundary_vertices, i);
                 break;
             fi;
@@ -39,7 +39,7 @@ InstallGlobalFunction(DiscTriangulation, function(data)
     for i in [1..Size(data[1])] do
         for j in [i + 1..Size(data[1])] do
             if not Set([i, j]) in data[2] and not (i in InnerVertices(t) and j in InnerVertices(t)) then
-                Add(poss_edges, [Set([i, j]), MyNorm(data[1][i] - data[1][j])]);
+                Add(poss_edges, [Set([i, j]), _MyNorm(data[1][i] - data[1][j])]);
             fi;
         od;
     od;
@@ -58,12 +58,12 @@ InstallGlobalFunction(DiscTriangulation, function(data)
                 break;
             fi;
             count := count + 1;
-            res := LineSegmentIntersection([data[1][i], data[1][j]], [data[1][data[2][e][1]], data[1][data[2][e][2]]], eps);
-            if (res[1] and (not MyNumericalPosition([data[1][i], data[1][j]], res[2], eps) <> fail or not MyNumericalPosition([data[1][data[2][e][1]], data[1][data[2][e][2]]], res[2], eps) <> fail)) then
+            res := _LineSegmentIntersection([data[1][i], data[1][j]], [data[1][data[2][e][1]], data[1][data[2][e][2]]], eps);
+            if (res[1] and (not _MyNumericalPosition([data[1][i], data[1][j]], res[2], eps) <> fail or not _MyNumericalPosition([data[1][data[2][e][1]], data[1][data[2][e][2]]], res[2], eps) <> fail)) then
                 ok := false;
                 break;
             fi;
-            if LineSegmentIntersectionColinear([data[1][i], data[1][j]], [data[1][data[2][e][1]], data[1][data[2][e][2]]], eps)[1] then
+            if _LineSegmentIntersectionColinear([data[1][i], data[1][j]], [data[1][data[2][e][1]], data[1][data[2][e][2]]], eps)[1] then
                 ok := false;
                 break;
             fi;
@@ -72,13 +72,13 @@ InstallGlobalFunction(DiscTriangulation, function(data)
             Add(data[2], Set([i, j]));
             count_new := count_new + 1;
             if count_new = 5 then
-                t := TriangularComplexByVerticesInFaces(triangulate_comb(data));
+                t := TriangularComplexByVerticesInFaces(_triangulate_comb(data));
                 count_new := 0;
             fi;
         fi;
     od;
     # Print("In the end we got ", count, " loops \n");
-    return CleanData(data, eps);
+    return _CleanData(data, eps);
 end);
 
 
@@ -88,9 +88,9 @@ InstallGlobalFunction(Retriangulation,function(t,coordinates)
     l:=ComputeSelfIntersections(t,coordinates);
     data_triangulated:=[];
     for i in Faces(t) do
-            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            data_triangulated[i]:=_triangulate(DiscTriangulation(l[i]));
     od;
-    return join_triangles(data_triangulated);
+    return _join_triangles(data_triangulated);
 end);
 
 InstallGlobalFunction(ComponentsRetriangulation,function(t,coordinates)
@@ -100,9 +100,9 @@ InstallGlobalFunction(ComponentsRetriangulation,function(t,coordinates)
     data_triangulated:=[];
     for c in ConnectedComponents(t) do
         for i in Faces(c) do
-            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            data_triangulated[i]:=_triangulate(DiscTriangulation(l[i]));
         od;
-        Add(components,join_triangles(data_triangulated{Faces(c)}));
+        Add(components,_join_triangles(data_triangulated{Faces(c)}));
     od;
     return components;
 end);
@@ -157,13 +157,13 @@ InstallGlobalFunction(SymmetricRetriangulation,function(args...)
         # transfer triangulations to all other triangles
         for k in [1..Size(orbs_vof)] do
             i:=Position(vof,orbs_vof[k][1]);
-            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            data_triangulated[i]:=_triangulate(DiscTriangulation(l[i]));
             for h in [2..Size(orbs_vof[k])] do
                 j:=Position(vof,orbs_vof[k][h]);
-                data_triangulated[j]:=SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
+                data_triangulated[j]:=_SymmetryAction(data_triangulated[i],vof[i],vof[j],coordinates,group);
             od;
         od;
-        return join_triangles(data_triangulated);
+        return _join_triangles(data_triangulated);
     elif Size(args)=4 then
         t:=args[1];
         vof:=VerticesOfFaces(args[1]);
@@ -181,7 +181,7 @@ InstallGlobalFunction(SymmetricRetriangulation,function(args...)
             for orb in orbs_pairs do
                 for p in Orbits(Stabilizer(group,i),orb,OnSets) do
                     if i in p[1] then
-                        Add(pairs_reps[i],Other(p[1],i));
+                        Add(pairs_reps[i],_Other(p[1],i));
                     fi;
                 od;
             od; 
@@ -222,17 +222,17 @@ InstallGlobalFunction(SymmetricRetriangulation,function(args...)
         for k in [1..Size(orbs)] do
             i:=orbs[k][1];
             #Print("Triangulation for face ",String(i),"\n");
-            data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+            data_triangulated[i]:=_triangulate(DiscTriangulation(l[i]));
             while not IsSimplicialSurface(TriangularComplexByVerticesInFaces(data_triangulated[i][2])) do
                 Print("Triangulation of face ",String(i)," failed! Try to triangulate it again.\n");
-                data_triangulated[i]:=triangulate(DiscTriangulation(l[i]));
+                data_triangulated[i]:=_triangulate(DiscTriangulation(l[i]));
             od;
             for h in [2..Size(orbs[k])] do
                 j:=orbs[k][h];
-                data_triangulated[j]:=SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
+                data_triangulated[j]:=_SymmetryActionDirect(data_triangulated[i],i,j,coordinates,group,group_orthogonal);
             od;
         od;
-        return join_triangles(data_triangulated);
+        return _join_triangles(data_triangulated);
     else
         Print("Unknown Number of arguments. Should be either 3 or 4.");
         return fail;

@@ -18,20 +18,20 @@ InstallGlobalFunction(SetNonManifoldVertexShift,function(shift)
 end);
 
 # Dot Product
-BindGlobal("Dot",function(a,b)
+BindGlobal("_Dot",function(a,b)
         return a[1]*b[1]+a[2]*b[2]+a[3]*b[3];
 end);
 
-BindGlobal("MyNorm",function(a)
-        return Sqrt(Dot(a,a));
+BindGlobal("_MyNorm",function(a)
+        return Sqrt(_Dot(a,a));
 end);
 
-BindGlobal("SurfaceTriangle",function(x,y,z)
+BindGlobal("_SurfaceTriangle",function(x,y,z)
     	local a,b,c;
         # surface of triangle
-        a := MyNorm(x-y);
-        b := MyNorm(x-z);
-        c := MyNorm(y-z);      
+        a := _MyNorm(x-y);
+        b := _MyNorm(x-z);
+        c := _MyNorm(y-z);      
         if AbsoluteValue((a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c))<_SelfIntersectingComplexesParameters.eps then
         	# bc of numerical errors, expression can be negative instead of 0
         	return 0.;
@@ -41,7 +41,7 @@ BindGlobal("SurfaceTriangle",function(x,y,z)
 end);
 
 # Rounding Vector to Nullify Components Smaller than Epsilon
-BindGlobal("MyRoundVector", function(n, eps)
+BindGlobal("_MyRoundVector", function(n, eps)
     local i;
     n := 1.0*n; # Ensure n is treated as a float
     for i in [1..3] do
@@ -53,37 +53,37 @@ BindGlobal("MyRoundVector", function(n, eps)
 end);
 
 # Angle Between Two Vectors
-BindGlobal("VectorAngle", function(a, b)
-    return Acos(Dot(a, b) / (MyNorm(a) * MyNorm(b)));
+BindGlobal("_VectorAngle", function(a, b)
+    return Acos(_Dot(a, b) / (_MyNorm(a) * _MyNorm(b)));
 end);
 
 # Angle Between Two Vectors in the Plane Defined by a Normal
-BindGlobal("VectorAnglePlane", function(a, b, n)
-    return Atan2(Determinant(1.0*[a, b, n]), Dot(a, b));
+BindGlobal("_VectorAnglePlane", function(a, b, n)
+    return Atan2(Determinant(1.0*[a, b, n]), _Dot(a, b));
 end);
 
 # Rotate a Vector About an Axis by an Angle Alpha
-BindGlobal("Rotate_Vector_Axis", function(v, u, alpha)
+BindGlobal("_Rotate_Vector_Axis", function(v, u, alpha)
     local r_alpha_u;
-    u := u / MyNorm(u); # Normalize the axis
+    u := u / _MyNorm(u); # Normalize the axis
     r_alpha_u := Cos(alpha) * IdentityMat(3) + Sin(alpha) * [[0, -u[3], u[2]], [u[3], 0, -u[1]], [-u[2], u[1], 0]] + (1 - Cos(alpha)) * (TransposedMat([u]) * [u]);
     return (v * TransposedMat(r_alpha_u));
 end);
 
 # Check if three points are collinear
-BindGlobal("PointsInOneLine",function(v1, v2, v3, eps)
+BindGlobal("_PointsInOneLine",function(v1, v2, v3, eps)
     local area;
-    area := SurfaceTriangle(v1,v2,v3);
+    area := _SurfaceTriangle(v1,v2,v3);
     return AbsoluteValue(area)<eps;
 end);
 
 # Cross product of two vectors
-BindGlobal("Crossproduct",function(x,y)
+BindGlobal("_Crossproduct",function(x,y)
     return [x[2]*y[3]-x[3]*y[2],x[3]*y[1]-x[1]*y[3],x[1]*y[2]-x[2]*y[1]];
 end);
 
 # Returns a list of unique vectors from a list, considering numerical tolerance
-BindGlobal("NumericalUniqueListOfLists",function(list, eps)
+BindGlobal("_NumericalUniqueListOfLists",function(list, eps)
     local n, I, i, unique;
     
     n := Length(list);
@@ -92,7 +92,7 @@ BindGlobal("NumericalUniqueListOfLists",function(list, eps)
     unique[1] := list[1];
     
     for i in I do
-        if ForAll(unique, x-> not MyNorm(x-list[i])<eps) then
+        if ForAll(unique, x-> not _MyNorm(x-list[i])<eps) then
             unique[Length(unique)+1] := list[i];
         fi;
     od;
@@ -100,7 +100,7 @@ BindGlobal("NumericalUniqueListOfLists",function(list, eps)
 end);
 
 # Projects a line on a triangle
-BindGlobal("ProjectLineOnTriangle",function(x,l,d,normal,points, eps)
+BindGlobal("_ProjectLineOnTriangle",function(x,l,d,normal,points, eps)
     local lambda, p, orthog, coords, o, o_true, i;
     if not AbsoluteValue(d - x*normal)<eps then
         # the point is not on the triangle plane already
@@ -133,105 +133,105 @@ BindGlobal("ProjectLineOnTriangle",function(x,l,d,normal,points, eps)
 end);
 
 # Floating point equality check
-BindGlobal("FlEq",function(x,y,epsilon)
+BindGlobal("_FlEq",function(x,y,epsilon)
     return AbsoluteValue(x-y)<epsilon;
 end);
 
 # Vector equality check with floating point precision
-BindGlobal("FlVEq",function(x,y,epsilon)
-    return MyNorm(x-y)<epsilon;
+BindGlobal("_FlVEq",function(x,y,epsilon)
+    return _MyNorm(x-y)<epsilon;
 end);
 
 # Floating point less than or equal check
-BindGlobal("FlLeq",function(x,y,epsilon)
+BindGlobal("_FlLeq",function(x,y,epsilon)
     return x-y <= epsilon;
 end);
 
 # Floating point greater than or equal check
-BindGlobal("FlGeq",function(x,y,epsilon)
+BindGlobal("_FlGeq",function(x,y,epsilon)
     return y-x <= epsilon;
 end);
 
 # Check if two lines lie on the same plane
-BindGlobal("OnSamePlane", function(l1, l2, eps)
+BindGlobal("_OnSamePlane", function(l1, l2, eps)
     local v1, v2, v3, c1, c2, cross_product, norm_cross_product;
     
     v1 := l1[1] - l1[2]; # Vector of first line
     v2 := l1[1] - l2[2]; # Vector connecting a point from the first line to a point on the second line
     v3 := l1[1] - l2[1]; # Vector connecting a point from the first line to another point on the second line
     
-    c1 := Crossproduct(v1, v2); # Cross product of v1 and v2
-    c2 := Crossproduct(v1, v3); # Cross product of v1 and v3
+    c1 := _Crossproduct(v1, v2); # Cross product of v1 and v2
+    c2 := _Crossproduct(v1, v3); # Cross product of v1 and v3
     
-    cross_product := Crossproduct(c1, c2); # Cross product of c1 and c2
-    norm_cross_product := MyNorm(cross_product); # Norm of the cross product
+    cross_product := _Crossproduct(c1, c2); # Cross product of c1 and c2
+    norm_cross_product := _MyNorm(cross_product); # Norm of the cross product
     
     return norm_cross_product < eps; # If the norm is less than epsilon, lines are on the same plane
 end);
 
 # Check if a point lies inside a given triangle
-BindGlobal("MyPointInTriangle", function(a, b, c, p, eps)
+BindGlobal("_MyPointInTriangle", function(a, b, c, p, eps)
     local n1, n2, n3;
     # Unit normal for triangles (A, B, P), (B, C, P), and (C, A, P)
-    n1 := Crossproduct(p-a, b-a);
-    if MyNorm(n1) < eps then
-        if MyNorm(p-a) + MyNorm(p-b) <= MyNorm(a-b) + eps then
+    n1 := _Crossproduct(p-a, b-a);
+    if _MyNorm(n1) < eps then
+        if _MyNorm(p-a) + _MyNorm(p-b) <= _MyNorm(a-b) + eps then
             return true;
         else
             return false;
         fi;
     else
-        n1 := n1 / MyNorm(n1);
+        n1 := n1 / _MyNorm(n1);
     fi;
 
-    n2 := Crossproduct(p-b, c-b);
-    if MyNorm(n2) < eps then
-        if MyNorm(p-b) + MyNorm(p-c) <= MyNorm(b-c) + eps then
+    n2 := _Crossproduct(p-b, c-b);
+    if _MyNorm(n2) < eps then
+        if _MyNorm(p-b) + _MyNorm(p-c) <= _MyNorm(b-c) + eps then
             return true;
         else
             return false;
         fi;
     else
-        n2 := n2 / MyNorm(n2);
+        n2 := n2 / _MyNorm(n2);
     fi;
 
-    n3 := Crossproduct(p-c, a-c);
-    if MyNorm(n3) < eps then
-        if MyNorm(p-a) + MyNorm(p-c) <= MyNorm(a-c) + eps then
+    n3 := _Crossproduct(p-c, a-c);
+    if _MyNorm(n3) < eps then
+        if _MyNorm(p-a) + _MyNorm(p-c) <= _MyNorm(a-c) + eps then
             return true;
         else
             return false;
         fi;
     else
-        n3 := n3 / MyNorm(n3);
+        n3 := n3 / _MyNorm(n3);
     fi;
 
     # Check if dot products of normals are close to 1
-    if AbsoluteValue(Dot(n1, n2) - 1) <= eps and AbsoluteValue(Dot(n2, n3) - 1) <= eps then
+    if AbsoluteValue(_Dot(n1, n2) - 1) <= eps and AbsoluteValue(_Dot(n2, n3) - 1) <= eps then
         return true;
     fi;
     return false;
 end);
 
 # Calculate the orthogonal transformation that maps one triangle onto another
-BindGlobal("OrthogonalTransformation", function(triangle_i, triangle_j)
+BindGlobal("_OrthogonalTransformation", function(triangle_i, triangle_j)
     return triangle_i^-1 * triangle_j;
 end);
 
 # Transfer data from one triangulated object to another via group action
-BindGlobal("SymmetryAction", function(data_triangulated_i, vof_i, vof_j, coordinates, group)
+BindGlobal("_SymmetryAction", function(data_triangulated_i, vof_i, vof_j, coordinates, group)
     local group_elem, triangle_j, triangle_i, ort_elem, first, second;
     group_elem := RepresentativeAction(group, vof_i, vof_j, OnSets);    
     first := vof_i{[1, 2, 3]};
     second := List(first, i -> i^group_elem);
     triangle_i := coordinates{first};
     triangle_j := coordinates{second};
-    ort_elem := OrthogonalTransformation(triangle_i, triangle_j);
+    ort_elem := _OrthogonalTransformation(triangle_i, triangle_j);
     return [List(data_triangulated_i[1], i -> i * ort_elem), data_triangulated_i[2]];
 end);
 
 # Direct symmetry action transfer using a predefined orthogonal group
-BindGlobal("SymmetryActionDirect", function(data_triangulated_i, i, j, coordinates, group, group_orthogonal)
+BindGlobal("_SymmetryActionDirect", function(data_triangulated_i, i, j, coordinates, group, group_orthogonal)
     local group_elem, triangle_j, triangle_i, ort_elem, first, second;
     group_elem := RepresentativeAction(group, i, j);    
     ort_elem := group_orthogonal[Position(Elements(group), group_elem)];
@@ -239,17 +239,17 @@ BindGlobal("SymmetryActionDirect", function(data_triangulated_i, i, j, coordinat
 end);
 
 # Remove a specified item from a list and return the remaining item
-BindGlobal("Other", function(list, i)
+BindGlobal("_Other", function(list, i)
     list := StructuralCopy(ShallowCopy(list)); # Create a modifiable copy of the list
     Remove(list, Position(list, i)); # Remove the specified item
     return list[1]; # Return the remaining item
 end);
 
 # Finds the position of an entry in a list using a numerical tolerance
-BindGlobal("MyNumericalPosition", function(list, entry, eps)
+BindGlobal("_MyNumericalPosition", function(list, entry, eps)
     local i;
     for i in [1..Size(list)] do
-        if MyNorm(list[i] - entry) < eps then
+        if _MyNorm(list[i] - entry) < eps then
             return i;
         fi;
     od;
@@ -257,7 +257,7 @@ BindGlobal("MyNumericalPosition", function(list, entry, eps)
 end);
 
 # Creates a sublist from the given list at the specified positions
-BindGlobal("Sublist", function(list, positions)
+BindGlobal("_Sublist", function(list, positions)
     local new_list, p;
     new_list := []; # Initialize the new list
     for p in positions do
@@ -268,14 +268,14 @@ end);
 
 
 
-BindGlobal("NumericalPosition", function(list,entry,epsilon)
+BindGlobal("_NumericalPosition", function(list,entry,epsilon)
         local i, n;
 
         n := Length(list);
         i := 1;
         
         while i <= n do
-            if FlVEq(list[i],entry, epsilon) then
+            if _FlVEq(list[i],entry, epsilon) then
                 return i;
             fi;
             i := i + 1;
@@ -286,7 +286,7 @@ BindGlobal("NumericalPosition", function(list,entry,epsilon)
 );
 
 # creates a triangular complex from coordinate data
-BindGlobal( "TriangularComplexFromCoordinates", function(params,eps)
+BindGlobal( "_TriangularComplexFromCoordinates", function(params,eps)
         local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
         Coords := params[1];
         faces := params[2];
@@ -304,7 +304,7 @@ BindGlobal( "TriangularComplexFromCoordinates", function(params,eps)
             verts := [];
 
             for l in [1,2,3] do 
-                pos := NumericalPosition(VerticesCoords,Coords[f][l],eps);
+                pos := _NumericalPosition(VerticesCoords,Coords[f][l],eps);
             
                 if pos = fail then
                     # vertex coord. is new
@@ -333,7 +333,7 @@ end);;
 
 # Create a simplicial surface from changed coordinates and a previous simplicial surface (that determines the faces of the new simplicial surface
 # Input is of type[IsList,IsFloat], where List = [Coordinates,SimplicialSurface]
-BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
+BindGlobal( "_SimplicialSurfaceFromChangedCoordinates", function(params,eps)
         local Coords, faces, f, i, j, l, pos, old_surf, VerticesInFaces, VerticesCoords, verts, surf;
         Coords := params[1];
         old_surf := params[2];
@@ -355,7 +355,7 @@ BindGlobal( "SimplicialSurfaceFromChangedCoordinates", function(params,eps)
 end);
 
 # reads a stl file and creates a complex / simplicial surface (depending on the regularity of the object)
-BindGlobal("ReadSTL", function(fileName)
+BindGlobal("_ReadSTL", function(fileName)
 	# reads a file from the current dir
 	local surf, file, name, r, r2, eps, filesepr, faces, endsign, normal, data, normals, points, test, i,j, index, verts, coords, input, Coords;
 	eps := _SelfIntersectingComplexesParameters.eps;
@@ -397,11 +397,11 @@ BindGlobal("ReadSTL", function(fileName)
 					
 					test := ShallowCopy(points);
 					Add(test,coords);
-					if Length(NumericalUniqueListOfLists(test,eps)) > Length(points) then
+					if Length(_NumericalUniqueListOfLists(test,eps)) > Length(points) then
 						Add(points,coords);
 						index := Length(points); 
 					else
-						index := NumericalPosition(points,coords,eps);
+						index := _NumericalPosition(points,coords,eps);
 					fi;
 					verts[j] := index;
 					Coords[i][j] := coords;
@@ -421,13 +421,13 @@ BindGlobal("ReadSTL", function(fileName)
 	fi;
 	
 	faces := [1..Length(Coords)];
-	data := TriangularComplexFromCoordinates([Coords,faces],eps);
+	data := _TriangularComplexFromCoordinates([Coords,faces],eps);
 	return [data[1],Coords,points];
 end);;
 
 
 # if normals not set just defaults the normal vectors without any orientation
-BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
+BindGlobal("_ConvertDataFormatPtC", function(surf,points,normals)
     local faces, f, Coords, verts, c_verts;
 
     faces := Faces(surf);
@@ -443,7 +443,7 @@ BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
         if IsBound(normals[f]) then
         	Coords[f][4] := normals[f];
         else
-        	Coords[f][4] := Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/MyNorm(Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
+        	Coords[f][4] := _Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/_MyNorm(_Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
         fi;
         Coords[f][5] := verts;
     od;
@@ -451,7 +451,7 @@ BindGlobal("ConvertDataFormatPtC", function(surf,points,normals)
 end);;
 
 
-BindGlobal("ConvertDataFormatCtP", function(surf,Coords)
+BindGlobal("_ConvertDataFormatCtP", function(surf,Coords)
     local f, faces, points, normals, c_p, normal, v;
 
     faces := Faces(surf);
@@ -491,7 +491,7 @@ BindGlobal("_RemoveDuplicateFaces",function(Coords,eps)
                 for l in [1..Length(Copy_Coords)] do
                     if IsBound(Copy_Coords[l]) and Copy_Coords[l] <> [] and l <> r then
                         test_coords := [Copy_Coords[l][1],Copy_Coords[l][2],Copy_Coords[l][3]];
-                        if Length(NumericalUniqueListOfLists([coords[1],coords[2],coords[3],test_coords[1],test_coords[2],test_coords[3]],eps)) < 4 then
+                        if Length(_NumericalUniqueListOfLists([coords[1],coords[2],coords[3],test_coords[1],test_coords[2],test_coords[3]],eps)) < 4 then
                             Copy_Coords[l] := [];
                             w := w + 1;
                         fi;
@@ -544,7 +544,7 @@ BindGlobal("_DrawSTL", function(fileName, Coords)
                 coords := [Coords[i][1],Coords[i][2],Coords[i][3]];
                 x := Coords[i][2]-Coords[i][1];
                 y := Coords[i][3]-Coords[i][1];
-                normal := Crossproduct(x,y);
+                normal := _Crossproduct(x,y);
                 normal := normal / Sqrt(normal*normal);
                 
                 # write normal

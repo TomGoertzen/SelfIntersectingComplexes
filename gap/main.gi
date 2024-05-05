@@ -1,5 +1,5 @@
 # Merges multiple sets of surface data into a single set
-BindGlobal("MergeSurfacesCoordinates", function(data)
+BindGlobal("_MergeSurfacesCoordinates", function(data)
     local vof, coordinates, i;
     vof := []; # Initialize list for vertices of faces
     coordinates := []; # Initialize list for coordinates
@@ -16,7 +16,7 @@ end);
 
 # Create Simplicial Surface from Coordinate List
 # Input is of type [IsList,IsFloat]
-BindGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
+BindGlobal( "_SimplicialSurfaceFromCoordinates", function(params,eps)
         local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
         Coords := params[1];
         faces := params[2];
@@ -34,7 +34,7 @@ BindGlobal( "SimplicialSurfaceFromCoordinates", function(params,eps)
             verts := [];
 
             for l in [1,2,3] do 
-                pos := NumericalPosition(VerticesCoords,Coords[f][l],eps);
+                pos := _NumericalPosition(VerticesCoords,Coords[f][l],eps);
             
                 if pos = fail then
                     # vertex coord is new
@@ -65,7 +65,7 @@ InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,grou
     data := SymmetricRetriangulation(t, points, group, group_ort);
     points := data[1];
     t := TriangularComplexByVerticesInFaces(data[2]);
-    data := FindOuterTriangle(t, Sublist(points, Vertices(t)));
+    data := FindOuterTriangle(t, _Sublist(points, Vertices(t)));
     f := data[1];
     n := data[2];
     data := ExtractChamber(t, points, f, n);
@@ -88,7 +88,7 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
     data := Retriangulation(t, points);
     points := data[1];
     t := TriangularComplexByVerticesInFaces(data[2]);
-    data := FindOuterTriangle(t, Sublist(points, Vertices(t)));
+    data := FindOuterTriangle(t, _Sublist(points, Vertices(t)));
     f := data[1];
     n := data[2];
     data := ExtractChamber(t, points, f, n);
@@ -115,7 +115,7 @@ InstallGlobalFunction(JoinComponents, function(t, coordinates)
     eps:=_SelfIntersectingComplexesParameters.eps;
     map := [];
     for i in [1..Size(data[1])] do
-        map[i] := MyNumericalPosition(data[1], data[1][i], eps);
+        map[i] := _MyNumericalPosition(data[1], data[1][i], eps);
     od;
     new_vertices := [];
     map2 := [];
@@ -149,7 +149,7 @@ InstallGlobalFunction(MergeOuterHull, function(info, name)
     data := Retriangulation(t, points);
     points := data[1];
     t := TriangularComplexByVerticesInFaces(data[2]);
-    data := FindOuterTriangle(t, Sublist(points, Vertices(t)));
+    data := FindOuterTriangle(t, _Sublist(points, Vertices(t)));
     f := data[1];
     n := data[2];
     data := ExtractChamber(t, points, f, n);
@@ -163,12 +163,12 @@ InstallGlobalFunction(ComponentsOuterHull, function(t,points, name)
     # Parallelizable first step
     normals := [];
     assembly := ComponentsRetriangulation(t,points);
-    data := MergeSurfacesCoordinates(assembly);
+    data := _MergeSurfacesCoordinates(assembly);
     points := data[2];
     t := data[1];
     new_vof := [];
     for c in ConnectedComponents(t) do
-        data := FindOuterTriangle(c, Sublist(points, Vertices(c)));
+        data := FindOuterTriangle(c, _Sublist(points, Vertices(c)));
         f := data[1];
         n := data[2];
         data := ExtractChamber(c, points, f, n);

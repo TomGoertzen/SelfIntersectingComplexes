@@ -11,10 +11,10 @@ BindGlobal("CalculateFan",function(s,e,vC,f,MyNormal)
 	od;
 	a:=vC[VoE[1]];
 	n:=vC[VoE[2]]-vC[VoE[1]];
-	n:=n/MyNorm(n);
+	n:=n/_MyNorm(n);
 	for t in ThirdPoint do
 		p:=vC[t[2]];
-		t[3]:=p-a-Dot((p-a),n)*n;
+		t[3]:=p-a-_Dot((p-a),n)*n;
 		# if we consider face f save the vector
 		if t[1]=f then
 			vec:=t[3];
@@ -23,11 +23,11 @@ BindGlobal("CalculateFan",function(s,e,vC,f,MyNormal)
 	# now compute the angle of all derived vectors with vec and rotate MyNormal vector n according to the angle
 	for t in ThirdPoint do
 		if Determinant(1.*[vec,n,MyNormal]) < 0. then
-			t[4]:=VectorAnglePlane(vec,t[3],n);
-			t[5]:=Rotate_Vector_Axis(MyNormal,n,t[4]);
+			t[4]:=_VectorAnglePlane(vec,t[3],n);
+			t[5]:=_Rotate_Vector_Axis(MyNormal,n,t[4]);
 		else
-			t[4]:=VectorAnglePlane(vec,t[3],-n);
-			t[5]:=Rotate_Vector_Axis(MyNormal,-n,t[4]);
+			t[4]:=_VectorAnglePlane(vec,t[3],-n);
+			t[5]:=_Rotate_Vector_Axis(MyNormal,-n,t[4]);
 		fi;
 	od;
 	SortBy(ThirdPoint,x->x[4]);
@@ -67,7 +67,7 @@ BindGlobal("FindOuterTriangle",function(t,points)
     eov:=EdgesOfVertex(t,i_max);
     eov:=List(eov,e->[e,DifferenceLists(VerticesOfEdge(t,e),[i_max])]);
     eov:=List(eov,e->[e[1],points[e[2][1]]-points[i_max]]);
-    eov:=List(eov,e->[e[1],e[2]/MyNorm(e[2])]);
+    eov:=List(eov,e->[e[1],e[2]/_MyNorm(e[2])]);
     # find edge with smallest absolute value in x-coordinate
     j_min:=1;
     x_min:=AbsoluteValue(eov[1][2][1]);
@@ -81,8 +81,8 @@ BindGlobal("FindOuterTriangle",function(t,points)
     e:=eov[j_min][1];
     foe:=FacesOfEdge(t,e);
     foe:=List(foe,f->[f,VerticesOfFace(t,f)]);
-    foe:=List(foe,f->[f[1],Crossproduct(points[f[2][2]]-points[f[2][1]],points[f[2][3]]-points[f[2][1]])]);
-    foe:=List(foe,f->[f[1],f[2]/MyNorm(f[2])]);
+    foe:=List(foe,f->[f[1],_Crossproduct(points[f[2][2]]-points[f[2][1]],points[f[2][3]]-points[f[2][1]])]);
+    foe:=List(foe,f->[f[1],f[2]/_MyNorm(f[2])]);
     # find edge with smallest absolute value in x-coordinate
     j_max:=1;
     x_max:=AbsoluteValue(foe[1][2][1]);
@@ -121,7 +121,7 @@ InstallGlobalFunction(ExtractChamber,function(s,vC,f,n)
 		if not t_new[1] in OuterTriangles then
 
 			Add(OuterTriangles,t_new[1]);
-			NormalVectors[t_new[1]]:=MyRoundVector(t_new[2], eps);
+			NormalVectors[t_new[1]]:=_MyRoundVector(t_new[2], eps);
 			for edge in EdgesOfFace(s,t_new[1]) do
 				if edge <> t[2] then
 					Add(B,[t_new[1],edge]);
@@ -146,7 +146,7 @@ InstallGlobalFunction(DrawSTLScratch,function(t,fileName,vC)
 		ccoords:=vC{vof[f]};
 		x := ccoords[2]-ccoords[1];
         y := ccoords[3]-ccoords[1];
-        normal := Crossproduct(x,y);
+        normal := _Crossproduct(x,y);
         normal := normal / Sqrt(normal*normal);
         normals[f] := normal;
     od;
@@ -205,9 +205,9 @@ InstallGlobalFunction(DrawSTLwithNormals,function(s,fileName, vC,normals,visuali
                 # write vertex coords according to the right hand rule
                 perms:=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]];
                 for perm in perms do
-                	n:=Crossproduct(coords[perm[2]]-coords[perm[1]],coords[perm[3]]-coords[perm[1]]);
-                	n:=-n/MyNorm(n);
-                	if MyNorm(n-normal)<eps then
+                	n:=_Crossproduct(coords[perm[2]]-coords[perm[1]],coords[perm[3]]-coords[perm[1]]);
+                	n:=-n/_MyNorm(n);
+                	if _MyNorm(n-normal)<eps then
 
                 		break;
                 	fi;
@@ -228,12 +228,12 @@ InstallGlobalFunction(DrawSTLwithNormals,function(s,fileName, vC,normals,visuali
                 # visualize normal of face
                 if f in visualize_normal_list then
                 middle := 1./3 * coords[1] + 1./3 * coords[2] + 1./3 * coords[3];
-                v2 := middle + 0.02 * (coords[1]-coords[2])/MyNorm(coords[1]-coords[2]);
+                v2 := middle + 0.02 * (coords[1]-coords[2])/_MyNorm(coords[1]-coords[2]);
                 v3 := middle + 0.1 * normal;
                 
                 new_coords := [middle,v2,v3];
-                new_normal := Crossproduct(middle-v2, middle - v3);
-                new_normal := new_normal / MyNorm(new_normal);
+                new_normal := _Crossproduct(middle-v2, middle - v3);
+                new_normal := new_normal / _MyNorm(new_normal);
                 
                 AppendTo(output, "\tfacet normal ");
                 
@@ -318,7 +318,7 @@ InstallGlobalFunction(DrawSTLScratchVOF,function(vof,fileName,vC)
 		ccoords:=vC{vof[i]};
 		x := ccoords[2]-ccoords[1];
         y := ccoords[3]-ccoords[1];
-        normal := Crossproduct(x,y);
+        normal := _Crossproduct(x,y);
         normal := normal / Sqrt(normal*normal);
         normals[i] := normal;
     od;
@@ -362,9 +362,9 @@ InstallGlobalFunction(DrawSTLwithNormalsVOF,function(vof,fileName, vC,normals,vi
                 # write vertex coords according to the right hand rule
                 perms:=[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]];
                 for perm in perms do
-                	n:=Crossproduct(coords[perm[2]]-coords[perm[1]],coords[perm[3]]-coords[perm[1]]);
-                	n:=-n/MyNorm(n);
-                	if MyNorm(n-normal)<eps then
+                	n:=_Crossproduct(coords[perm[2]]-coords[perm[1]],coords[perm[3]]-coords[perm[1]]);
+                	n:=-n/_MyNorm(n);
+                	if _MyNorm(n-normal)<eps then
 
                 		break;
                 	fi;
@@ -385,12 +385,12 @@ InstallGlobalFunction(DrawSTLwithNormalsVOF,function(vof,fileName, vC,normals,vi
                 # visualize normal of face
                 if f in visualize_normal_list then
                 middle := 1./3 * coords[1] + 1./3 * coords[2] + 1./3 * coords[3];
-                v2 := middle + 0.02 * (coords[1]-coords[2])/MyNorm(coords[1]-coords[2]);
+                v2 := middle + 0.02 * (coords[1]-coords[2])/_MyNorm(coords[1]-coords[2]);
                 v3 := middle + 0.1 * normal;
                 
                 new_coords := [middle,v2,v3];
-                new_normal := Crossproduct(middle-v2, middle - v3);
-                new_normal := new_normal / MyNorm(new_normal);
+                new_normal := _Crossproduct(middle-v2, middle - v3);
+                new_normal := new_normal / _MyNorm(new_normal);
                 
                 AppendTo(output, "\tfacet normal ");
                 
@@ -421,7 +421,7 @@ end);
 
 InstallGlobalFunction(OuterHull,function(t,points)
     local data,f,n;
-    data:=FindOuterTriangle(t,Sublist(points,Vertices(t)));
+    data:=FindOuterTriangle(t,_Sublist(points,Vertices(t)));
     f:=data[1];
     n:=data[2];
     return ExtractChamber(t,points,f,n);
@@ -429,7 +429,7 @@ end);
 
 BindGlobal("NormalsOuterHull",function(t,points)
     local data,f,n;
-    data:=FindOuterTriangle(t,Sublist(points,Vertices(t)));
+    data:=FindOuterTriangle(t,_Sublist(points,Vertices(t)));
     f:=data[1];
     n:=data[2];
     return ExtractChamber(t,points,f,n)[4];
@@ -452,8 +452,8 @@ InstallGlobalFunction(ComputeChambers,function(t,points)
         od;
         if not count=2 then
             vof:=VerticesOfFace(t,current_face);
-            n:=Crossproduct(points[vof[2]]-points[vof[1]],points[vof[3]]-points[vof[1]]);
-            n:=n/MyNorm(n);
+            n:=_Crossproduct(points[vof[2]]-points[vof[1]],points[vof[3]]-points[vof[1]]);
+            n:=n/_MyNorm(n);
             data:=ExtractChamber(t,points,current_face,n);
             if not data[2] in components[1] then
                 Add(components[1],data[2]);

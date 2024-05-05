@@ -95,8 +95,8 @@ BindGlobal("_UpdateNormals", function(Coords)
     eps := 1./10^6;
     for f in Coords do
         c_verts := ShallowCopy([f[1],f[2],f[3]]);
-        norm := Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/MyNorm(Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
-        if FlGeq(norm*f[4],0.,eps) then
+        norm := _Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3])/_MyNorm(_Crossproduct(c_verts[1]-c_verts[2],c_verts[1]-c_verts[3]));
+        if _FlGeq(norm*f[4],0.,eps) then
         	f[4] := norm;
         else
         	f[4] := -norm;
@@ -242,7 +242,7 @@ BindGlobal("_FixVertOfInnerNMEdge", function(t,e,Coords,points,data,shift_param,
 	
 	normal:=data[4][index_f];
 	n:=points[verts_e[2]]-points[verts_e[1]];
-	n:=n/MyNorm(n);
+	n:=n/_MyNorm(n);
 	vec:=data_fan[index_f][3];
     	
 	
@@ -644,7 +644,7 @@ InstallGlobalFunction(FixNMEdgePath, function(surf,data,points,Coords,shift_para
 			
 		od;
 		
-		s_data := SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
+		s_data := _SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
 		surf := s_data[1];
 		points_fix := points;
 	else
@@ -671,7 +671,7 @@ InstallGlobalFunction(FixNMVerts, function(surf, data, points, Coords, shift_par
 		
 	od;
 	
-	s_data := SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
+	s_data := _SimplicialSurfaceFromChangedCoordinates([Coords,surf],1./10^6);
 	surf := s_data[1];
 	
 	Coords := _UpdateNormals(Coords);
@@ -695,7 +695,7 @@ InstallGlobalFunction(RemedyNonManifold, function(data,points, shift_param)
 	surf := ShallowCopy(data[2]);
 	normals := ShallowCopy(data[4]);
 	
-	Coords := ConvertDataFormatPtC(surf,points,normals);
+	Coords := _ConvertDataFormatPtC(surf,points,normals);
 	# investigate path based
 	m_data := FixNMEdgePath(surf, ShallowCopy(data),points,Coords,shift_param);
 	m_surf := m_data[1];
