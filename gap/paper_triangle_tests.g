@@ -1,11 +1,5 @@
-eps:=1.*10^-6;
 LoadPackage("GAPic");
-Read("helper.gi");
-Read("SelfIntersectingComplexes.gd");
-Read("detection.gi");
-Read("retriangulation.gi");
-Read("chambers.gi");
-Read("main.gi");
+LoadPackage("self");;
 faces:=[[1,2,3],[4,5,6]];
 s:=SimplicialSurfaceByVerticesInFaces(faces);
 list:=[
@@ -29,15 +23,21 @@ list:=[
       [[0, 0, 0], [2, 0, 0], [0, 2, 0], [-0.5, -0.5, 0], [1., 0.5, 0], [0.5, 1., 0]],
       [[0, 0, 0], [2, 0, 0], [0, 2, 0], [2.5, 2.5, 0], [1., 0.5, 0], [0.5, 1., 0]],
       [[0, 0, 0], [2, 0, 0], [1, 2, 0], [1, 1.5, 0], [0, 3, 0], [2, 3, 0]], 
-      [[0, 0, 0], [2, 0, 0], [1, 2, 0], [-1, 0, 0], [1, 0, 0], [-2, -3, 0]]];
+      [[0, 0, 0], [2, 0, 0], [1, 2, 0], [-1, 0, 0], [1, 0, 0], [-2, -3, 0]],
+      [[0, 0, 0], [2, 0, 0], [1, 2, 0], [-1, 0, 0], [2, 0, 0], [-1, -1, 0]],
+      [[1, 0, 0], [0, 1, 0], [0, 0, 2], [-1, -1, 1], [-1, -1, 2], [2, 2, 1]],
+      [[0, 0, 0], [2, 0, 0], [1, 1.5, 0], [1, 1.5, 0], [0, 3, 0], [2, 3, 0]],
+      [[0,0,0],[1,0,0],[0.5,Sqrt(3.)*3/4,0],[0.5,Sqrt(3.)/4,-0.5],[0.5,Sqrt(3.)/4,0.5],[0.75,-0.5,0]]];
 for i in [1..Size(list)] do
-	coordinates:=list[i];
+	coordinates:=list[i]*1.;
 	pr:=SetVertexCoordinates3D(s,coordinates);
 	pr:=ActivateLineWidth(s,pr);
 	DrawComplexToJavaScript(s,Concatenation("Triangles/TriangleRaw",String(i)),pr);
-	data:=PrintableOuterHull(s,coordinates*1.,Concatenation("Triangles/Triangle",String(i)),eps,0.1,Group(()),true,false);;
-	t:=data[1];
-	pr:=SetVertexCoordinates3D(t,data[3]);
+	l:=ComputeSelfIntersections(s,coordinates);
+  l:=List(l,f->triangulate(DiscTriangulation(f)));
+  data:=join_triangles(l);
+	t:=TriangularComplexByVerticesInFaces(data[2]);
+	pr:=SetVertexCoordinates3D(t,data[1]);
 	pr:=ActivateLineWidth(t,pr);
 	DrawComplexToJavaScript(t,Concatenation("Triangles/TriangleTriangulated",String(i)),pr);
 od;

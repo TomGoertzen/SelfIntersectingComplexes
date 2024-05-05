@@ -22,25 +22,86 @@ In this section we present example sessions which demonstrate
 how to use the main high-level functions. <P/>
 
 <Subsection>
-<Heading>Example : computing intersections of two triangles</Heading>
-
-TODO
-
-
-</Subsection>
-
-<Subsection>
 <Heading>Example : computing outer hull of a self-intersecting surface</Heading>
 
-TODO
+Consider two cubes shifted into each other such that that first cube is given by the unit cube and the second one is obtained by shifting it in direction <M>(0.5,0.5,0.5)</M>. It follows that these cubes intersect and we can compute their self-intersection and then their outer hull resulting in a simplicial sphere.
 
+<Example><![CDATA[
+gap> coordinates:=[[0.,0.,1.],[0.,0.,0.],[0.,1.,0.],[0.,1.,1.],
+> [1.,1.,1.],[1.,1.,0.],[1.,0.,0.],[1.,0.,1.],
+> [0.5,0.5,1.5],[0.5,0.5,0.5],[0.5,1.5,0.5],[0.5,1.5,1.5],
+> [1.5,1.5,1.5],[1.5,1.5,0.5],[1.5,0.5,0.5],[1.5,0.5,1.5]];;
+gap> 
+gap> faces:=[[1,3,2],[3,4,1],[7,5,8],[5,6,7],[1,2,7],[1,8,7],
+> [3,4,5],[3,6,5],[7,2,3],[7,3,6],[1,4,8],[4,5,8],
+> [9,11,10],[11,12,9],[15,13,16],[13,14,15],[9,10,15],[9,16,15],
+> [11,12,13],[11,14,13],[15,10,11],[15,11,14],[9,12,16],[12,13,16]];;
+gap> 
+gap> TwoCubes:=SimplicialSurfaceByVerticesInFaces(faces);;
+gap> IsConnected(TwoCubes);
+false
+gap> data:=PrintableOuterHull(TwoCubes,coordinates,"TwoCubes");;
+gap> IsConnected(data[2]);
+true
+gap> EulerCharacteristic(data[2]);
+2
+]]></Example>
 
 </Subsection>
 
 <Subsection>
 <Heading>Example : computing outer hull of a self-intersecting symmetric surface</Heading>
 
-TODO
+In the following example, we showcase how to use the symmetry group of the great icosahedron to compute its outer hull and all its chambers.
+
+<Example><![CDATA[
+gap> phi:=(1+Sqrt(5.))/2;;
+gap> coordinates:=1./(2*phi)*[
+>       [0, 1, phi],
+>       [0, 1, -phi],
+>       [-1, -phi, 0],[1, -phi, 0],
+>       [-phi, 0, -1],
+>       [phi, 0, -1],
+>       [phi, 0, 1],[-phi, 0, 1],
+>       [1, phi, 0],
+>       [0, -1, phi],
+>       [-1, phi, 0],
+>       [0, -1, -phi]
+>       ];;
+gap> 
+gap> group:=AutomorphismGroupOnFaces(Icosahedron());;
+gap> m1:=[[-1,0,0],[0,1,0],[0,0,1]];;
+gap> m2:=[[phi/2,-0.5,1./(2*phi)],[-0.5,-1./(2*phi),phi/2],[1./(2*phi),phi/2,0.5]];;
+gap> m3:=[[1,0,0],[0,1,0],[0,0,-1]];;
+gap> 
+gap> words:=List(Elements(group),elm->String(Factorization(group,elm)));;
+gap> subs:=[];
+[  ]
+gap> for w in words do
+>   if w= "<identity ...>" then
+>     Add(subs,"[[1,0,0],[0,1,0],[0,0,1]]");
+>   else
+>     subs_w:="";
+>     for c in w do
+>       if c='x' then
+>         Add(subs_w,'m');
+>       else
+>         Add(subs_w,c);
+>       fi;
+>     od;
+>     Add(subs,subs_w);
+>   fi;
+> od;
+gap> subs:=List(subs,s->EvalString(s));;
+gap> PrintableSymmetricOuterHull(Icosahedron(),coordinates,"Ico_2_1",group,subs);;
+gap> data:=last;;
+gap> NumberOfFaces(data[2]);
+180
+gap> StructureDescription(AutomorphismGroup(data[2]));
+"C2 x A5"
+gap> Size(ComputeChambers(data[1],data[3])[1]);
+414
+]]></Example>
 
 
 </Subsection>
@@ -48,8 +109,31 @@ TODO
 <Subsection>
 <Heading>Example : fixing non-manifold parts </Heading>
 
-TODO
+In the following example, a surface with non-manifold edges is modified in order to not include ramified edges anymore.
 
+<Example><![CDATA[
+gap> coordinates:= [
+>                     [  0.9510565160,  0.0000000000,  0.0000000000 ],
+>                     [  0.4253254040,  0.8506508085,  0.0000000000 ],
+>                     [  0.4253254040,  0.2628655560,  0.8090169940 ],
+>                     [ -0.0449027976, -0.0277514551,  0.0854101965 ],
+>                     [  0.4253254040, -0.6881909604, -0.4999999998 ],
+>                     [  0.4253254040, -0.6881909604,  0.4999999998 ],
+>                     [ -0.4253254040,  0.6881909604,  0.4999999998 ],
+>                     [ -0.4253254040,  0.6881909604, -0.4999999998 ],
+>                     [ -0.4253254040, -0.2628655560, -0.8090169940 ],
+>                     [ -0.4253254040, -0.8506508085,  0.0000000000 ],
+>                     [  0.0449027976,  0.0277514551, -0.0854101965 ],
+>                     [ -0.9510565160,  0.0000000000,  0.0000000000 ],
+>                     ];;
+gap> data := Retriangulation(Icosahedron(),coordinates);;
+gap> outerhull:=OuterHull(TriangularComplexByVerticesInFaces(data[2]),data[1]);;
+gap> RamifiedEdges(outerhull[2]);
+[ 24, 25, 30, 34, 42, 47, 60, 64, 71, 76 ]
+gap> fixed:=RemedyNonManifold(outerhull,data[1],0.01);;
+gap> RamifiedEdges(fixed[1]);
+[  ]
+]]></Example>
 
 </Subsection>
 

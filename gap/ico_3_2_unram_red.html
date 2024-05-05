@@ -32,11 +32,11 @@
 	import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 	import { Line2 } from 'three/addons/lines/Line2.js';
 	import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-	import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+	import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 
 	//start scene and camera
 	const scene = new THREE.Scene();
-	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100 );
 
 	const renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -182,19 +182,19 @@
 
 			0.951056516,0.,0.,
 			0.425325404,0.8506508085,0.,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
 
 			0.951056516,0.,0.,
 			0.425325404,0.262865556,0.809016994,
 			0.425325404,-0.6881909604000001,0.4999999998,
 
 			0.951056516,0.,0.,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
-			0.1657517901096376,-0.01731415965562747,0.06710716423321821,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
+			0.1292798064818534,-0.02244126253331733,0.07044907026685665,
 
 			0.951056516,0.,0.,
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
-			0.1657517901096376,-0.01731415965562747,0.06710716423321821,
+			0.1292798064818534,-0.02244126253331733,0.07044907026685665,
 
 			0.951056516,0.,0.,
 			0.425325404,-0.6881909604000001,-0.4999999998,
@@ -209,12 +209,12 @@
 			-0.425325404,0.6881909604000001,0.4999999998,
 
 			0.425325404,0.8506508085,0.,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
-			0.05137477354054257,0.1596287483457181,0.0644678440128061,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
+			0.03701706912727969,0.1260306832039073,0.07018513824565098,
 
 			0.425325404,0.8506508085,0.,
-			0.05137477354054257,0.1596287483457181,0.0644678440128061,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
+			0.03701706912727969,0.1260306832039073,0.07018513824565098,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
 
 			0.425325404,0.8506508085,0.,
 			-0.425325404,0.6881909604000001,0.4999999998,
@@ -222,7 +222,7 @@
 
 			0.425325404,0.8506508085,0.,
 			-0.425325404,0.6881909604000001,-0.4999999998,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
 
 			0.425325404,0.262865556,0.809016994,
 			0.1098867367749586,0.06791373824254217,0.06737620779366739,
@@ -250,43 +250,43 @@
 
 			-0.0449027976,-0.0277514551,0.08541019649999999,
 			0.03542176863691715,0.1222975648548171,0.07082039316041153,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
 
 			-0.0449027976,-0.0277514551,0.08541019649999999,
 			0.0354217686536573,-0.140567991027654,-0.01458980336871456,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
 
 			-0.0449027976,-0.0277514551,0.08541019649999999,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
 
 			0.1098867367749586,0.06791373824254217,0.06737620779366739,
 			0.1252273638565441,-0.02301094063083842,0.07082039315948314,
 			0.03542176863691715,0.1222975648548171,0.07082039316041153,
 
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
-			0.1657517901096376,-0.01731415965562747,0.06710716423321821,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
+			0.1292798064818534,-0.02244126253331733,0.07044907026685665,
 
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
-			0.05137477354054257,0.1596287483457181,0.0644678440128061,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
+			0.03701706912727969,0.1260306832039073,0.07018513824565098,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
 
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
 			0.0449027976,0.0277514551,-0.08541019649999999,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
 
 			0.0449027976,0.0277514551,-0.08541019649999999,
-			0.1519452257355765,0.05639505893132235,0.06136807718159009,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
+			0.1140925856710204,0.06676187031142018,0.06677539473245965,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
 
 			0.1252273638565441,-0.02301094063083842,0.07082039315948314,
 			0.0354217686536573,-0.140567991027654,-0.01458980336871456,
-			0.1264257014788746,-0.1206515938169228,0.04167184265918403,
+			0.1115406332339348,-0.09715665814707317,0.01729800727712827,
 
 			0.1252273638565441,-0.02301094063083842,0.07082039315948314,
 			0.425325404,-0.6881909604000001,0.4999999998,
-			0.1264257014788746,-0.1206515938169228,0.04167184265918403,
+			0.1115406332339348,-0.09715665814707317,0.01729800727712827,
 
 			0.03542176863691715,0.1222975648548171,0.07082039316041153,
 			-0.425325404,0.6881909604000001,0.4999999998,
@@ -294,15 +294,15 @@
 
 			0.03542176863691715,0.1222975648548171,0.07082039316041153,
 			-0.03542176865365726,0.1405679910276539,0.01458980336871446,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
 
 			0.425325404,-0.6881909604000001,-0.4999999998,
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
-			0.05864019882640532,-0.1656480454318542,-0.03740133285455366,
+			0.0377436116709321,-0.143075996468074,-0.01687095631729846,
 
 			0.425325404,-0.6881909604000001,-0.4999999998,
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
-			0.05864019882640532,-0.1656480454318542,-0.03740133285455366,
+			0.0377436116709321,-0.143075996468074,-0.01687095631729846,
 
 			0.425325404,-0.6881909604000001,-0.4999999998,
 			0.425325404,-0.6881909604000001,0.4999999998,
@@ -318,11 +318,11 @@
 
 			0.0354217686536573,-0.140567991027654,-0.01458980336871456,
 			0.425325404,-0.6881909604000001,0.4999999998,
-			0.1264257014788746,-0.1206515938169228,0.04167184265918403,
+			0.1115406332339348,-0.09715665814707317,0.01729800727712827,
 
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
-			0.05864019882640532,-0.1656480454318542,-0.03740133285455366,
+			0.0377436116709321,-0.143075996468074,-0.01687095631729846,
 
 			0.1098867367622748,-0.0945461097393121,0.01458980334578874,
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
@@ -333,12 +333,12 @@
 			-0.425325404,-0.8506508085,0.,
 
 			0.0354217686536573,-0.140567991027654,-0.01458980336871456,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
-			-0.05137477354054253,-0.159628748345718,-0.06446784401280611,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
+			-0.03701706912727964,-0.1260306832039071,-0.07018513824565099,
 
 			0.0354217686536573,-0.140567991027654,-0.01458980336871456,
 			-0.425325404,-0.8506508085,0.,
-			-0.05137477354054253,-0.159628748345718,-0.06446784401280611,
+			-0.03701706912727964,-0.1260306832039071,-0.07018513824565099,
 
 			-0.425325404,0.6881909604000001,0.4999999998,
 			-0.425325404,0.6881909604000001,-0.4999999998,
@@ -346,43 +346,43 @@
 
 			-0.425325404,0.6881909604000001,0.4999999998,
 			-0.03542176865365726,0.1405679910276539,0.01458980336871446,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
 
 			-0.425325404,0.6881909604000001,0.4999999998,
 			-0.951056516,0.,0.,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
 
 			-0.425325404,0.6881909604000001,-0.4999999998,
 			-0.1098867367622748,0.09454610973931203,-0.01458980334578877,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
 
 			-0.425325404,0.6881909604000001,-0.4999999998,
 			-0.1098867367622748,0.09454610973931203,-0.01458980334578877,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.425325404,0.6881909604000001,-0.4999999998,
 			-0.425325404,-0.262865556,-0.809016994,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.425325404,0.6881909604000001,-0.4999999998,
 			-0.425325404,-0.262865556,-0.809016994,
 			-0.951056516,0.,0.,
 
 			-0.1098867367622748,0.09454610973931203,-0.01458980334578877,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			0.0449027976,0.0277514551,-0.08541019649999999,
-			-0.005118984749543602,0.1724394192620157,0.01649963342152638,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.0323914902632459,0.1437551338510901,0.01478078637399565,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.1252273638565441,0.02301094063083842,-0.07082039315948313,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
 
 			-0.1252273638565441,0.02301094063083842,-0.07082039315948313,
 			-0.951056516,0.,0.,
-			-0.1183932448542015,0.1256159250281217,0.01541019663681068,
+			-0.1107373875714675,0.09765309126819299,-0.01158980334752883,
 
 			-0.425325404,-0.262865556,-0.809016994,
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
@@ -390,31 +390,31 @@
 
 			-0.425325404,-0.262865556,-0.809016994,
 			-0.1098867367749586,-0.06791373824254218,-0.06737620779366749,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.425325404,-0.262865556,-0.809016994,
 			-0.425325404,-0.8506508085,0.,
 			-0.951056516,0.,0.,
 
 			-0.425325404,-0.8506508085,0.,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
-			-0.05137477354054253,-0.159628748345718,-0.06446784401280611,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
+			-0.03701706912727964,-0.1260306832039071,-0.07018513824565099,
 
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
 			-0.1098867367749586,-0.06791373824254218,-0.06737620779366749,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.03542176863691709,-0.122297564854817,-0.07082039316041154,
 			0.0449027976,0.0277514551,-0.08541019649999999,
-			-0.1357419861035725,0.06214779413913728,-0.08800886366509909,
+			-0.1262788260812469,0.02692462598166831,-0.07253924021004472,
 
 			-0.425325404,-0.8506508085,0.,
 			-0.951056516,0.,0.,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
 
 			-0.1252273638565441,0.02301094063083842,-0.07082039315948313,
 			-0.951056516,0.,0.,
-			-0.1519452257355765,-0.05639505893132236,-0.06136807718159017,
+			-0.1140925856710204,-0.0667618703114202,-0.06677539473245975,
 
 					] ); 
 
@@ -457,7 +457,7 @@
 
     const edgeMaterial1 = new THREE.LineBasicMaterial( {
         color: 0xFF0000,
-        linewidth: 3.,
+        lineWidth: 3.,
     } );
         
 	function getEdges1(){
@@ -469,7 +469,7 @@
 			0.03542176863691715,0.12229756485481713,0.070820393160411527,
 
 			0.12522736385654409,-0.02301094063083842,0.070820393159483144,
-			0.12642570147887455,-0.12065159381692281,0.041671842659184027,
+			0.1115406332339348,-0.097156658147073166,0.017298007277128269,
 
 			0.03542176863691715,0.12229756485481713,0.070820393160411527,
 			-0.03542176865365726,0.14056799102765394,0.01458980336871446,
@@ -478,49 +478,49 @@
 			-0.42532540400000002,-0.85065080849999997,0.,
 
 			0.035421768653657301,-0.14056799102765397,-0.014589803368714557,
-			-0.15194522573557651,-0.056395058931322357,-0.061368077181590173,
+			-0.11409258567102043,-0.066761870311420196,-0.066775394732459747,
 
 			0.42532540400000002,-0.68819096040000005,0.49999999979999998,
 			-0.42532540400000002,-0.85065080849999997,0.,
 
 			0.42532540400000002,-0.68819096040000005,0.49999999979999998,
-			0.12642570147887455,-0.12065159381692281,0.041671842659184027,
+			0.1115406332339348,-0.097156658147073166,0.017298007277128269,
 
 			-0.03542176865365726,0.14056799102765394,0.01458980336871446,
-			-0.11839324485420148,0.12561592502812169,0.015410196636810683,
+			-0.11073738757146749,0.097653091268192993,-0.011589803347528826,
 
 			-0.10988673676227483,0.094546109739312031,-0.014589803345788771,
-			-0.0051189847495436017,0.17243941926201567,0.016499633421526383,
+			-0.032391490263245899,0.14375513385109012,0.014780786373995653,
 
 			-0.10988673676227483,0.094546109739312031,-0.014589803345788771,
-			-0.13574198610357255,0.062147794139137284,-0.088008863665099094,
+			-0.12627882608124694,0.026924625981668306,-0.072539240210044723,
 
 			-0.10988673677495864,-0.067913738242542182,-0.067376207793667486,
-			-0.13574198610357255,0.062147794139137284,-0.088008863665099094,
+			-0.12627882608124694,0.026924625981668306,-0.072539240210044723,
 
 			-0.42532540400000002,-0.85065080849999997,0.,
-			-0.15194522573557651,-0.056395058931322357,-0.061368077181590173,
+			-0.11409258567102043,-0.066761870311420196,-0.066775394732459747,
 
 			-0.42532540400000002,-0.85065080849999997,0.,
-			-0.051374773540542526,-0.15962874834571802,-0.064467844012806114,
+			-0.037017069127279638,-0.12603068320390712,-0.070185138245650994,
 
 			0.044902797600000002,0.027751455099999999,-0.085410196499999994,
-			-0.0051189847495436017,0.17243941926201567,0.016499633421526383,
+			-0.032391490263245899,0.14375513385109012,0.014780786373995653,
 
 			0.044902797600000002,0.027751455099999999,-0.085410196499999994,
-			-0.13574198610357255,0.062147794139137284,-0.088008863665099094,
+			-0.12627882608124694,0.026924625981668306,-0.072539240210044723,
 
-			0.15194522573557648,0.05639505893132235,0.06136807718159009,
-			0.051374773540542575,0.15962874834571811,0.0644678440128061,
+			0.11409258567102037,0.066761870311420182,0.06677539473245965,
+			0.037017069127279693,0.12603068320390726,0.07018513824565098,
 
-			0.15194522573557648,0.05639505893132235,0.06136807718159009,
-			0.16575179010963761,-0.017314159655627472,0.067107164233218206,
+			0.11409258567102037,0.066761870311420182,0.06677539473245965,
+			0.12927980648185344,-0.022441262533317328,0.07044907026685665,
 
-			0.051374773540542575,0.15962874834571811,0.0644678440128061,
-			-0.0051189847495436017,0.17243941926201567,0.016499633421526383,
+			0.037017069127279693,0.12603068320390726,0.07018513824565098,
+			-0.032391490263245899,0.14375513385109012,0.014780786373995653,
 
-			-0.15194522573557651,-0.056395058931322357,-0.061368077181590173,
-			-0.051374773540542526,-0.15962874834571802,-0.064467844012806114,
+			-0.11409258567102043,-0.066761870311420196,-0.066775394732459747,
+			-0.037017069127279638,-0.12603068320390712,-0.070185138245650994,
 
 		]);
 		return edges1;
@@ -536,12 +536,167 @@
     edgeRoot.add(edgeLine1);
         
 	// update function to be called every frame 
-	// generate labels and spheres for the vertices
 
 
 	function getVertex1(){
 		return [0.95105651599999996,0.,0.,];
 	}
+
+
+	function getVertex2(){
+		return [0.42532540400000002,0.85065080849999997,0.,];
+	}
+
+
+	function getVertex3(){
+		return [0.42532540400000002,0.262865556,0.80901699400000004,];
+	}
+
+
+	function getVertex4(){
+		return [-0.044902797600000002,-0.027751455099999999,0.085410196499999994,];
+	}
+
+
+	function getVertex5(){
+		return [0.10988673677495858,0.067913738242542168,0.067376207793667389,];
+	}
+
+
+	function getVertex6(){
+		return [0.12522736385654409,-0.02301094063083842,0.070820393159483144,];
+	}
+
+
+	function getVertex7(){
+		return [0.03542176863691715,0.12229756485481713,0.070820393160411527,];
+	}
+
+
+	function getVertex8(){
+		return [0.42532540400000002,-0.68819096040000005,-0.49999999979999998,];
+	}
+
+
+	function getVertex9(){
+		return [0.10988673676227484,-0.094546109739312101,0.014589803345788743,];
+	}
+
+
+	function getVertex10(){
+		return [0.035421768653657301,-0.14056799102765397,-0.014589803368714557,];
+	}
+
+
+	function getVertex11(){
+		return [0.42532540400000002,-0.68819096040000005,0.49999999979999998,];
+	}
+
+
+	function getVertex12(){
+		return [-0.42532540400000002,0.68819096040000005,0.49999999979999998,];
+	}
+
+
+	function getVertex13(){
+		return [-0.42532540400000002,0.68819096040000005,-0.49999999979999998,];
+	}
+
+
+	function getVertex14(){
+		return [-0.03542176865365726,0.14056799102765394,0.01458980336871446,];
+	}
+
+
+	function getVertex15(){
+		return [-0.10988673676227483,0.094546109739312031,-0.014589803345788771,];
+	}
+
+
+	function getVertex16(){
+		return [-0.42532540400000002,-0.262865556,-0.80901699400000004,];
+	}
+
+
+	function getVertex17(){
+		return [-0.035421768636917095,-0.12229756485481702,-0.070820393160411541,];
+	}
+
+
+	function getVertex18(){
+		return [-0.10988673677495864,-0.067913738242542182,-0.067376207793667486,];
+	}
+
+
+	function getVertex19(){
+		return [-0.42532540400000002,-0.85065080849999997,0.,];
+	}
+
+
+	function getVertex20(){
+		return [0.044902797600000002,0.027751455099999999,-0.085410196499999994,];
+	}
+
+
+	function getVertex21(){
+		return [-0.12522736385654409,0.02301094063083842,-0.07082039315948313,];
+	}
+
+
+	function getVertex22(){
+		return [-0.95105651599999996,0.,0.,];
+	}
+
+
+	function getVertex53(){
+		return [0.11409258567102037,0.066761870311420182,0.06677539473245965,];
+	}
+
+
+	function getVertex54(){
+		return [0.037017069127279693,0.12603068320390726,0.07018513824565098,];
+	}
+
+
+	function getVertex55(){
+		return [-0.032391490263245899,0.14375513385109012,0.014780786373995653,];
+	}
+
+
+	function getVertex56(){
+		return [-0.11073738757146749,0.097653091268192993,-0.011589803347528826,];
+	}
+
+
+	function getVertex57(){
+		return [-0.12627882608124694,0.026924625981668306,-0.072539240210044723,];
+	}
+
+
+	function getVertex58(){
+		return [-0.11409258567102043,-0.066761870311420196,-0.066775394732459747,];
+	}
+
+
+	function getVertex59(){
+		return [-0.037017069127279638,-0.12603068320390712,-0.070185138245650994,];
+	}
+
+
+	function getVertex60(){
+		return [0.037743611670932105,-0.14307599646807398,-0.016870956317298465,];
+	}
+
+
+	function getVertex61(){
+		return [0.1115406332339348,-0.097156658147073166,0.017298007277128269,];
+	}
+
+
+	function getVertex62(){
+		return [0.12927980648185344,-0.022441262533317328,0.07044907026685665,];
+	}
+	// generate labels and spheres for the vertices
 	const sphereMaterial1 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere1 = new THREE.Mesh( sphereGeometry, sphereMaterial1 );
 	vertexRoot.add(sphere1);
@@ -556,12 +711,7 @@
     vertexLabel1.position.set(getVertex1()[0],getVertex1()[1],getVertex1()[2]);
     vertexlabelRoot.add( vertexLabel1 );
             
-            
-
-	function getVertex2(){
-		return [0.42532540400000002,0.85065080849999997,0.,];
-	}
-	const sphereMaterial2 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial2 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere2 = new THREE.Mesh( sphereGeometry, sphereMaterial2 );
 	vertexRoot.add(sphere2);
 	sphere2.position.set(getVertex2()[0],getVertex2()[1],getVertex2()[2]);
@@ -575,12 +725,7 @@
     vertexLabel2.position.set(getVertex2()[0],getVertex2()[1],getVertex2()[2]);
     vertexlabelRoot.add( vertexLabel2 );
             
-            
-
-	function getVertex3(){
-		return [0.42532540400000002,0.262865556,0.80901699400000004,];
-	}
-	const sphereMaterial3 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial3 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere3 = new THREE.Mesh( sphereGeometry, sphereMaterial3 );
 	vertexRoot.add(sphere3);
 	sphere3.position.set(getVertex3()[0],getVertex3()[1],getVertex3()[2]);
@@ -594,12 +739,7 @@
     vertexLabel3.position.set(getVertex3()[0],getVertex3()[1],getVertex3()[2]);
     vertexlabelRoot.add( vertexLabel3 );
             
-            
-
-	function getVertex4(){
-		return [-0.044902797600000002,-0.027751455099999999,0.085410196499999994,];
-	}
-	const sphereMaterial4 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial4 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere4 = new THREE.Mesh( sphereGeometry, sphereMaterial4 );
 	vertexRoot.add(sphere4);
 	sphere4.position.set(getVertex4()[0],getVertex4()[1],getVertex4()[2]);
@@ -613,12 +753,7 @@
     vertexLabel4.position.set(getVertex4()[0],getVertex4()[1],getVertex4()[2]);
     vertexlabelRoot.add( vertexLabel4 );
             
-            
-
-	function getVertex5(){
-		return [0.10988673677495858,0.067913738242542168,0.067376207793667389,];
-	}
-	const sphereMaterial5 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial5 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere5 = new THREE.Mesh( sphereGeometry, sphereMaterial5 );
 	vertexRoot.add(sphere5);
 	sphere5.position.set(getVertex5()[0],getVertex5()[1],getVertex5()[2]);
@@ -632,12 +767,7 @@
     vertexLabel5.position.set(getVertex5()[0],getVertex5()[1],getVertex5()[2]);
     vertexlabelRoot.add( vertexLabel5 );
             
-            
-
-	function getVertex6(){
-		return [0.12522736385654409,-0.02301094063083842,0.070820393159483144,];
-	}
-	const sphereMaterial6 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial6 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere6 = new THREE.Mesh( sphereGeometry, sphereMaterial6 );
 	vertexRoot.add(sphere6);
 	sphere6.position.set(getVertex6()[0],getVertex6()[1],getVertex6()[2]);
@@ -651,12 +781,7 @@
     vertexLabel6.position.set(getVertex6()[0],getVertex6()[1],getVertex6()[2]);
     vertexlabelRoot.add( vertexLabel6 );
             
-            
-
-	function getVertex7(){
-		return [0.03542176863691715,0.12229756485481713,0.070820393160411527,];
-	}
-	const sphereMaterial7 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial7 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere7 = new THREE.Mesh( sphereGeometry, sphereMaterial7 );
 	vertexRoot.add(sphere7);
 	sphere7.position.set(getVertex7()[0],getVertex7()[1],getVertex7()[2]);
@@ -670,12 +795,7 @@
     vertexLabel7.position.set(getVertex7()[0],getVertex7()[1],getVertex7()[2]);
     vertexlabelRoot.add( vertexLabel7 );
             
-            
-
-	function getVertex8(){
-		return [0.42532540400000002,-0.68819096040000005,-0.49999999979999998,];
-	}
-	const sphereMaterial8 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial8 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere8 = new THREE.Mesh( sphereGeometry, sphereMaterial8 );
 	vertexRoot.add(sphere8);
 	sphere8.position.set(getVertex8()[0],getVertex8()[1],getVertex8()[2]);
@@ -689,12 +809,7 @@
     vertexLabel8.position.set(getVertex8()[0],getVertex8()[1],getVertex8()[2]);
     vertexlabelRoot.add( vertexLabel8 );
             
-            
-
-	function getVertex9(){
-		return [0.10988673676227484,-0.094546109739312101,0.014589803345788743,];
-	}
-	const sphereMaterial9 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial9 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere9 = new THREE.Mesh( sphereGeometry, sphereMaterial9 );
 	vertexRoot.add(sphere9);
 	sphere9.position.set(getVertex9()[0],getVertex9()[1],getVertex9()[2]);
@@ -708,12 +823,7 @@
     vertexLabel9.position.set(getVertex9()[0],getVertex9()[1],getVertex9()[2]);
     vertexlabelRoot.add( vertexLabel9 );
             
-            
-
-	function getVertex10(){
-		return [0.035421768653657301,-0.14056799102765397,-0.014589803368714557,];
-	}
-	const sphereMaterial10 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial10 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere10 = new THREE.Mesh( sphereGeometry, sphereMaterial10 );
 	vertexRoot.add(sphere10);
 	sphere10.position.set(getVertex10()[0],getVertex10()[1],getVertex10()[2]);
@@ -727,12 +837,7 @@
     vertexLabel10.position.set(getVertex10()[0],getVertex10()[1],getVertex10()[2]);
     vertexlabelRoot.add( vertexLabel10 );
             
-            
-
-	function getVertex11(){
-		return [0.42532540400000002,-0.68819096040000005,0.49999999979999998,];
-	}
-	const sphereMaterial11 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial11 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere11 = new THREE.Mesh( sphereGeometry, sphereMaterial11 );
 	vertexRoot.add(sphere11);
 	sphere11.position.set(getVertex11()[0],getVertex11()[1],getVertex11()[2]);
@@ -746,12 +851,7 @@
     vertexLabel11.position.set(getVertex11()[0],getVertex11()[1],getVertex11()[2]);
     vertexlabelRoot.add( vertexLabel11 );
             
-            
-
-	function getVertex12(){
-		return [-0.42532540400000002,0.68819096040000005,0.49999999979999998,];
-	}
-	const sphereMaterial12 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial12 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere12 = new THREE.Mesh( sphereGeometry, sphereMaterial12 );
 	vertexRoot.add(sphere12);
 	sphere12.position.set(getVertex12()[0],getVertex12()[1],getVertex12()[2]);
@@ -765,12 +865,7 @@
     vertexLabel12.position.set(getVertex12()[0],getVertex12()[1],getVertex12()[2]);
     vertexlabelRoot.add( vertexLabel12 );
             
-            
-
-	function getVertex13(){
-		return [-0.42532540400000002,0.68819096040000005,-0.49999999979999998,];
-	}
-	const sphereMaterial13 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial13 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere13 = new THREE.Mesh( sphereGeometry, sphereMaterial13 );
 	vertexRoot.add(sphere13);
 	sphere13.position.set(getVertex13()[0],getVertex13()[1],getVertex13()[2]);
@@ -784,12 +879,7 @@
     vertexLabel13.position.set(getVertex13()[0],getVertex13()[1],getVertex13()[2]);
     vertexlabelRoot.add( vertexLabel13 );
             
-            
-
-	function getVertex14(){
-		return [-0.03542176865365726,0.14056799102765394,0.01458980336871446,];
-	}
-	const sphereMaterial14 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial14 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere14 = new THREE.Mesh( sphereGeometry, sphereMaterial14 );
 	vertexRoot.add(sphere14);
 	sphere14.position.set(getVertex14()[0],getVertex14()[1],getVertex14()[2]);
@@ -803,12 +893,7 @@
     vertexLabel14.position.set(getVertex14()[0],getVertex14()[1],getVertex14()[2]);
     vertexlabelRoot.add( vertexLabel14 );
             
-            
-
-	function getVertex15(){
-		return [-0.10988673676227483,0.094546109739312031,-0.014589803345788771,];
-	}
-	const sphereMaterial15 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial15 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere15 = new THREE.Mesh( sphereGeometry, sphereMaterial15 );
 	vertexRoot.add(sphere15);
 	sphere15.position.set(getVertex15()[0],getVertex15()[1],getVertex15()[2]);
@@ -822,12 +907,7 @@
     vertexLabel15.position.set(getVertex15()[0],getVertex15()[1],getVertex15()[2]);
     vertexlabelRoot.add( vertexLabel15 );
             
-            
-
-	function getVertex16(){
-		return [-0.42532540400000002,-0.262865556,-0.80901699400000004,];
-	}
-	const sphereMaterial16 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial16 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere16 = new THREE.Mesh( sphereGeometry, sphereMaterial16 );
 	vertexRoot.add(sphere16);
 	sphere16.position.set(getVertex16()[0],getVertex16()[1],getVertex16()[2]);
@@ -841,12 +921,7 @@
     vertexLabel16.position.set(getVertex16()[0],getVertex16()[1],getVertex16()[2]);
     vertexlabelRoot.add( vertexLabel16 );
             
-            
-
-	function getVertex17(){
-		return [-0.035421768636917095,-0.12229756485481702,-0.070820393160411541,];
-	}
-	const sphereMaterial17 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial17 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere17 = new THREE.Mesh( sphereGeometry, sphereMaterial17 );
 	vertexRoot.add(sphere17);
 	sphere17.position.set(getVertex17()[0],getVertex17()[1],getVertex17()[2]);
@@ -860,12 +935,7 @@
     vertexLabel17.position.set(getVertex17()[0],getVertex17()[1],getVertex17()[2]);
     vertexlabelRoot.add( vertexLabel17 );
             
-            
-
-	function getVertex18(){
-		return [-0.10988673677495864,-0.067913738242542182,-0.067376207793667486,];
-	}
-	const sphereMaterial18 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial18 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere18 = new THREE.Mesh( sphereGeometry, sphereMaterial18 );
 	vertexRoot.add(sphere18);
 	sphere18.position.set(getVertex18()[0],getVertex18()[1],getVertex18()[2]);
@@ -879,12 +949,7 @@
     vertexLabel18.position.set(getVertex18()[0],getVertex18()[1],getVertex18()[2]);
     vertexlabelRoot.add( vertexLabel18 );
             
-            
-
-	function getVertex19(){
-		return [-0.42532540400000002,-0.85065080849999997,0.,];
-	}
-	const sphereMaterial19 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial19 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere19 = new THREE.Mesh( sphereGeometry, sphereMaterial19 );
 	vertexRoot.add(sphere19);
 	sphere19.position.set(getVertex19()[0],getVertex19()[1],getVertex19()[2]);
@@ -898,12 +963,7 @@
     vertexLabel19.position.set(getVertex19()[0],getVertex19()[1],getVertex19()[2]);
     vertexlabelRoot.add( vertexLabel19 );
             
-            
-
-	function getVertex20(){
-		return [0.044902797600000002,0.027751455099999999,-0.085410196499999994,];
-	}
-	const sphereMaterial20 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial20 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere20 = new THREE.Mesh( sphereGeometry, sphereMaterial20 );
 	vertexRoot.add(sphere20);
 	sphere20.position.set(getVertex20()[0],getVertex20()[1],getVertex20()[2]);
@@ -917,12 +977,7 @@
     vertexLabel20.position.set(getVertex20()[0],getVertex20()[1],getVertex20()[2]);
     vertexlabelRoot.add( vertexLabel20 );
             
-            
-
-	function getVertex21(){
-		return [-0.12522736385654409,0.02301094063083842,-0.07082039315948313,];
-	}
-	const sphereMaterial21 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial21 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere21 = new THREE.Mesh( sphereGeometry, sphereMaterial21 );
 	vertexRoot.add(sphere21);
 	sphere21.position.set(getVertex21()[0],getVertex21()[1],getVertex21()[2]);
@@ -936,12 +991,7 @@
     vertexLabel21.position.set(getVertex21()[0],getVertex21()[1],getVertex21()[2]);
     vertexlabelRoot.add( vertexLabel21 );
             
-            
-
-	function getVertex22(){
-		return [-0.95105651599999996,0.,0.,];
-	}
-	const sphereMaterial22 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+            	const sphereMaterial22 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
 	const sphere22 = new THREE.Mesh( sphereGeometry, sphereMaterial22 );
 	vertexRoot.add(sphere22);
 	sphere22.position.set(getVertex22()[0],getVertex22()[1],getVertex22()[2]);
@@ -955,195 +1005,145 @@
     vertexLabel22.position.set(getVertex22()[0],getVertex22()[1],getVertex22()[2]);
     vertexlabelRoot.add( vertexLabel22 );
             
+            	const sphereMaterial53 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere53 = new THREE.Mesh( sphereGeometry, sphereMaterial53 );
+	vertexRoot.add(sphere53);
+	sphere53.position.set(getVertex53()[0],getVertex53()[1],getVertex53()[2]);
+
+    const lableDiv53 = document.createElement( 'div' );
+    lableDiv53.className = 'label';
+    lableDiv53.textContent = '53';
+    lableDiv53.style.marginTop = '-1em';
+
+    const vertexLabel53 = new CSS2DObject( lableDiv53 );
+    vertexLabel53.position.set(getVertex53()[0],getVertex53()[1],getVertex53()[2]);
+    vertexlabelRoot.add( vertexLabel53 );
             
+            	const sphereMaterial54 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere54 = new THREE.Mesh( sphereGeometry, sphereMaterial54 );
+	vertexRoot.add(sphere54);
+	sphere54.position.set(getVertex54()[0],getVertex54()[1],getVertex54()[2]);
 
-	function getVertex23(){
-		return [0.15194522573557648,0.05639505893132235,0.06136807718159009,];
-	}
-	const sphereMaterial23 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere23 = new THREE.Mesh( sphereGeometry, sphereMaterial23 );
-	vertexRoot.add(sphere23);
-	sphere23.position.set(getVertex23()[0],getVertex23()[1],getVertex23()[2]);
+    const lableDiv54 = document.createElement( 'div' );
+    lableDiv54.className = 'label';
+    lableDiv54.textContent = '54';
+    lableDiv54.style.marginTop = '-1em';
 
-    const lableDiv23 = document.createElement( 'div' );
-    lableDiv23.className = 'label';
-    lableDiv23.textContent = '23';
-    lableDiv23.style.marginTop = '-1em';
-
-    const vertexLabel23 = new CSS2DObject( lableDiv23 );
-    vertexLabel23.position.set(getVertex23()[0],getVertex23()[1],getVertex23()[2]);
-    vertexlabelRoot.add( vertexLabel23 );
+    const vertexLabel54 = new CSS2DObject( lableDiv54 );
+    vertexLabel54.position.set(getVertex54()[0],getVertex54()[1],getVertex54()[2]);
+    vertexlabelRoot.add( vertexLabel54 );
             
+            	const sphereMaterial55 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere55 = new THREE.Mesh( sphereGeometry, sphereMaterial55 );
+	vertexRoot.add(sphere55);
+	sphere55.position.set(getVertex55()[0],getVertex55()[1],getVertex55()[2]);
+
+    const lableDiv55 = document.createElement( 'div' );
+    lableDiv55.className = 'label';
+    lableDiv55.textContent = '55';
+    lableDiv55.style.marginTop = '-1em';
+
+    const vertexLabel55 = new CSS2DObject( lableDiv55 );
+    vertexLabel55.position.set(getVertex55()[0],getVertex55()[1],getVertex55()[2]);
+    vertexlabelRoot.add( vertexLabel55 );
             
+            	const sphereMaterial56 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere56 = new THREE.Mesh( sphereGeometry, sphereMaterial56 );
+	vertexRoot.add(sphere56);
+	sphere56.position.set(getVertex56()[0],getVertex56()[1],getVertex56()[2]);
 
-	function getVertex24(){
-		return [0.051374773540542575,0.15962874834571811,0.0644678440128061,];
-	}
-	const sphereMaterial24 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere24 = new THREE.Mesh( sphereGeometry, sphereMaterial24 );
-	vertexRoot.add(sphere24);
-	sphere24.position.set(getVertex24()[0],getVertex24()[1],getVertex24()[2]);
+    const lableDiv56 = document.createElement( 'div' );
+    lableDiv56.className = 'label';
+    lableDiv56.textContent = '56';
+    lableDiv56.style.marginTop = '-1em';
 
-    const lableDiv24 = document.createElement( 'div' );
-    lableDiv24.className = 'label';
-    lableDiv24.textContent = '24';
-    lableDiv24.style.marginTop = '-1em';
-
-    const vertexLabel24 = new CSS2DObject( lableDiv24 );
-    vertexLabel24.position.set(getVertex24()[0],getVertex24()[1],getVertex24()[2]);
-    vertexlabelRoot.add( vertexLabel24 );
+    const vertexLabel56 = new CSS2DObject( lableDiv56 );
+    vertexLabel56.position.set(getVertex56()[0],getVertex56()[1],getVertex56()[2]);
+    vertexlabelRoot.add( vertexLabel56 );
             
+            	const sphereMaterial57 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere57 = new THREE.Mesh( sphereGeometry, sphereMaterial57 );
+	vertexRoot.add(sphere57);
+	sphere57.position.set(getVertex57()[0],getVertex57()[1],getVertex57()[2]);
+
+    const lableDiv57 = document.createElement( 'div' );
+    lableDiv57.className = 'label';
+    lableDiv57.textContent = '57';
+    lableDiv57.style.marginTop = '-1em';
+
+    const vertexLabel57 = new CSS2DObject( lableDiv57 );
+    vertexLabel57.position.set(getVertex57()[0],getVertex57()[1],getVertex57()[2]);
+    vertexlabelRoot.add( vertexLabel57 );
             
+            	const sphereMaterial58 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere58 = new THREE.Mesh( sphereGeometry, sphereMaterial58 );
+	vertexRoot.add(sphere58);
+	sphere58.position.set(getVertex58()[0],getVertex58()[1],getVertex58()[2]);
 
-	function getVertex25(){
-		return [-0.0051189847495436017,0.17243941926201567,0.016499633421526383,];
-	}
-	const sphereMaterial25 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere25 = new THREE.Mesh( sphereGeometry, sphereMaterial25 );
-	vertexRoot.add(sphere25);
-	sphere25.position.set(getVertex25()[0],getVertex25()[1],getVertex25()[2]);
+    const lableDiv58 = document.createElement( 'div' );
+    lableDiv58.className = 'label';
+    lableDiv58.textContent = '58';
+    lableDiv58.style.marginTop = '-1em';
 
-    const lableDiv25 = document.createElement( 'div' );
-    lableDiv25.className = 'label';
-    lableDiv25.textContent = '25';
-    lableDiv25.style.marginTop = '-1em';
-
-    const vertexLabel25 = new CSS2DObject( lableDiv25 );
-    vertexLabel25.position.set(getVertex25()[0],getVertex25()[1],getVertex25()[2]);
-    vertexlabelRoot.add( vertexLabel25 );
+    const vertexLabel58 = new CSS2DObject( lableDiv58 );
+    vertexLabel58.position.set(getVertex58()[0],getVertex58()[1],getVertex58()[2]);
+    vertexlabelRoot.add( vertexLabel58 );
             
+            	const sphereMaterial59 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere59 = new THREE.Mesh( sphereGeometry, sphereMaterial59 );
+	vertexRoot.add(sphere59);
+	sphere59.position.set(getVertex59()[0],getVertex59()[1],getVertex59()[2]);
+
+    const lableDiv59 = document.createElement( 'div' );
+    lableDiv59.className = 'label';
+    lableDiv59.textContent = '59';
+    lableDiv59.style.marginTop = '-1em';
+
+    const vertexLabel59 = new CSS2DObject( lableDiv59 );
+    vertexLabel59.position.set(getVertex59()[0],getVertex59()[1],getVertex59()[2]);
+    vertexlabelRoot.add( vertexLabel59 );
             
+            	const sphereMaterial60 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere60 = new THREE.Mesh( sphereGeometry, sphereMaterial60 );
+	vertexRoot.add(sphere60);
+	sphere60.position.set(getVertex60()[0],getVertex60()[1],getVertex60()[2]);
 
-	function getVertex26(){
-		return [-0.11839324485420148,0.12561592502812169,0.015410196636810683,];
-	}
-	const sphereMaterial26 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere26 = new THREE.Mesh( sphereGeometry, sphereMaterial26 );
-	vertexRoot.add(sphere26);
-	sphere26.position.set(getVertex26()[0],getVertex26()[1],getVertex26()[2]);
+    const lableDiv60 = document.createElement( 'div' );
+    lableDiv60.className = 'label';
+    lableDiv60.textContent = '60';
+    lableDiv60.style.marginTop = '-1em';
 
-    const lableDiv26 = document.createElement( 'div' );
-    lableDiv26.className = 'label';
-    lableDiv26.textContent = '26';
-    lableDiv26.style.marginTop = '-1em';
-
-    const vertexLabel26 = new CSS2DObject( lableDiv26 );
-    vertexLabel26.position.set(getVertex26()[0],getVertex26()[1],getVertex26()[2]);
-    vertexlabelRoot.add( vertexLabel26 );
+    const vertexLabel60 = new CSS2DObject( lableDiv60 );
+    vertexLabel60.position.set(getVertex60()[0],getVertex60()[1],getVertex60()[2]);
+    vertexlabelRoot.add( vertexLabel60 );
             
+            	const sphereMaterial61 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere61 = new THREE.Mesh( sphereGeometry, sphereMaterial61 );
+	vertexRoot.add(sphere61);
+	sphere61.position.set(getVertex61()[0],getVertex61()[1],getVertex61()[2]);
+
+    const lableDiv61 = document.createElement( 'div' );
+    lableDiv61.className = 'label';
+    lableDiv61.textContent = '61';
+    lableDiv61.style.marginTop = '-1em';
+
+    const vertexLabel61 = new CSS2DObject( lableDiv61 );
+    vertexLabel61.position.set(getVertex61()[0],getVertex61()[1],getVertex61()[2]);
+    vertexlabelRoot.add( vertexLabel61 );
             
+            	const sphereMaterial62 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
+	const sphere62 = new THREE.Mesh( sphereGeometry, sphereMaterial62 );
+	vertexRoot.add(sphere62);
+	sphere62.position.set(getVertex62()[0],getVertex62()[1],getVertex62()[2]);
 
-	function getVertex27(){
-		return [-0.13574198610357255,0.062147794139137284,-0.088008863665099094,];
-	}
-	const sphereMaterial27 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere27 = new THREE.Mesh( sphereGeometry, sphereMaterial27 );
-	vertexRoot.add(sphere27);
-	sphere27.position.set(getVertex27()[0],getVertex27()[1],getVertex27()[2]);
+    const lableDiv62 = document.createElement( 'div' );
+    lableDiv62.className = 'label';
+    lableDiv62.textContent = '62';
+    lableDiv62.style.marginTop = '-1em';
 
-    const lableDiv27 = document.createElement( 'div' );
-    lableDiv27.className = 'label';
-    lableDiv27.textContent = '27';
-    lableDiv27.style.marginTop = '-1em';
-
-    const vertexLabel27 = new CSS2DObject( lableDiv27 );
-    vertexLabel27.position.set(getVertex27()[0],getVertex27()[1],getVertex27()[2]);
-    vertexlabelRoot.add( vertexLabel27 );
-            
-            
-
-	function getVertex28(){
-		return [-0.15194522573557651,-0.056395058931322357,-0.061368077181590173,];
-	}
-	const sphereMaterial28 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere28 = new THREE.Mesh( sphereGeometry, sphereMaterial28 );
-	vertexRoot.add(sphere28);
-	sphere28.position.set(getVertex28()[0],getVertex28()[1],getVertex28()[2]);
-
-    const lableDiv28 = document.createElement( 'div' );
-    lableDiv28.className = 'label';
-    lableDiv28.textContent = '28';
-    lableDiv28.style.marginTop = '-1em';
-
-    const vertexLabel28 = new CSS2DObject( lableDiv28 );
-    vertexLabel28.position.set(getVertex28()[0],getVertex28()[1],getVertex28()[2]);
-    vertexlabelRoot.add( vertexLabel28 );
-            
-            
-
-	function getVertex29(){
-		return [-0.051374773540542526,-0.15962874834571802,-0.064467844012806114,];
-	}
-	const sphereMaterial29 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere29 = new THREE.Mesh( sphereGeometry, sphereMaterial29 );
-	vertexRoot.add(sphere29);
-	sphere29.position.set(getVertex29()[0],getVertex29()[1],getVertex29()[2]);
-
-    const lableDiv29 = document.createElement( 'div' );
-    lableDiv29.className = 'label';
-    lableDiv29.textContent = '29';
-    lableDiv29.style.marginTop = '-1em';
-
-    const vertexLabel29 = new CSS2DObject( lableDiv29 );
-    vertexLabel29.position.set(getVertex29()[0],getVertex29()[1],getVertex29()[2]);
-    vertexlabelRoot.add( vertexLabel29 );
-            
-            
-
-	function getVertex30(){
-		return [0.058640198826405317,-0.16564804543185419,-0.037401332854553659,];
-	}
-	const sphereMaterial30 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere30 = new THREE.Mesh( sphereGeometry, sphereMaterial30 );
-	vertexRoot.add(sphere30);
-	sphere30.position.set(getVertex30()[0],getVertex30()[1],getVertex30()[2]);
-
-    const lableDiv30 = document.createElement( 'div' );
-    lableDiv30.className = 'label';
-    lableDiv30.textContent = '30';
-    lableDiv30.style.marginTop = '-1em';
-
-    const vertexLabel30 = new CSS2DObject( lableDiv30 );
-    vertexLabel30.position.set(getVertex30()[0],getVertex30()[1],getVertex30()[2]);
-    vertexlabelRoot.add( vertexLabel30 );
-            
-            
-
-	function getVertex31(){
-		return [0.12642570147887455,-0.12065159381692281,0.041671842659184027,];
-	}
-	const sphereMaterial31 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere31 = new THREE.Mesh( sphereGeometry, sphereMaterial31 );
-	vertexRoot.add(sphere31);
-	sphere31.position.set(getVertex31()[0],getVertex31()[1],getVertex31()[2]);
-
-    const lableDiv31 = document.createElement( 'div' );
-    lableDiv31.className = 'label';
-    lableDiv31.textContent = '31';
-    lableDiv31.style.marginTop = '-1em';
-
-    const vertexLabel31 = new CSS2DObject( lableDiv31 );
-    vertexLabel31.position.set(getVertex31()[0],getVertex31()[1],getVertex31()[2]);
-    vertexlabelRoot.add( vertexLabel31 );
-            
-            
-
-	function getVertex32(){
-		return [0.16575179010963761,-0.017314159655627472,0.067107164233218206,];
-	}
-	const sphereMaterial32 = new THREE.MeshBasicMaterial( { color: 0xF58137 } );
-	const sphere32 = new THREE.Mesh( sphereGeometry, sphereMaterial32 );
-	vertexRoot.add(sphere32);
-	sphere32.position.set(getVertex32()[0],getVertex32()[1],getVertex32()[2]);
-
-    const lableDiv32 = document.createElement( 'div' );
-    lableDiv32.className = 'label';
-    lableDiv32.textContent = '32';
-    lableDiv32.style.marginTop = '-1em';
-
-    const vertexLabel32 = new CSS2DObject( lableDiv32 );
-    vertexLabel32.position.set(getVertex32()[0],getVertex32()[1],getVertex32()[2]);
-    vertexlabelRoot.add( vertexLabel32 );
+    const vertexLabel62 = new CSS2DObject( lableDiv62 );
+    vertexLabel62.position.set(getVertex62()[0],getVertex62()[1],getVertex62()[2]);
+    vertexlabelRoot.add( vertexLabel62 );
             
             	// generate the rings for the incircles 
 
@@ -1190,8 +1190,8 @@
 
     ringRoot.add(ringMesh1);
             
-	var inradius2 = calulateInradius(getVertex1(), getVertex2(), getVertex23());
-	var incenter2 = calulateIncenter(getVertex1(), getVertex2(), getVertex23());
+	var inradius2 = calulateInradius(getVertex1(), getVertex2(), getVertex53());
+	var incenter2 = calulateIncenter(getVertex1(), getVertex2(), getVertex53());
 	var ringGeometry2 = new THREE.RingGeometry((inradius2 - 0.005),inradius2, 32);
 	const ringMaterial2 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh2 = new THREE.Mesh(ringGeometry2, ringMaterial2);
@@ -1199,14 +1199,14 @@
 	function setCircleRotation2(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.42532540400000002,0.85065080849999997,0.],[0.15194522573557648,0.05639505893132235,0.06136807718159009]);
+        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.42532540400000002,0.85065080849999997,0.],[0.11409258567102037,0.066761870311420182,0.06677539473245965]);
 
         ringMesh2.position.setX(incenter[0]);
         ringMesh2.position.setY(incenter[1]);
         ringMesh2.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex1(), getVertex2(), getVertex23());
+        var inradius = calulateInradius(getVertex1(), getVertex2(), getVertex53());
         var relRadius = inradius/inradius2;
 
         ringMesh2.scale.set(relRadius, relRadius, relRadius);
@@ -1214,7 +1214,7 @@
         // rotate ring to right angle
         const A2 = new THREE.Vector3(0.95105651599999996,0.,0.);
         const B2 = new THREE.Vector3(0.42532540400000002,0.85065080849999997,0.);
-        const C2 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
+        const C2 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
 
         const normalVec2 = new THREE.Vector3();
         normalVec2.crossVectors(B2.sub(A2), C2.sub(A2));
@@ -1276,8 +1276,8 @@
 
     ringRoot.add(ringMesh3);
             
-	var inradius4 = calulateInradius(getVertex1(), getVertex23(), getVertex32());
-	var incenter4 = calulateIncenter(getVertex1(), getVertex23(), getVertex32());
+	var inradius4 = calulateInradius(getVertex1(), getVertex53(), getVertex62());
+	var incenter4 = calulateIncenter(getVertex1(), getVertex53(), getVertex62());
 	var ringGeometry4 = new THREE.RingGeometry((inradius4 - 0.005),inradius4, 32);
 	const ringMaterial4 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh4 = new THREE.Mesh(ringGeometry4, ringMaterial4);
@@ -1285,22 +1285,22 @@
 	function setCircleRotation4(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 
         ringMesh4.position.setX(incenter[0]);
         ringMesh4.position.setY(incenter[1]);
         ringMesh4.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex1(), getVertex23(), getVertex32());
+        var inradius = calulateInradius(getVertex1(), getVertex53(), getVertex62());
         var relRadius = inradius/inradius4;
 
         ringMesh4.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A4 = new THREE.Vector3(0.95105651599999996,0.,0.);
-        const B4 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
-        const C4 = new THREE.Vector3(0.16575179010963761,-0.017314159655627472,0.067107164233218206);
+        const B4 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
+        const C4 = new THREE.Vector3(0.12927980648185344,-0.022441262533317328,0.07044907026685665);
 
         const normalVec4 = new THREE.Vector3();
         normalVec4.crossVectors(B4.sub(A4), C4.sub(A4));
@@ -1319,8 +1319,8 @@
 
     ringRoot.add(ringMesh4);
             
-	var inradius5 = calulateInradius(getVertex1(), getVertex9(), getVertex32());
-	var incenter5 = calulateIncenter(getVertex1(), getVertex9(), getVertex32());
+	var inradius5 = calulateInradius(getVertex1(), getVertex9(), getVertex62());
+	var incenter5 = calulateIncenter(getVertex1(), getVertex9(), getVertex62());
 	var ringGeometry5 = new THREE.RingGeometry((inradius5 - 0.005),inradius5, 32);
 	const ringMaterial5 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh5 = new THREE.Mesh(ringGeometry5, ringMaterial5);
@@ -1328,14 +1328,14 @@
 	function setCircleRotation5(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+        var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 
         ringMesh5.position.setX(incenter[0]);
         ringMesh5.position.setY(incenter[1]);
         ringMesh5.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex1(), getVertex9(), getVertex32());
+        var inradius = calulateInradius(getVertex1(), getVertex9(), getVertex62());
         var relRadius = inradius/inradius5;
 
         ringMesh5.scale.set(relRadius, relRadius, relRadius);
@@ -1343,7 +1343,7 @@
         // rotate ring to right angle
         const A5 = new THREE.Vector3(0.95105651599999996,0.,0.);
         const B5 = new THREE.Vector3(0.10988673676227484,-0.094546109739312101,0.014589803345788743);
-        const C5 = new THREE.Vector3(0.16575179010963761,-0.017314159655627472,0.067107164233218206);
+        const C5 = new THREE.Vector3(0.12927980648185344,-0.022441262533317328,0.07044907026685665);
 
         const normalVec5 = new THREE.Vector3();
         normalVec5.crossVectors(B5.sub(A5), C5.sub(A5));
@@ -1491,8 +1491,8 @@
 
     ringRoot.add(ringMesh8);
             
-	var inradius9 = calulateInradius(getVertex2(), getVertex23(), getVertex24());
-	var incenter9 = calulateIncenter(getVertex2(), getVertex23(), getVertex24());
+	var inradius9 = calulateInradius(getVertex2(), getVertex53(), getVertex54());
+	var incenter9 = calulateIncenter(getVertex2(), getVertex53(), getVertex54());
 	var ringGeometry9 = new THREE.RingGeometry((inradius9 - 0.005),inradius9, 32);
 	const ringMaterial9 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh9 = new THREE.Mesh(ringGeometry9, ringMaterial9);
@@ -1500,22 +1500,22 @@
 	function setCircleRotation9(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.051374773540542575,0.15962874834571811,0.0644678440128061]);
+        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.037017069127279693,0.12603068320390726,0.07018513824565098]);
 
         ringMesh9.position.setX(incenter[0]);
         ringMesh9.position.setY(incenter[1]);
         ringMesh9.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex2(), getVertex23(), getVertex24());
+        var inradius = calulateInradius(getVertex2(), getVertex53(), getVertex54());
         var relRadius = inradius/inradius9;
 
         ringMesh9.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A9 = new THREE.Vector3(0.42532540400000002,0.85065080849999997,0.);
-        const B9 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
-        const C9 = new THREE.Vector3(0.051374773540542575,0.15962874834571811,0.0644678440128061);
+        const B9 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
+        const C9 = new THREE.Vector3(0.037017069127279693,0.12603068320390726,0.07018513824565098);
 
         const normalVec9 = new THREE.Vector3();
         normalVec9.crossVectors(B9.sub(A9), C9.sub(A9));
@@ -1534,8 +1534,8 @@
 
     ringRoot.add(ringMesh9);
             
-	var inradius10 = calulateInradius(getVertex2(), getVertex24(), getVertex25());
-	var incenter10 = calulateIncenter(getVertex2(), getVertex24(), getVertex25());
+	var inradius10 = calulateInradius(getVertex2(), getVertex54(), getVertex55());
+	var incenter10 = calulateIncenter(getVertex2(), getVertex54(), getVertex55());
 	var ringGeometry10 = new THREE.RingGeometry((inradius10 - 0.005),inradius10, 32);
 	const ringMaterial10 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh10 = new THREE.Mesh(ringGeometry10, ringMaterial10);
@@ -1543,22 +1543,22 @@
 	function setCircleRotation10(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.051374773540542575,0.15962874834571811,0.0644678440128061],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.037017069127279693,0.12603068320390726,0.07018513824565098],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 
         ringMesh10.position.setX(incenter[0]);
         ringMesh10.position.setY(incenter[1]);
         ringMesh10.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex2(), getVertex24(), getVertex25());
+        var inradius = calulateInradius(getVertex2(), getVertex54(), getVertex55());
         var relRadius = inradius/inradius10;
 
         ringMesh10.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A10 = new THREE.Vector3(0.42532540400000002,0.85065080849999997,0.);
-        const B10 = new THREE.Vector3(0.051374773540542575,0.15962874834571811,0.0644678440128061);
-        const C10 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
+        const B10 = new THREE.Vector3(0.037017069127279693,0.12603068320390726,0.07018513824565098);
+        const C10 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
 
         const normalVec10 = new THREE.Vector3();
         normalVec10.crossVectors(B10.sub(A10), C10.sub(A10));
@@ -1620,8 +1620,8 @@
 
     ringRoot.add(ringMesh11);
             
-	var inradius12 = calulateInradius(getVertex2(), getVertex13(), getVertex25());
-	var incenter12 = calulateIncenter(getVertex2(), getVertex13(), getVertex25());
+	var inradius12 = calulateInradius(getVertex2(), getVertex13(), getVertex55());
+	var incenter12 = calulateIncenter(getVertex2(), getVertex13(), getVertex55());
 	var ringGeometry12 = new THREE.RingGeometry((inradius12 - 0.005),inradius12, 32);
 	const ringMaterial12 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh12 = new THREE.Mesh(ringGeometry12, ringMaterial12);
@@ -1629,14 +1629,14 @@
 	function setCircleRotation12(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ -0.42532540400000002,0.68819096040000005,-0.49999999979999998],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+        var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ -0.42532540400000002,0.68819096040000005,-0.49999999979999998],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 
         ringMesh12.position.setX(incenter[0]);
         ringMesh12.position.setY(incenter[1]);
         ringMesh12.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex2(), getVertex13(), getVertex25());
+        var inradius = calulateInradius(getVertex2(), getVertex13(), getVertex55());
         var relRadius = inradius/inradius12;
 
         ringMesh12.scale.set(relRadius, relRadius, relRadius);
@@ -1644,7 +1644,7 @@
         // rotate ring to right angle
         const A12 = new THREE.Vector3(0.42532540400000002,0.85065080849999997,0.);
         const B12 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,-0.49999999979999998);
-        const C12 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
+        const C12 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
 
         const normalVec12 = new THREE.Vector3();
         normalVec12.crossVectors(B12.sub(A12), C12.sub(A12));
@@ -1921,8 +1921,8 @@
 
     ringRoot.add(ringMesh18);
             
-	var inradius19 = calulateInradius(getVertex4(), getVertex7(), getVertex26());
-	var incenter19 = calulateIncenter(getVertex4(), getVertex7(), getVertex26());
+	var inradius19 = calulateInradius(getVertex4(), getVertex7(), getVertex56());
+	var incenter19 = calulateIncenter(getVertex4(), getVertex7(), getVertex56());
 	var ringGeometry19 = new THREE.RingGeometry((inradius19 - 0.005),inradius19, 32);
 	const ringMaterial19 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh19 = new THREE.Mesh(ringGeometry19, ringMaterial19);
@@ -1930,14 +1930,14 @@
 	function setCircleRotation19(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.03542176863691715,0.12229756485481713,0.070820393160411527],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.03542176863691715,0.12229756485481713,0.070820393160411527],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 
         ringMesh19.position.setX(incenter[0]);
         ringMesh19.position.setY(incenter[1]);
         ringMesh19.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex4(), getVertex7(), getVertex26());
+        var inradius = calulateInradius(getVertex4(), getVertex7(), getVertex56());
         var relRadius = inradius/inradius19;
 
         ringMesh19.scale.set(relRadius, relRadius, relRadius);
@@ -1945,7 +1945,7 @@
         // rotate ring to right angle
         const A19 = new THREE.Vector3(-0.044902797600000002,-0.027751455099999999,0.085410196499999994);
         const B19 = new THREE.Vector3(0.03542176863691715,0.12229756485481713,0.070820393160411527);
-        const C19 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
+        const C19 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
 
         const normalVec19 = new THREE.Vector3();
         normalVec19.crossVectors(B19.sub(A19), C19.sub(A19));
@@ -1964,8 +1964,8 @@
 
     ringRoot.add(ringMesh19);
             
-	var inradius20 = calulateInradius(getVertex4(), getVertex10(), getVertex28());
-	var incenter20 = calulateIncenter(getVertex4(), getVertex10(), getVertex28());
+	var inradius20 = calulateInradius(getVertex4(), getVertex10(), getVertex58());
+	var incenter20 = calulateIncenter(getVertex4(), getVertex10(), getVertex58());
 	var ringGeometry20 = new THREE.RingGeometry((inradius20 - 0.005),inradius20, 32);
 	const ringMaterial20 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh20 = new THREE.Mesh(ringGeometry20, ringMaterial20);
@@ -1973,14 +1973,14 @@
 	function setCircleRotation20(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 
         ringMesh20.position.setX(incenter[0]);
         ringMesh20.position.setY(incenter[1]);
         ringMesh20.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex4(), getVertex10(), getVertex28());
+        var inradius = calulateInradius(getVertex4(), getVertex10(), getVertex58());
         var relRadius = inradius/inradius20;
 
         ringMesh20.scale.set(relRadius, relRadius, relRadius);
@@ -1988,7 +1988,7 @@
         // rotate ring to right angle
         const A20 = new THREE.Vector3(-0.044902797600000002,-0.027751455099999999,0.085410196499999994);
         const B20 = new THREE.Vector3(0.035421768653657301,-0.14056799102765397,-0.014589803368714557);
-        const C20 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
+        const C20 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
 
         const normalVec20 = new THREE.Vector3();
         normalVec20.crossVectors(B20.sub(A20), C20.sub(A20));
@@ -2007,8 +2007,8 @@
 
     ringRoot.add(ringMesh20);
             
-	var inradius21 = calulateInradius(getVertex4(), getVertex26(), getVertex28());
-	var incenter21 = calulateIncenter(getVertex4(), getVertex26(), getVertex28());
+	var inradius21 = calulateInradius(getVertex4(), getVertex56(), getVertex58());
+	var incenter21 = calulateIncenter(getVertex4(), getVertex56(), getVertex58());
 	var ringGeometry21 = new THREE.RingGeometry((inradius21 - 0.005),inradius21, 32);
 	const ringMaterial21 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh21 = new THREE.Mesh(ringGeometry21, ringMaterial21);
@@ -2016,22 +2016,22 @@
 	function setCircleRotation21(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ -0.11839324485420148,0.12561592502812169,0.015410196636810683],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+        var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ -0.11073738757146749,0.097653091268192993,-0.011589803347528826],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 
         ringMesh21.position.setX(incenter[0]);
         ringMesh21.position.setY(incenter[1]);
         ringMesh21.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex4(), getVertex26(), getVertex28());
+        var inradius = calulateInradius(getVertex4(), getVertex56(), getVertex58());
         var relRadius = inradius/inradius21;
 
         ringMesh21.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A21 = new THREE.Vector3(-0.044902797600000002,-0.027751455099999999,0.085410196499999994);
-        const B21 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
-        const C21 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
+        const B21 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
+        const C21 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
 
         const normalVec21 = new THREE.Vector3();
         normalVec21.crossVectors(B21.sub(A21), C21.sub(A21));
@@ -2093,8 +2093,8 @@
 
     ringRoot.add(ringMesh22);
             
-	var inradius23 = calulateInradius(getVertex9(), getVertex23(), getVertex32());
-	var incenter23 = calulateIncenter(getVertex9(), getVertex23(), getVertex32());
+	var inradius23 = calulateInradius(getVertex9(), getVertex53(), getVertex62());
+	var incenter23 = calulateIncenter(getVertex9(), getVertex53(), getVertex62());
 	var ringGeometry23 = new THREE.RingGeometry((inradius23 - 0.005),inradius23, 32);
 	const ringMaterial23 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh23 = new THREE.Mesh(ringGeometry23, ringMaterial23);
@@ -2102,22 +2102,22 @@
 	function setCircleRotation23(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 
         ringMesh23.position.setX(incenter[0]);
         ringMesh23.position.setY(incenter[1]);
         ringMesh23.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex9(), getVertex23(), getVertex32());
+        var inradius = calulateInradius(getVertex9(), getVertex53(), getVertex62());
         var relRadius = inradius/inradius23;
 
         ringMesh23.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A23 = new THREE.Vector3(0.10988673676227484,-0.094546109739312101,0.014589803345788743);
-        const B23 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
-        const C23 = new THREE.Vector3(0.16575179010963761,-0.017314159655627472,0.067107164233218206);
+        const B23 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
+        const C23 = new THREE.Vector3(0.12927980648185344,-0.022441262533317328,0.07044907026685665);
 
         const normalVec23 = new THREE.Vector3();
         normalVec23.crossVectors(B23.sub(A23), C23.sub(A23));
@@ -2136,8 +2136,8 @@
 
     ringRoot.add(ringMesh23);
             
-	var inradius24 = calulateInradius(getVertex23(), getVertex24(), getVertex25());
-	var incenter24 = calulateIncenter(getVertex23(), getVertex24(), getVertex25());
+	var inradius24 = calulateInradius(getVertex53(), getVertex54(), getVertex55());
+	var incenter24 = calulateIncenter(getVertex53(), getVertex54(), getVertex55());
 	var ringGeometry24 = new THREE.RingGeometry((inradius24 - 0.005),inradius24, 32);
 	const ringMaterial24 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh24 = new THREE.Mesh(ringGeometry24, ringMaterial24);
@@ -2145,22 +2145,22 @@
 	function setCircleRotation24(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.15194522573557648,0.05639505893132235,0.06136807718159009],[ 0.051374773540542575,0.15962874834571811,0.0644678440128061],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+        var incenter = calulateIncenter([0.11409258567102037,0.066761870311420182,0.06677539473245965],[ 0.037017069127279693,0.12603068320390726,0.07018513824565098],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 
         ringMesh24.position.setX(incenter[0]);
         ringMesh24.position.setY(incenter[1]);
         ringMesh24.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex23(), getVertex24(), getVertex25());
+        var inradius = calulateInradius(getVertex53(), getVertex54(), getVertex55());
         var relRadius = inradius/inradius24;
 
         ringMesh24.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
-        const A24 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
-        const B24 = new THREE.Vector3(0.051374773540542575,0.15962874834571811,0.0644678440128061);
-        const C24 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
+        const A24 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
+        const B24 = new THREE.Vector3(0.037017069127279693,0.12603068320390726,0.07018513824565098);
+        const C24 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
 
         const normalVec24 = new THREE.Vector3();
         normalVec24.crossVectors(B24.sub(A24), C24.sub(A24));
@@ -2179,8 +2179,8 @@
 
     ringRoot.add(ringMesh24);
             
-	var inradius25 = calulateInradius(getVertex9(), getVertex20(), getVertex23());
-	var incenter25 = calulateIncenter(getVertex9(), getVertex20(), getVertex23());
+	var inradius25 = calulateInradius(getVertex9(), getVertex20(), getVertex53());
+	var incenter25 = calulateIncenter(getVertex9(), getVertex20(), getVertex53());
 	var ringGeometry25 = new THREE.RingGeometry((inradius25 - 0.005),inradius25, 32);
 	const ringMaterial25 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh25 = new THREE.Mesh(ringGeometry25, ringMaterial25);
@@ -2188,14 +2188,14 @@
 	function setCircleRotation25(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[0.15194522573557648,0.05639505893132235,0.06136807718159009]);
+        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[0.11409258567102037,0.066761870311420182,0.06677539473245965]);
 
         ringMesh25.position.setX(incenter[0]);
         ringMesh25.position.setY(incenter[1]);
         ringMesh25.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex9(), getVertex20(), getVertex23());
+        var inradius = calulateInradius(getVertex9(), getVertex20(), getVertex53());
         var relRadius = inradius/inradius25;
 
         ringMesh25.scale.set(relRadius, relRadius, relRadius);
@@ -2203,7 +2203,7 @@
         // rotate ring to right angle
         const A25 = new THREE.Vector3(0.10988673676227484,-0.094546109739312101,0.014589803345788743);
         const B25 = new THREE.Vector3(0.044902797600000002,0.027751455099999999,-0.085410196499999994);
-        const C25 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
+        const C25 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
 
         const normalVec25 = new THREE.Vector3();
         normalVec25.crossVectors(B25.sub(A25), C25.sub(A25));
@@ -2222,8 +2222,8 @@
 
     ringRoot.add(ringMesh25);
             
-	var inradius26 = calulateInradius(getVertex20(), getVertex23(), getVertex25());
-	var incenter26 = calulateIncenter(getVertex20(), getVertex23(), getVertex25());
+	var inradius26 = calulateInradius(getVertex20(), getVertex53(), getVertex55());
+	var incenter26 = calulateIncenter(getVertex20(), getVertex53(), getVertex55());
 	var ringGeometry26 = new THREE.RingGeometry((inradius26 - 0.005),inradius26, 32);
 	const ringMaterial26 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh26 = new THREE.Mesh(ringGeometry26, ringMaterial26);
@@ -2231,22 +2231,22 @@
 	function setCircleRotation26(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+        var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 
         ringMesh26.position.setX(incenter[0]);
         ringMesh26.position.setY(incenter[1]);
         ringMesh26.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex20(), getVertex23(), getVertex25());
+        var inradius = calulateInradius(getVertex20(), getVertex53(), getVertex55());
         var relRadius = inradius/inradius26;
 
         ringMesh26.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A26 = new THREE.Vector3(0.044902797600000002,0.027751455099999999,-0.085410196499999994);
-        const B26 = new THREE.Vector3(0.15194522573557648,0.05639505893132235,0.06136807718159009);
-        const C26 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
+        const B26 = new THREE.Vector3(0.11409258567102037,0.066761870311420182,0.06677539473245965);
+        const C26 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
 
         const normalVec26 = new THREE.Vector3();
         normalVec26.crossVectors(B26.sub(A26), C26.sub(A26));
@@ -2265,8 +2265,8 @@
 
     ringRoot.add(ringMesh26);
             
-	var inradius27 = calulateInradius(getVertex6(), getVertex10(), getVertex31());
-	var incenter27 = calulateIncenter(getVertex6(), getVertex10(), getVertex31());
+	var inradius27 = calulateInradius(getVertex6(), getVertex10(), getVertex61());
+	var incenter27 = calulateIncenter(getVertex6(), getVertex10(), getVertex61());
 	var ringGeometry27 = new THREE.RingGeometry((inradius27 - 0.005),inradius27, 32);
 	const ringMaterial27 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh27 = new THREE.Mesh(ringGeometry27, ringMaterial27);
@@ -2274,14 +2274,14 @@
 	function setCircleRotation27(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+        var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 
         ringMesh27.position.setX(incenter[0]);
         ringMesh27.position.setY(incenter[1]);
         ringMesh27.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex6(), getVertex10(), getVertex31());
+        var inradius = calulateInradius(getVertex6(), getVertex10(), getVertex61());
         var relRadius = inradius/inradius27;
 
         ringMesh27.scale.set(relRadius, relRadius, relRadius);
@@ -2289,7 +2289,7 @@
         // rotate ring to right angle
         const A27 = new THREE.Vector3(0.12522736385654409,-0.02301094063083842,0.070820393159483144);
         const B27 = new THREE.Vector3(0.035421768653657301,-0.14056799102765397,-0.014589803368714557);
-        const C27 = new THREE.Vector3(0.12642570147887455,-0.12065159381692281,0.041671842659184027);
+        const C27 = new THREE.Vector3(0.1115406332339348,-0.097156658147073166,0.017298007277128269);
 
         const normalVec27 = new THREE.Vector3();
         normalVec27.crossVectors(B27.sub(A27), C27.sub(A27));
@@ -2308,8 +2308,8 @@
 
     ringRoot.add(ringMesh27);
             
-	var inradius28 = calulateInradius(getVertex6(), getVertex11(), getVertex31());
-	var incenter28 = calulateIncenter(getVertex6(), getVertex11(), getVertex31());
+	var inradius28 = calulateInradius(getVertex6(), getVertex11(), getVertex61());
+	var incenter28 = calulateIncenter(getVertex6(), getVertex11(), getVertex61());
 	var ringGeometry28 = new THREE.RingGeometry((inradius28 - 0.005),inradius28, 32);
 	const ringMaterial28 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh28 = new THREE.Mesh(ringGeometry28, ringMaterial28);
@@ -2317,14 +2317,14 @@
 	function setCircleRotation28(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+        var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 
         ringMesh28.position.setX(incenter[0]);
         ringMesh28.position.setY(incenter[1]);
         ringMesh28.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex6(), getVertex11(), getVertex31());
+        var inradius = calulateInradius(getVertex6(), getVertex11(), getVertex61());
         var relRadius = inradius/inradius28;
 
         ringMesh28.scale.set(relRadius, relRadius, relRadius);
@@ -2332,7 +2332,7 @@
         // rotate ring to right angle
         const A28 = new THREE.Vector3(0.12522736385654409,-0.02301094063083842,0.070820393159483144);
         const B28 = new THREE.Vector3(0.42532540400000002,-0.68819096040000005,0.49999999979999998);
-        const C28 = new THREE.Vector3(0.12642570147887455,-0.12065159381692281,0.041671842659184027);
+        const C28 = new THREE.Vector3(0.1115406332339348,-0.097156658147073166,0.017298007277128269);
 
         const normalVec28 = new THREE.Vector3();
         normalVec28.crossVectors(B28.sub(A28), C28.sub(A28));
@@ -2394,8 +2394,8 @@
 
     ringRoot.add(ringMesh29);
             
-	var inradius30 = calulateInradius(getVertex7(), getVertex14(), getVertex26());
-	var incenter30 = calulateIncenter(getVertex7(), getVertex14(), getVertex26());
+	var inradius30 = calulateInradius(getVertex7(), getVertex14(), getVertex56());
+	var incenter30 = calulateIncenter(getVertex7(), getVertex14(), getVertex56());
 	var ringGeometry30 = new THREE.RingGeometry((inradius30 - 0.005),inradius30, 32);
 	const ringMaterial30 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh30 = new THREE.Mesh(ringGeometry30, ringMaterial30);
@@ -2403,14 +2403,14 @@
 	function setCircleRotation30(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.03542176863691715,0.12229756485481713,0.070820393160411527],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+        var incenter = calulateIncenter([0.03542176863691715,0.12229756485481713,0.070820393160411527],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 
         ringMesh30.position.setX(incenter[0]);
         ringMesh30.position.setY(incenter[1]);
         ringMesh30.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex7(), getVertex14(), getVertex26());
+        var inradius = calulateInradius(getVertex7(), getVertex14(), getVertex56());
         var relRadius = inradius/inradius30;
 
         ringMesh30.scale.set(relRadius, relRadius, relRadius);
@@ -2418,7 +2418,7 @@
         // rotate ring to right angle
         const A30 = new THREE.Vector3(0.03542176863691715,0.12229756485481713,0.070820393160411527);
         const B30 = new THREE.Vector3(-0.03542176865365726,0.14056799102765394,0.01458980336871446);
-        const C30 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
+        const C30 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
 
         const normalVec30 = new THREE.Vector3();
         normalVec30.crossVectors(B30.sub(A30), C30.sub(A30));
@@ -2437,8 +2437,8 @@
 
     ringRoot.add(ringMesh30);
             
-	var inradius31 = calulateInradius(getVertex8(), getVertex9(), getVertex30());
-	var incenter31 = calulateIncenter(getVertex8(), getVertex9(), getVertex30());
+	var inradius31 = calulateInradius(getVertex8(), getVertex9(), getVertex60());
+	var incenter31 = calulateIncenter(getVertex8(), getVertex9(), getVertex60());
 	var ringGeometry31 = new THREE.RingGeometry((inradius31 - 0.005),inradius31, 32);
 	const ringMaterial31 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh31 = new THREE.Mesh(ringGeometry31, ringMaterial31);
@@ -2446,14 +2446,14 @@
 	function setCircleRotation31(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+        var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 
         ringMesh31.position.setX(incenter[0]);
         ringMesh31.position.setY(incenter[1]);
         ringMesh31.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex8(), getVertex9(), getVertex30());
+        var inradius = calulateInradius(getVertex8(), getVertex9(), getVertex60());
         var relRadius = inradius/inradius31;
 
         ringMesh31.scale.set(relRadius, relRadius, relRadius);
@@ -2461,7 +2461,7 @@
         // rotate ring to right angle
         const A31 = new THREE.Vector3(0.42532540400000002,-0.68819096040000005,-0.49999999979999998);
         const B31 = new THREE.Vector3(0.10988673676227484,-0.094546109739312101,0.014589803345788743);
-        const C31 = new THREE.Vector3(0.058640198826405317,-0.16564804543185419,-0.037401332854553659);
+        const C31 = new THREE.Vector3(0.037743611670932105,-0.14307599646807398,-0.016870956317298465);
 
         const normalVec31 = new THREE.Vector3();
         normalVec31.crossVectors(B31.sub(A31), C31.sub(A31));
@@ -2480,8 +2480,8 @@
 
     ringRoot.add(ringMesh31);
             
-	var inradius32 = calulateInradius(getVertex8(), getVertex17(), getVertex30());
-	var incenter32 = calulateIncenter(getVertex8(), getVertex17(), getVertex30());
+	var inradius32 = calulateInradius(getVertex8(), getVertex17(), getVertex60());
+	var incenter32 = calulateIncenter(getVertex8(), getVertex17(), getVertex60());
 	var ringGeometry32 = new THREE.RingGeometry((inradius32 - 0.005),inradius32, 32);
 	const ringMaterial32 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh32 = new THREE.Mesh(ringGeometry32, ringMaterial32);
@@ -2489,14 +2489,14 @@
 	function setCircleRotation32(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+        var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 
         ringMesh32.position.setX(incenter[0]);
         ringMesh32.position.setY(incenter[1]);
         ringMesh32.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex8(), getVertex17(), getVertex30());
+        var inradius = calulateInradius(getVertex8(), getVertex17(), getVertex60());
         var relRadius = inradius/inradius32;
 
         ringMesh32.scale.set(relRadius, relRadius, relRadius);
@@ -2504,7 +2504,7 @@
         // rotate ring to right angle
         const A32 = new THREE.Vector3(0.42532540400000002,-0.68819096040000005,-0.49999999979999998);
         const B32 = new THREE.Vector3(-0.035421768636917095,-0.12229756485481702,-0.070820393160411541);
-        const C32 = new THREE.Vector3(0.058640198826405317,-0.16564804543185419,-0.037401332854553659);
+        const C32 = new THREE.Vector3(0.037743611670932105,-0.14307599646807398,-0.016870956317298465);
 
         const normalVec32 = new THREE.Vector3();
         normalVec32.crossVectors(B32.sub(A32), C32.sub(A32));
@@ -2652,8 +2652,8 @@
 
     ringRoot.add(ringMesh35);
             
-	var inradius36 = calulateInradius(getVertex10(), getVertex11(), getVertex31());
-	var incenter36 = calulateIncenter(getVertex10(), getVertex11(), getVertex31());
+	var inradius36 = calulateInradius(getVertex10(), getVertex11(), getVertex61());
+	var incenter36 = calulateIncenter(getVertex10(), getVertex11(), getVertex61());
 	var ringGeometry36 = new THREE.RingGeometry((inradius36 - 0.005),inradius36, 32);
 	const ringMaterial36 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh36 = new THREE.Mesh(ringGeometry36, ringMaterial36);
@@ -2661,14 +2661,14 @@
 	function setCircleRotation36(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 
         ringMesh36.position.setX(incenter[0]);
         ringMesh36.position.setY(incenter[1]);
         ringMesh36.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex10(), getVertex11(), getVertex31());
+        var inradius = calulateInradius(getVertex10(), getVertex11(), getVertex61());
         var relRadius = inradius/inradius36;
 
         ringMesh36.scale.set(relRadius, relRadius, relRadius);
@@ -2676,7 +2676,7 @@
         // rotate ring to right angle
         const A36 = new THREE.Vector3(0.035421768653657301,-0.14056799102765397,-0.014589803368714557);
         const B36 = new THREE.Vector3(0.42532540400000002,-0.68819096040000005,0.49999999979999998);
-        const C36 = new THREE.Vector3(0.12642570147887455,-0.12065159381692281,0.041671842659184027);
+        const C36 = new THREE.Vector3(0.1115406332339348,-0.097156658147073166,0.017298007277128269);
 
         const normalVec36 = new THREE.Vector3();
         normalVec36.crossVectors(B36.sub(A36), C36.sub(A36));
@@ -2695,8 +2695,8 @@
 
     ringRoot.add(ringMesh36);
             
-	var inradius37 = calulateInradius(getVertex9(), getVertex17(), getVertex30());
-	var incenter37 = calulateIncenter(getVertex9(), getVertex17(), getVertex30());
+	var inradius37 = calulateInradius(getVertex9(), getVertex17(), getVertex60());
+	var incenter37 = calulateIncenter(getVertex9(), getVertex17(), getVertex60());
 	var ringGeometry37 = new THREE.RingGeometry((inradius37 - 0.005),inradius37, 32);
 	const ringMaterial37 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh37 = new THREE.Mesh(ringGeometry37, ringMaterial37);
@@ -2704,14 +2704,14 @@
 	function setCircleRotation37(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+        var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 
         ringMesh37.position.setX(incenter[0]);
         ringMesh37.position.setY(incenter[1]);
         ringMesh37.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex9(), getVertex17(), getVertex30());
+        var inradius = calulateInradius(getVertex9(), getVertex17(), getVertex60());
         var relRadius = inradius/inradius37;
 
         ringMesh37.scale.set(relRadius, relRadius, relRadius);
@@ -2719,7 +2719,7 @@
         // rotate ring to right angle
         const A37 = new THREE.Vector3(0.10988673676227484,-0.094546109739312101,0.014589803345788743);
         const B37 = new THREE.Vector3(-0.035421768636917095,-0.12229756485481702,-0.070820393160411541);
-        const C37 = new THREE.Vector3(0.058640198826405317,-0.16564804543185419,-0.037401332854553659);
+        const C37 = new THREE.Vector3(0.037743611670932105,-0.14307599646807398,-0.016870956317298465);
 
         const normalVec37 = new THREE.Vector3();
         normalVec37.crossVectors(B37.sub(A37), C37.sub(A37));
@@ -2824,8 +2824,8 @@
 
     ringRoot.add(ringMesh39);
             
-	var inradius40 = calulateInradius(getVertex10(), getVertex28(), getVertex29());
-	var incenter40 = calulateIncenter(getVertex10(), getVertex28(), getVertex29());
+	var inradius40 = calulateInradius(getVertex10(), getVertex58(), getVertex59());
+	var incenter40 = calulateIncenter(getVertex10(), getVertex58(), getVertex59());
 	var ringGeometry40 = new THREE.RingGeometry((inradius40 - 0.005),inradius40, 32);
 	const ringMaterial40 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh40 = new THREE.Mesh(ringGeometry40, ringMaterial40);
@@ -2833,22 +2833,22 @@
 	function setCircleRotation40(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.15194522573557651,-0.056395058931322357,-0.061368077181590173],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.11409258567102043,-0.066761870311420196,-0.066775394732459747],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 
         ringMesh40.position.setX(incenter[0]);
         ringMesh40.position.setY(incenter[1]);
         ringMesh40.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex10(), getVertex28(), getVertex29());
+        var inradius = calulateInradius(getVertex10(), getVertex58(), getVertex59());
         var relRadius = inradius/inradius40;
 
         ringMesh40.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A40 = new THREE.Vector3(0.035421768653657301,-0.14056799102765397,-0.014589803368714557);
-        const B40 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
-        const C40 = new THREE.Vector3(-0.051374773540542526,-0.15962874834571802,-0.064467844012806114);
+        const B40 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
+        const C40 = new THREE.Vector3(-0.037017069127279638,-0.12603068320390712,-0.070185138245650994);
 
         const normalVec40 = new THREE.Vector3();
         normalVec40.crossVectors(B40.sub(A40), C40.sub(A40));
@@ -2867,8 +2867,8 @@
 
     ringRoot.add(ringMesh40);
             
-	var inradius41 = calulateInradius(getVertex10(), getVertex19(), getVertex29());
-	var incenter41 = calulateIncenter(getVertex10(), getVertex19(), getVertex29());
+	var inradius41 = calulateInradius(getVertex10(), getVertex19(), getVertex59());
+	var incenter41 = calulateIncenter(getVertex10(), getVertex19(), getVertex59());
 	var ringGeometry41 = new THREE.RingGeometry((inradius41 - 0.005),inradius41, 32);
 	const ringMaterial41 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh41 = new THREE.Mesh(ringGeometry41, ringMaterial41);
@@ -2876,14 +2876,14 @@
 	function setCircleRotation41(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.42532540400000002,-0.85065080849999997,0.],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+        var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.42532540400000002,-0.85065080849999997,0.],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 
         ringMesh41.position.setX(incenter[0]);
         ringMesh41.position.setY(incenter[1]);
         ringMesh41.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex10(), getVertex19(), getVertex29());
+        var inradius = calulateInradius(getVertex10(), getVertex19(), getVertex59());
         var relRadius = inradius/inradius41;
 
         ringMesh41.scale.set(relRadius, relRadius, relRadius);
@@ -2891,7 +2891,7 @@
         // rotate ring to right angle
         const A41 = new THREE.Vector3(0.035421768653657301,-0.14056799102765397,-0.014589803368714557);
         const B41 = new THREE.Vector3(-0.42532540400000002,-0.85065080849999997,0.);
-        const C41 = new THREE.Vector3(-0.051374773540542526,-0.15962874834571802,-0.064467844012806114);
+        const C41 = new THREE.Vector3(-0.037017069127279638,-0.12603068320390712,-0.070185138245650994);
 
         const normalVec41 = new THREE.Vector3();
         normalVec41.crossVectors(B41.sub(A41), C41.sub(A41));
@@ -2953,8 +2953,8 @@
 
     ringRoot.add(ringMesh42);
             
-	var inradius43 = calulateInradius(getVertex12(), getVertex14(), getVertex26());
-	var incenter43 = calulateIncenter(getVertex12(), getVertex14(), getVertex26());
+	var inradius43 = calulateInradius(getVertex12(), getVertex14(), getVertex56());
+	var incenter43 = calulateIncenter(getVertex12(), getVertex14(), getVertex56());
 	var ringGeometry43 = new THREE.RingGeometry((inradius43 - 0.005),inradius43, 32);
 	const ringMaterial43 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh43 = new THREE.Mesh(ringGeometry43, ringMaterial43);
@@ -2962,14 +2962,14 @@
 	function setCircleRotation43(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 
         ringMesh43.position.setX(incenter[0]);
         ringMesh43.position.setY(incenter[1]);
         ringMesh43.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex12(), getVertex14(), getVertex26());
+        var inradius = calulateInradius(getVertex12(), getVertex14(), getVertex56());
         var relRadius = inradius/inradius43;
 
         ringMesh43.scale.set(relRadius, relRadius, relRadius);
@@ -2977,7 +2977,7 @@
         // rotate ring to right angle
         const A43 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,0.49999999979999998);
         const B43 = new THREE.Vector3(-0.03542176865365726,0.14056799102765394,0.01458980336871446);
-        const C43 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
+        const C43 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
 
         const normalVec43 = new THREE.Vector3();
         normalVec43.crossVectors(B43.sub(A43), C43.sub(A43));
@@ -2996,8 +2996,8 @@
 
     ringRoot.add(ringMesh43);
             
-	var inradius44 = calulateInradius(getVertex12(), getVertex22(), getVertex26());
-	var incenter44 = calulateIncenter(getVertex12(), getVertex22(), getVertex26());
+	var inradius44 = calulateInradius(getVertex12(), getVertex22(), getVertex56());
+	var incenter44 = calulateIncenter(getVertex12(), getVertex22(), getVertex56());
 	var ringGeometry44 = new THREE.RingGeometry((inradius44 - 0.005),inradius44, 32);
 	const ringMaterial44 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh44 = new THREE.Mesh(ringGeometry44, ringMaterial44);
@@ -3005,14 +3005,14 @@
 	function setCircleRotation44(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.95105651599999996,0.,0.],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.95105651599999996,0.,0.],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 
         ringMesh44.position.setX(incenter[0]);
         ringMesh44.position.setY(incenter[1]);
         ringMesh44.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex12(), getVertex22(), getVertex26());
+        var inradius = calulateInradius(getVertex12(), getVertex22(), getVertex56());
         var relRadius = inradius/inradius44;
 
         ringMesh44.scale.set(relRadius, relRadius, relRadius);
@@ -3020,7 +3020,7 @@
         // rotate ring to right angle
         const A44 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,0.49999999979999998);
         const B44 = new THREE.Vector3(-0.95105651599999996,0.,0.);
-        const C44 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
+        const C44 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
 
         const normalVec44 = new THREE.Vector3();
         normalVec44.crossVectors(B44.sub(A44), C44.sub(A44));
@@ -3039,8 +3039,8 @@
 
     ringRoot.add(ringMesh44);
             
-	var inradius45 = calulateInradius(getVertex13(), getVertex15(), getVertex25());
-	var incenter45 = calulateIncenter(getVertex13(), getVertex15(), getVertex25());
+	var inradius45 = calulateInradius(getVertex13(), getVertex15(), getVertex55());
+	var incenter45 = calulateIncenter(getVertex13(), getVertex15(), getVertex55());
 	var ringGeometry45 = new THREE.RingGeometry((inradius45 - 0.005),inradius45, 32);
 	const ringMaterial45 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh45 = new THREE.Mesh(ringGeometry45, ringMaterial45);
@@ -3048,14 +3048,14 @@
 	function setCircleRotation45(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 
         ringMesh45.position.setX(incenter[0]);
         ringMesh45.position.setY(incenter[1]);
         ringMesh45.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex13(), getVertex15(), getVertex25());
+        var inradius = calulateInradius(getVertex13(), getVertex15(), getVertex55());
         var relRadius = inradius/inradius45;
 
         ringMesh45.scale.set(relRadius, relRadius, relRadius);
@@ -3063,7 +3063,7 @@
         // rotate ring to right angle
         const A45 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,-0.49999999979999998);
         const B45 = new THREE.Vector3(-0.10988673676227483,0.094546109739312031,-0.014589803345788771);
-        const C45 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
+        const C45 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
 
         const normalVec45 = new THREE.Vector3();
         normalVec45.crossVectors(B45.sub(A45), C45.sub(A45));
@@ -3082,8 +3082,8 @@
 
     ringRoot.add(ringMesh45);
             
-	var inradius46 = calulateInradius(getVertex13(), getVertex15(), getVertex27());
-	var incenter46 = calulateIncenter(getVertex13(), getVertex15(), getVertex27());
+	var inradius46 = calulateInradius(getVertex13(), getVertex15(), getVertex57());
+	var incenter46 = calulateIncenter(getVertex13(), getVertex15(), getVertex57());
 	var ringGeometry46 = new THREE.RingGeometry((inradius46 - 0.005),inradius46, 32);
 	const ringMaterial46 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh46 = new THREE.Mesh(ringGeometry46, ringMaterial46);
@@ -3091,14 +3091,14 @@
 	function setCircleRotation46(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh46.position.setX(incenter[0]);
         ringMesh46.position.setY(incenter[1]);
         ringMesh46.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex13(), getVertex15(), getVertex27());
+        var inradius = calulateInradius(getVertex13(), getVertex15(), getVertex57());
         var relRadius = inradius/inradius46;
 
         ringMesh46.scale.set(relRadius, relRadius, relRadius);
@@ -3106,7 +3106,7 @@
         // rotate ring to right angle
         const A46 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,-0.49999999979999998);
         const B46 = new THREE.Vector3(-0.10988673676227483,0.094546109739312031,-0.014589803345788771);
-        const C46 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const C46 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec46 = new THREE.Vector3();
         normalVec46.crossVectors(B46.sub(A46), C46.sub(A46));
@@ -3125,8 +3125,8 @@
 
     ringRoot.add(ringMesh46);
             
-	var inradius47 = calulateInradius(getVertex13(), getVertex16(), getVertex27());
-	var incenter47 = calulateIncenter(getVertex13(), getVertex16(), getVertex27());
+	var inradius47 = calulateInradius(getVertex13(), getVertex16(), getVertex57());
+	var incenter47 = calulateIncenter(getVertex13(), getVertex16(), getVertex57());
 	var ringGeometry47 = new THREE.RingGeometry((inradius47 - 0.005),inradius47, 32);
 	const ringMaterial47 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh47 = new THREE.Mesh(ringGeometry47, ringMaterial47);
@@ -3134,14 +3134,14 @@
 	function setCircleRotation47(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.42532540400000002,-0.262865556,-0.80901699400000004],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.42532540400000002,-0.262865556,-0.80901699400000004],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh47.position.setX(incenter[0]);
         ringMesh47.position.setY(incenter[1]);
         ringMesh47.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex13(), getVertex16(), getVertex27());
+        var inradius = calulateInradius(getVertex13(), getVertex16(), getVertex57());
         var relRadius = inradius/inradius47;
 
         ringMesh47.scale.set(relRadius, relRadius, relRadius);
@@ -3149,7 +3149,7 @@
         // rotate ring to right angle
         const A47 = new THREE.Vector3(-0.42532540400000002,0.68819096040000005,-0.49999999979999998);
         const B47 = new THREE.Vector3(-0.42532540400000002,-0.262865556,-0.80901699400000004);
-        const C47 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const C47 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec47 = new THREE.Vector3();
         normalVec47.crossVectors(B47.sub(A47), C47.sub(A47));
@@ -3211,8 +3211,8 @@
 
     ringRoot.add(ringMesh48);
             
-	var inradius49 = calulateInradius(getVertex15(), getVertex25(), getVertex27());
-	var incenter49 = calulateIncenter(getVertex15(), getVertex25(), getVertex27());
+	var inradius49 = calulateInradius(getVertex15(), getVertex55(), getVertex57());
+	var incenter49 = calulateIncenter(getVertex15(), getVertex55(), getVertex57());
 	var ringGeometry49 = new THREE.RingGeometry((inradius49 - 0.005),inradius49, 32);
 	const ringMaterial49 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh49 = new THREE.Mesh(ringGeometry49, ringMaterial49);
@@ -3220,22 +3220,22 @@
 	function setCircleRotation49(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.10988673676227483,0.094546109739312031,-0.014589803345788771],[ -0.0051189847495436017,0.17243941926201567,0.016499633421526383],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.10988673676227483,0.094546109739312031,-0.014589803345788771],[ -0.032391490263245899,0.14375513385109012,0.014780786373995653],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh49.position.setX(incenter[0]);
         ringMesh49.position.setY(incenter[1]);
         ringMesh49.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex15(), getVertex25(), getVertex27());
+        var inradius = calulateInradius(getVertex15(), getVertex55(), getVertex57());
         var relRadius = inradius/inradius49;
 
         ringMesh49.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A49 = new THREE.Vector3(-0.10988673676227483,0.094546109739312031,-0.014589803345788771);
-        const B49 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
-        const C49 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const B49 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
+        const C49 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec49 = new THREE.Vector3();
         normalVec49.crossVectors(B49.sub(A49), C49.sub(A49));
@@ -3254,8 +3254,8 @@
 
     ringRoot.add(ringMesh49);
             
-	var inradius50 = calulateInradius(getVertex20(), getVertex25(), getVertex27());
-	var incenter50 = calulateIncenter(getVertex20(), getVertex25(), getVertex27());
+	var inradius50 = calulateInradius(getVertex20(), getVertex55(), getVertex57());
+	var incenter50 = calulateIncenter(getVertex20(), getVertex55(), getVertex57());
 	var ringGeometry50 = new THREE.RingGeometry((inradius50 - 0.005),inradius50, 32);
 	const ringMaterial50 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh50 = new THREE.Mesh(ringGeometry50, ringMaterial50);
@@ -3263,22 +3263,22 @@
 	function setCircleRotation50(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ -0.0051189847495436017,0.17243941926201567,0.016499633421526383],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ -0.032391490263245899,0.14375513385109012,0.014780786373995653],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh50.position.setX(incenter[0]);
         ringMesh50.position.setY(incenter[1]);
         ringMesh50.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex20(), getVertex25(), getVertex27());
+        var inradius = calulateInradius(getVertex20(), getVertex55(), getVertex57());
         var relRadius = inradius/inradius50;
 
         ringMesh50.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A50 = new THREE.Vector3(0.044902797600000002,0.027751455099999999,-0.085410196499999994);
-        const B50 = new THREE.Vector3(-0.0051189847495436017,0.17243941926201567,0.016499633421526383);
-        const C50 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const B50 = new THREE.Vector3(-0.032391490263245899,0.14375513385109012,0.014780786373995653);
+        const C50 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec50 = new THREE.Vector3();
         normalVec50.crossVectors(B50.sub(A50), C50.sub(A50));
@@ -3297,8 +3297,8 @@
 
     ringRoot.add(ringMesh50);
             
-	var inradius51 = calulateInradius(getVertex21(), getVertex26(), getVertex28());
-	var incenter51 = calulateIncenter(getVertex21(), getVertex26(), getVertex28());
+	var inradius51 = calulateInradius(getVertex21(), getVertex56(), getVertex58());
+	var incenter51 = calulateIncenter(getVertex21(), getVertex56(), getVertex58());
 	var ringGeometry51 = new THREE.RingGeometry((inradius51 - 0.005),inradius51, 32);
 	const ringMaterial51 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh51 = new THREE.Mesh(ringGeometry51, ringMaterial51);
@@ -3306,22 +3306,22 @@
 	function setCircleRotation51(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.11839324485420148,0.12561592502812169,0.015410196636810683],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.11073738757146749,0.097653091268192993,-0.011589803347528826],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 
         ringMesh51.position.setX(incenter[0]);
         ringMesh51.position.setY(incenter[1]);
         ringMesh51.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex21(), getVertex26(), getVertex28());
+        var inradius = calulateInradius(getVertex21(), getVertex56(), getVertex58());
         var relRadius = inradius/inradius51;
 
         ringMesh51.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A51 = new THREE.Vector3(-0.12522736385654409,0.02301094063083842,-0.07082039315948313);
-        const B51 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
-        const C51 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
+        const B51 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
+        const C51 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
 
         const normalVec51 = new THREE.Vector3();
         normalVec51.crossVectors(B51.sub(A51), C51.sub(A51));
@@ -3340,8 +3340,8 @@
 
     ringRoot.add(ringMesh51);
             
-	var inradius52 = calulateInradius(getVertex21(), getVertex22(), getVertex26());
-	var incenter52 = calulateIncenter(getVertex21(), getVertex22(), getVertex26());
+	var inradius52 = calulateInradius(getVertex21(), getVertex22(), getVertex56());
+	var incenter52 = calulateIncenter(getVertex21(), getVertex22(), getVertex56());
 	var ringGeometry52 = new THREE.RingGeometry((inradius52 - 0.005),inradius52, 32);
 	const ringMaterial52 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh52 = new THREE.Mesh(ringGeometry52, ringMaterial52);
@@ -3349,14 +3349,14 @@
 	function setCircleRotation52(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 
         ringMesh52.position.setX(incenter[0]);
         ringMesh52.position.setY(incenter[1]);
         ringMesh52.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex21(), getVertex22(), getVertex26());
+        var inradius = calulateInradius(getVertex21(), getVertex22(), getVertex56());
         var relRadius = inradius/inradius52;
 
         ringMesh52.scale.set(relRadius, relRadius, relRadius);
@@ -3364,7 +3364,7 @@
         // rotate ring to right angle
         const A52 = new THREE.Vector3(-0.12522736385654409,0.02301094063083842,-0.07082039315948313);
         const B52 = new THREE.Vector3(-0.95105651599999996,0.,0.);
-        const C52 = new THREE.Vector3(-0.11839324485420148,0.12561592502812169,0.015410196636810683);
+        const C52 = new THREE.Vector3(-0.11073738757146749,0.097653091268192993,-0.011589803347528826);
 
         const normalVec52 = new THREE.Vector3();
         normalVec52.crossVectors(B52.sub(A52), C52.sub(A52));
@@ -3426,8 +3426,8 @@
 
     ringRoot.add(ringMesh53);
             
-	var inradius54 = calulateInradius(getVertex16(), getVertex18(), getVertex27());
-	var incenter54 = calulateIncenter(getVertex16(), getVertex18(), getVertex27());
+	var inradius54 = calulateInradius(getVertex16(), getVertex18(), getVertex57());
+	var incenter54 = calulateIncenter(getVertex16(), getVertex18(), getVertex57());
 	var ringGeometry54 = new THREE.RingGeometry((inradius54 - 0.005),inradius54, 32);
 	const ringMaterial54 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh54 = new THREE.Mesh(ringGeometry54, ringMaterial54);
@@ -3435,14 +3435,14 @@
 	function setCircleRotation54(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,-0.262865556,-0.80901699400000004],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.42532540400000002,-0.262865556,-0.80901699400000004],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh54.position.setX(incenter[0]);
         ringMesh54.position.setY(incenter[1]);
         ringMesh54.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex16(), getVertex18(), getVertex27());
+        var inradius = calulateInradius(getVertex16(), getVertex18(), getVertex57());
         var relRadius = inradius/inradius54;
 
         ringMesh54.scale.set(relRadius, relRadius, relRadius);
@@ -3450,7 +3450,7 @@
         // rotate ring to right angle
         const A54 = new THREE.Vector3(-0.42532540400000002,-0.262865556,-0.80901699400000004);
         const B54 = new THREE.Vector3(-0.10988673677495864,-0.067913738242542182,-0.067376207793667486);
-        const C54 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const C54 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec54 = new THREE.Vector3();
         normalVec54.crossVectors(B54.sub(A54), C54.sub(A54));
@@ -3512,8 +3512,8 @@
 
     ringRoot.add(ringMesh55);
             
-	var inradius56 = calulateInradius(getVertex19(), getVertex28(), getVertex29());
-	var incenter56 = calulateIncenter(getVertex19(), getVertex28(), getVertex29());
+	var inradius56 = calulateInradius(getVertex19(), getVertex58(), getVertex59());
+	var incenter56 = calulateIncenter(getVertex19(), getVertex58(), getVertex59());
 	var ringGeometry56 = new THREE.RingGeometry((inradius56 - 0.005),inradius56, 32);
 	const ringMaterial56 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh56 = new THREE.Mesh(ringGeometry56, ringMaterial56);
@@ -3521,22 +3521,22 @@
 	function setCircleRotation56(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.15194522573557651,-0.056395058931322357,-0.061368077181590173],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+        var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.11409258567102043,-0.066761870311420196,-0.066775394732459747],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 
         ringMesh56.position.setX(incenter[0]);
         ringMesh56.position.setY(incenter[1]);
         ringMesh56.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex19(), getVertex28(), getVertex29());
+        var inradius = calulateInradius(getVertex19(), getVertex58(), getVertex59());
         var relRadius = inradius/inradius56;
 
         ringMesh56.scale.set(relRadius, relRadius, relRadius);
 
         // rotate ring to right angle
         const A56 = new THREE.Vector3(-0.42532540400000002,-0.85065080849999997,0.);
-        const B56 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
-        const C56 = new THREE.Vector3(-0.051374773540542526,-0.15962874834571802,-0.064467844012806114);
+        const B56 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
+        const C56 = new THREE.Vector3(-0.037017069127279638,-0.12603068320390712,-0.070185138245650994);
 
         const normalVec56 = new THREE.Vector3();
         normalVec56.crossVectors(B56.sub(A56), C56.sub(A56));
@@ -3555,8 +3555,8 @@
 
     ringRoot.add(ringMesh56);
             
-	var inradius57 = calulateInradius(getVertex17(), getVertex18(), getVertex27());
-	var incenter57 = calulateIncenter(getVertex17(), getVertex18(), getVertex27());
+	var inradius57 = calulateInradius(getVertex17(), getVertex18(), getVertex57());
+	var incenter57 = calulateIncenter(getVertex17(), getVertex18(), getVertex57());
 	var ringGeometry57 = new THREE.RingGeometry((inradius57 - 0.005),inradius57, 32);
 	const ringMaterial57 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh57 = new THREE.Mesh(ringGeometry57, ringMaterial57);
@@ -3564,14 +3564,14 @@
 	function setCircleRotation57(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh57.position.setX(incenter[0]);
         ringMesh57.position.setY(incenter[1]);
         ringMesh57.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex17(), getVertex18(), getVertex27());
+        var inradius = calulateInradius(getVertex17(), getVertex18(), getVertex57());
         var relRadius = inradius/inradius57;
 
         ringMesh57.scale.set(relRadius, relRadius, relRadius);
@@ -3579,7 +3579,7 @@
         // rotate ring to right angle
         const A57 = new THREE.Vector3(-0.035421768636917095,-0.12229756485481702,-0.070820393160411541);
         const B57 = new THREE.Vector3(-0.10988673677495864,-0.067913738242542182,-0.067376207793667486);
-        const C57 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const C57 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec57 = new THREE.Vector3();
         normalVec57.crossVectors(B57.sub(A57), C57.sub(A57));
@@ -3598,8 +3598,8 @@
 
     ringRoot.add(ringMesh57);
             
-	var inradius58 = calulateInradius(getVertex17(), getVertex20(), getVertex27());
-	var incenter58 = calulateIncenter(getVertex17(), getVertex20(), getVertex27());
+	var inradius58 = calulateInradius(getVertex17(), getVertex20(), getVertex57());
+	var incenter58 = calulateIncenter(getVertex17(), getVertex20(), getVertex57());
 	var ringGeometry58 = new THREE.RingGeometry((inradius58 - 0.005),inradius58, 32);
 	const ringMaterial58 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh58 = new THREE.Mesh(ringGeometry58, ringMaterial58);
@@ -3607,14 +3607,14 @@
 	function setCircleRotation58(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+        var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 
         ringMesh58.position.setX(incenter[0]);
         ringMesh58.position.setY(incenter[1]);
         ringMesh58.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex17(), getVertex20(), getVertex27());
+        var inradius = calulateInradius(getVertex17(), getVertex20(), getVertex57());
         var relRadius = inradius/inradius58;
 
         ringMesh58.scale.set(relRadius, relRadius, relRadius);
@@ -3622,7 +3622,7 @@
         // rotate ring to right angle
         const A58 = new THREE.Vector3(-0.035421768636917095,-0.12229756485481702,-0.070820393160411541);
         const B58 = new THREE.Vector3(0.044902797600000002,0.027751455099999999,-0.085410196499999994);
-        const C58 = new THREE.Vector3(-0.13574198610357255,0.062147794139137284,-0.088008863665099094);
+        const C58 = new THREE.Vector3(-0.12627882608124694,0.026924625981668306,-0.072539240210044723);
 
         const normalVec58 = new THREE.Vector3();
         normalVec58.crossVectors(B58.sub(A58), C58.sub(A58));
@@ -3641,8 +3641,8 @@
 
     ringRoot.add(ringMesh58);
             
-	var inradius59 = calulateInradius(getVertex19(), getVertex22(), getVertex28());
-	var incenter59 = calulateIncenter(getVertex19(), getVertex22(), getVertex28());
+	var inradius59 = calulateInradius(getVertex19(), getVertex22(), getVertex58());
+	var incenter59 = calulateIncenter(getVertex19(), getVertex22(), getVertex58());
 	var ringGeometry59 = new THREE.RingGeometry((inradius59 - 0.005),inradius59, 32);
 	const ringMaterial59 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh59 = new THREE.Mesh(ringGeometry59, ringMaterial59);
@@ -3650,14 +3650,14 @@
 	function setCircleRotation59(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.95105651599999996,0.,0.],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+        var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.95105651599999996,0.,0.],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 
         ringMesh59.position.setX(incenter[0]);
         ringMesh59.position.setY(incenter[1]);
         ringMesh59.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex19(), getVertex22(), getVertex28());
+        var inradius = calulateInradius(getVertex19(), getVertex22(), getVertex58());
         var relRadius = inradius/inradius59;
 
         ringMesh59.scale.set(relRadius, relRadius, relRadius);
@@ -3665,7 +3665,7 @@
         // rotate ring to right angle
         const A59 = new THREE.Vector3(-0.42532540400000002,-0.85065080849999997,0.);
         const B59 = new THREE.Vector3(-0.95105651599999996,0.,0.);
-        const C59 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
+        const C59 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
 
         const normalVec59 = new THREE.Vector3();
         normalVec59.crossVectors(B59.sub(A59), C59.sub(A59));
@@ -3684,8 +3684,8 @@
 
     ringRoot.add(ringMesh59);
             
-	var inradius60 = calulateInradius(getVertex21(), getVertex22(), getVertex28());
-	var incenter60 = calulateIncenter(getVertex21(), getVertex22(), getVertex28());
+	var inradius60 = calulateInradius(getVertex21(), getVertex22(), getVertex58());
+	var incenter60 = calulateIncenter(getVertex21(), getVertex22(), getVertex58());
 	var ringGeometry60 = new THREE.RingGeometry((inradius60 - 0.005),inradius60, 32);
 	const ringMaterial60 = new THREE.LineBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
 	const ringMesh60 = new THREE.Mesh(ringGeometry60, ringMaterial60);
@@ -3693,14 +3693,14 @@
 	function setCircleRotation60(){
 
         //translate ring to incenter
-        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+        var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 
         ringMesh60.position.setX(incenter[0]);
         ringMesh60.position.setY(incenter[1]);
         ringMesh60.position.setZ(incenter[2]);
 
         // set the size right. Is done relative to the initial value, as we can only scale the mesh
-        var inradius = calulateInradius(getVertex21(), getVertex22(), getVertex28());
+        var inradius = calulateInradius(getVertex21(), getVertex22(), getVertex58());
         var relRadius = inradius/inradius60;
 
         ringMesh60.scale.set(relRadius, relRadius, relRadius);
@@ -3708,7 +3708,7 @@
         // rotate ring to right angle
         const A60 = new THREE.Vector3(-0.12522736385654409,0.02301094063083842,-0.07082039315948313);
         const B60 = new THREE.Vector3(-0.95105651599999996,0.,0.);
-        const C60 = new THREE.Vector3(-0.15194522573557651,-0.056395058931322357,-0.061368077181590173);
+        const C60 = new THREE.Vector3(-0.11409258567102043,-0.066761870311420196,-0.066775394732459747);
 
         const normalVec60 = new THREE.Vector3();
         normalVec60.crossVectors(B60.sub(A60), C60.sub(A60));
@@ -4005,11 +4005,11 @@
 		vector1[1] = (0.8506508085)-(0.);
 		vector1[2] = (0.)-(0.);
 
-		vector2[0] = (0.1519452257355765)-(0.951056516);
-		vector2[1] = (0.05639505893132235)-(0.);
-		vector2[2] = (0.06136807718159009)-(0.);
+		vector2[0] = (0.1140925856710204)-(0.951056516);
+		vector2[1] = (0.06676187031142018)-(0.);
+		vector2[2] = (0.06677539473245965)-(0.);
 
-		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.42532540400000002,0.85065080849999997,0.],[0.15194522573557648,0.05639505893132235,0.06136807718159009]);
+		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.42532540400000002,0.85065080849999997,0.],[0.11409258567102037,0.066761870311420182,0.06677539473245965]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4027,15 +4027,15 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.1519452257355765)-(0.951056516);
-		vector1[1] = (0.05639505893132235)-(0.);
-		vector1[2] = (0.06136807718159009)-(0.);
+		vector1[0] = (0.1140925856710204)-(0.951056516);
+		vector1[1] = (0.06676187031142018)-(0.);
+		vector1[2] = (0.06677539473245965)-(0.);
 
-		vector2[0] = (0.1657517901096376)-(0.951056516);
-		vector2[1] = (-0.01731415965562747)-(0.);
-		vector2[2] = (0.06710716423321821)-(0.);
+		vector2[0] = (0.1292798064818534)-(0.951056516);
+		vector2[1] = (-0.02244126253331733)-(0.);
+		vector2[2] = (0.07044907026685665)-(0.);
 
-		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4044,11 +4044,11 @@
 		vector1[1] = (-0.0945461097393121)-(0.);
 		vector1[2] = (0.01458980334578874)-(0.);
 
-		vector2[0] = (0.1657517901096376)-(0.951056516);
-		vector2[1] = (-0.01731415965562747)-(0.);
-		vector2[2] = (0.06710716423321821)-(0.);
+		vector2[0] = (0.1292798064818534)-(0.951056516);
+		vector2[1] = (-0.02244126253331733)-(0.);
+		vector2[2] = (0.07044907026685665)-(0.);
 
-		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+		var incenter = calulateIncenter([0.95105651599999996,0.,0.],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4092,28 +4092,28 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.1519452257355765)-(0.425325404);
-		vector1[1] = (0.05639505893132235)-(0.8506508085);
-		vector1[2] = (0.06136807718159009)-(0.);
+		vector1[0] = (0.1140925856710204)-(0.425325404);
+		vector1[1] = (0.06676187031142018)-(0.8506508085);
+		vector1[2] = (0.06677539473245965)-(0.);
 
-		vector2[0] = (0.05137477354054257)-(0.425325404);
-		vector2[1] = (0.1596287483457181)-(0.8506508085);
-		vector2[2] = (0.0644678440128061)-(0.);
+		vector2[0] = (0.03701706912727969)-(0.425325404);
+		vector2[1] = (0.1260306832039073)-(0.8506508085);
+		vector2[2] = (0.07018513824565098)-(0.);
 
-		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.051374773540542575,0.15962874834571811,0.0644678440128061]);
+		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.037017069127279693,0.12603068320390726,0.07018513824565098]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.05137477354054257)-(0.425325404);
-		vector1[1] = (0.1596287483457181)-(0.8506508085);
-		vector1[2] = (0.0644678440128061)-(0.);
+		vector1[0] = (0.03701706912727969)-(0.425325404);
+		vector1[1] = (0.1260306832039073)-(0.8506508085);
+		vector1[2] = (0.07018513824565098)-(0.);
 
-		vector2[0] = (-0.005118984749543602)-(0.425325404);
-		vector2[1] = (0.1724394192620157)-(0.8506508085);
-		vector2[2] = (0.01649963342152638)-(0.);
+		vector2[0] = (-0.0323914902632459)-(0.425325404);
+		vector2[1] = (0.1437551338510901)-(0.8506508085);
+		vector2[2] = (0.01478078637399565)-(0.);
 
-		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.051374773540542575,0.15962874834571811,0.0644678440128061],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ 0.037017069127279693,0.12603068320390726,0.07018513824565098],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4135,11 +4135,11 @@
 		vector1[1] = (0.6881909604000001)-(0.8506508085);
 		vector1[2] = (-0.4999999998)-(0.);
 
-		vector2[0] = (-0.005118984749543602)-(0.425325404);
-		vector2[1] = (0.1724394192620157)-(0.8506508085);
-		vector2[2] = (0.01649963342152638)-(0.);
+		vector2[0] = (-0.0323914902632459)-(0.425325404);
+		vector2[1] = (0.1437551338510901)-(0.8506508085);
+		vector2[2] = (0.01478078637399565)-(0.);
 
-		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ -0.42532540400000002,0.68819096040000005,-0.49999999979999998],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+		var incenter = calulateIncenter([0.42532540400000002,0.85065080849999997,0.],[ -0.42532540400000002,0.68819096040000005,-0.49999999979999998],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4226,11 +4226,11 @@
 		vector1[1] = (0.1222975648548171)-(-0.0277514551);
 		vector1[2] = (0.07082039316041153)-(0.08541019649999999);
 
-		vector2[0] = (-0.1183932448542015)-(-0.0449027976);
-		vector2[1] = (0.1256159250281217)-(-0.0277514551);
-		vector2[2] = (0.01541019663681068)-(0.08541019649999999);
+		vector2[0] = (-0.1107373875714675)-(-0.0449027976);
+		vector2[1] = (0.09765309126819299)-(-0.0277514551);
+		vector2[2] = (-0.01158980334752883)-(0.08541019649999999);
 
-		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.03542176863691715,0.12229756485481713,0.070820393160411527],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.03542176863691715,0.12229756485481713,0.070820393160411527],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4239,24 +4239,24 @@
 		vector1[1] = (-0.140567991027654)-(-0.0277514551);
 		vector1[2] = (-0.01458980336871456)-(0.08541019649999999);
 
-		vector2[0] = (-0.1519452257355765)-(-0.0449027976);
-		vector2[1] = (-0.05639505893132236)-(-0.0277514551);
-		vector2[2] = (-0.06136807718159017)-(0.08541019649999999);
+		vector2[0] = (-0.1140925856710204)-(-0.0449027976);
+		vector2[1] = (-0.0667618703114202)-(-0.0277514551);
+		vector2[2] = (-0.06677539473245975)-(0.08541019649999999);
 
-		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.1183932448542015)-(-0.0449027976);
-		vector1[1] = (0.1256159250281217)-(-0.0277514551);
-		vector1[2] = (0.01541019663681068)-(0.08541019649999999);
+		vector1[0] = (-0.1107373875714675)-(-0.0449027976);
+		vector1[1] = (0.09765309126819299)-(-0.0277514551);
+		vector1[2] = (-0.01158980334752883)-(0.08541019649999999);
 
-		vector2[0] = (-0.1519452257355765)-(-0.0449027976);
-		vector2[1] = (-0.05639505893132236)-(-0.0277514551);
-		vector2[2] = (-0.06136807718159017)-(0.08541019649999999);
+		vector2[0] = (-0.1140925856710204)-(-0.0449027976);
+		vector2[1] = (-0.0667618703114202)-(-0.0277514551);
+		vector2[2] = (-0.06677539473245975)-(0.08541019649999999);
 
-		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ -0.11839324485420148,0.12561592502812169,0.015410196636810683],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+		var incenter = calulateIncenter([-0.044902797600000002,-0.027751455099999999,0.085410196499999994],[ -0.11073738757146749,0.097653091268192993,-0.011589803347528826],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4274,28 +4274,28 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.1519452257355765)-(0.1098867367622748);
-		vector1[1] = (0.05639505893132235)-(-0.0945461097393121);
-		vector1[2] = (0.06136807718159009)-(0.01458980334578874);
+		vector1[0] = (0.1140925856710204)-(0.1098867367622748);
+		vector1[1] = (0.06676187031142018)-(-0.0945461097393121);
+		vector1[2] = (0.06677539473245965)-(0.01458980334578874);
 
-		vector2[0] = (0.1657517901096376)-(0.1098867367622748);
-		vector2[1] = (-0.01731415965562747)-(-0.0945461097393121);
-		vector2[2] = (0.06710716423321821)-(0.01458980334578874);
+		vector2[0] = (0.1292798064818534)-(0.1098867367622748);
+		vector2[1] = (-0.02244126253331733)-(-0.0945461097393121);
+		vector2[2] = (0.07044907026685665)-(0.01458980334578874);
 
-		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[0.16575179010963761,-0.017314159655627472,0.067107164233218206]);
+		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[0.12927980648185344,-0.022441262533317328,0.07044907026685665]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.05137477354054257)-(0.1519452257355765);
-		vector1[1] = (0.1596287483457181)-(0.05639505893132235);
-		vector1[2] = (0.0644678440128061)-(0.06136807718159009);
+		vector1[0] = (0.03701706912727969)-(0.1140925856710204);
+		vector1[1] = (0.1260306832039073)-(0.06676187031142018);
+		vector1[2] = (0.07018513824565098)-(0.06677539473245965);
 
-		vector2[0] = (-0.005118984749543602)-(0.1519452257355765);
-		vector2[1] = (0.1724394192620157)-(0.05639505893132235);
-		vector2[2] = (0.01649963342152638)-(0.06136807718159009);
+		vector2[0] = (-0.0323914902632459)-(0.1140925856710204);
+		vector2[1] = (0.1437551338510901)-(0.06676187031142018);
+		vector2[2] = (0.01478078637399565)-(0.06677539473245965);
 
-		var incenter = calulateIncenter([0.15194522573557648,0.05639505893132235,0.06136807718159009],[ 0.051374773540542575,0.15962874834571811,0.0644678440128061],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+		var incenter = calulateIncenter([0.11409258567102037,0.066761870311420182,0.06677539473245965],[ 0.037017069127279693,0.12603068320390726,0.07018513824565098],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4304,24 +4304,24 @@
 		vector1[1] = (0.0277514551)-(-0.0945461097393121);
 		vector1[2] = (-0.08541019649999999)-(0.01458980334578874);
 
-		vector2[0] = (0.1519452257355765)-(0.1098867367622748);
-		vector2[1] = (0.05639505893132235)-(-0.0945461097393121);
-		vector2[2] = (0.06136807718159009)-(0.01458980334578874);
+		vector2[0] = (0.1140925856710204)-(0.1098867367622748);
+		vector2[1] = (0.06676187031142018)-(-0.0945461097393121);
+		vector2[2] = (0.06677539473245965)-(0.01458980334578874);
 
-		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[0.15194522573557648,0.05639505893132235,0.06136807718159009]);
+		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[0.11409258567102037,0.066761870311420182,0.06677539473245965]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (0.1519452257355765)-(0.0449027976);
-		vector1[1] = (0.05639505893132235)-(0.0277514551);
-		vector1[2] = (0.06136807718159009)-(-0.08541019649999999);
+		vector1[0] = (0.1140925856710204)-(0.0449027976);
+		vector1[1] = (0.06676187031142018)-(0.0277514551);
+		vector1[2] = (0.06677539473245965)-(-0.08541019649999999);
 
-		vector2[0] = (-0.005118984749543602)-(0.0449027976);
-		vector2[1] = (0.1724394192620157)-(0.0277514551);
-		vector2[2] = (0.01649963342152638)-(-0.08541019649999999);
+		vector2[0] = (-0.0323914902632459)-(0.0449027976);
+		vector2[1] = (0.1437551338510901)-(0.0277514551);
+		vector2[2] = (0.01478078637399565)-(-0.08541019649999999);
 
-		var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ 0.15194522573557648,0.05639505893132235,0.06136807718159009],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+		var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ 0.11409258567102037,0.066761870311420182,0.06677539473245965],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4330,11 +4330,11 @@
 		vector1[1] = (-0.140567991027654)-(-0.02301094063083842);
 		vector1[2] = (-0.01458980336871456)-(0.07082039315948314);
 
-		vector2[0] = (0.1264257014788746)-(0.1252273638565441);
-		vector2[1] = (-0.1206515938169228)-(-0.02301094063083842);
-		vector2[2] = (0.04167184265918403)-(0.07082039315948314);
+		vector2[0] = (0.1115406332339348)-(0.1252273638565441);
+		vector2[1] = (-0.09715665814707317)-(-0.02301094063083842);
+		vector2[2] = (0.01729800727712827)-(0.07082039315948314);
 
-		var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+		var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4343,11 +4343,11 @@
 		vector1[1] = (-0.6881909604000001)-(-0.02301094063083842);
 		vector1[2] = (0.4999999998)-(0.07082039315948314);
 
-		vector2[0] = (0.1264257014788746)-(0.1252273638565441);
-		vector2[1] = (-0.1206515938169228)-(-0.02301094063083842);
-		vector2[2] = (0.04167184265918403)-(0.07082039315948314);
+		vector2[0] = (0.1115406332339348)-(0.1252273638565441);
+		vector2[1] = (-0.09715665814707317)-(-0.02301094063083842);
+		vector2[2] = (0.01729800727712827)-(0.07082039315948314);
 
-		var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+		var incenter = calulateIncenter([0.12522736385654409,-0.02301094063083842,0.070820393159483144],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4369,11 +4369,11 @@
 		vector1[1] = (0.1405679910276539)-(0.1222975648548171);
 		vector1[2] = (0.01458980336871446)-(0.07082039316041153);
 
-		vector2[0] = (-0.1183932448542015)-(0.03542176863691715);
-		vector2[1] = (0.1256159250281217)-(0.1222975648548171);
-		vector2[2] = (0.01541019663681068)-(0.07082039316041153);
+		vector2[0] = (-0.1107373875714675)-(0.03542176863691715);
+		vector2[1] = (0.09765309126819299)-(0.1222975648548171);
+		vector2[2] = (-0.01158980334752883)-(0.07082039316041153);
 
-		var incenter = calulateIncenter([0.03542176863691715,0.12229756485481713,0.070820393160411527],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+		var incenter = calulateIncenter([0.03542176863691715,0.12229756485481713,0.070820393160411527],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4382,11 +4382,11 @@
 		vector1[1] = (-0.0945461097393121)-(-0.6881909604000001);
 		vector1[2] = (0.01458980334578874)-(-0.4999999998);
 
-		vector2[0] = (0.05864019882640532)-(0.425325404);
-		vector2[1] = (-0.1656480454318542)-(-0.6881909604000001);
-		vector2[2] = (-0.03740133285455366)-(-0.4999999998);
+		vector2[0] = (0.0377436116709321)-(0.425325404);
+		vector2[1] = (-0.143075996468074)-(-0.6881909604000001);
+		vector2[2] = (-0.01687095631729846)-(-0.4999999998);
 
-		var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+		var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ 0.10988673676227484,-0.094546109739312101,0.014589803345788743],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4395,11 +4395,11 @@
 		vector1[1] = (-0.122297564854817)-(-0.6881909604000001);
 		vector1[2] = (-0.07082039316041154)-(-0.4999999998);
 
-		vector2[0] = (0.05864019882640532)-(0.425325404);
-		vector2[1] = (-0.1656480454318542)-(-0.6881909604000001);
-		vector2[2] = (-0.03740133285455366)-(-0.4999999998);
+		vector2[0] = (0.0377436116709321)-(0.425325404);
+		vector2[1] = (-0.143075996468074)-(-0.6881909604000001);
+		vector2[2] = (-0.01687095631729846)-(-0.4999999998);
 
-		var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+		var incenter = calulateIncenter([0.42532540400000002,-0.68819096040000005,-0.49999999979999998],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4447,11 +4447,11 @@
 		vector1[1] = (-0.6881909604000001)-(-0.140567991027654);
 		vector1[2] = (0.4999999998)-(-0.01458980336871456);
 
-		vector2[0] = (0.1264257014788746)-(0.0354217686536573);
-		vector2[1] = (-0.1206515938169228)-(-0.140567991027654);
-		vector2[2] = (0.04167184265918403)-(-0.01458980336871456);
+		vector2[0] = (0.1115406332339348)-(0.0354217686536573);
+		vector2[1] = (-0.09715665814707317)-(-0.140567991027654);
+		vector2[2] = (0.01729800727712827)-(-0.01458980336871456);
 
-		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.12642570147887455,-0.12065159381692281,0.041671842659184027]);
+		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ 0.42532540400000002,-0.68819096040000005,0.49999999979999998],[0.1115406332339348,-0.097156658147073166,0.017298007277128269]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4460,11 +4460,11 @@
 		vector1[1] = (-0.122297564854817)-(-0.0945461097393121);
 		vector1[2] = (-0.07082039316041154)-(0.01458980334578874);
 
-		vector2[0] = (0.05864019882640532)-(0.1098867367622748);
-		vector2[1] = (-0.1656480454318542)-(-0.0945461097393121);
-		vector2[2] = (-0.03740133285455366)-(0.01458980334578874);
+		vector2[0] = (0.0377436116709321)-(0.1098867367622748);
+		vector2[1] = (-0.143075996468074)-(-0.0945461097393121);
+		vector2[2] = (-0.01687095631729846)-(0.01458980334578874);
 
-		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.058640198826405317,-0.16564804543185419,-0.037401332854553659]);
+		var incenter = calulateIncenter([0.10988673676227484,-0.094546109739312101,0.014589803345788743],[ -0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[0.037743611670932105,-0.14307599646807398,-0.016870956317298465]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4495,15 +4495,15 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.1519452257355765)-(0.0354217686536573);
-		vector1[1] = (-0.05639505893132236)-(-0.140567991027654);
-		vector1[2] = (-0.06136807718159017)-(-0.01458980336871456);
+		vector1[0] = (-0.1140925856710204)-(0.0354217686536573);
+		vector1[1] = (-0.0667618703114202)-(-0.140567991027654);
+		vector1[2] = (-0.06677539473245975)-(-0.01458980336871456);
 
-		vector2[0] = (-0.05137477354054253)-(0.0354217686536573);
-		vector2[1] = (-0.159628748345718)-(-0.140567991027654);
-		vector2[2] = (-0.06446784401280611)-(-0.01458980336871456);
+		vector2[0] = (-0.03701706912727964)-(0.0354217686536573);
+		vector2[1] = (-0.1260306832039071)-(-0.140567991027654);
+		vector2[2] = (-0.07018513824565099)-(-0.01458980336871456);
 
-		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.15194522573557651,-0.056395058931322357,-0.061368077181590173],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.11409258567102043,-0.066761870311420196,-0.066775394732459747],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4512,11 +4512,11 @@
 		vector1[1] = (-0.8506508085)-(-0.140567991027654);
 		vector1[2] = (0.)-(-0.01458980336871456);
 
-		vector2[0] = (-0.05137477354054253)-(0.0354217686536573);
-		vector2[1] = (-0.159628748345718)-(-0.140567991027654);
-		vector2[2] = (-0.06446784401280611)-(-0.01458980336871456);
+		vector2[0] = (-0.03701706912727964)-(0.0354217686536573);
+		vector2[1] = (-0.1260306832039071)-(-0.140567991027654);
+		vector2[2] = (-0.07018513824565099)-(-0.01458980336871456);
 
-		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.42532540400000002,-0.85065080849999997,0.],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+		var incenter = calulateIncenter([0.035421768653657301,-0.14056799102765397,-0.014589803368714557],[ -0.42532540400000002,-0.85065080849999997,0.],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4538,11 +4538,11 @@
 		vector1[1] = (0.1405679910276539)-(0.6881909604000001);
 		vector1[2] = (0.01458980336871446)-(0.4999999998);
 
-		vector2[0] = (-0.1183932448542015)-(-0.425325404);
-		vector2[1] = (0.1256159250281217)-(0.6881909604000001);
-		vector2[2] = (0.01541019663681068)-(0.4999999998);
+		vector2[0] = (-0.1107373875714675)-(-0.425325404);
+		vector2[1] = (0.09765309126819299)-(0.6881909604000001);
+		vector2[2] = (-0.01158980334752883)-(0.4999999998);
 
-		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.03542176865365726,0.14056799102765394,0.01458980336871446],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4551,11 +4551,11 @@
 		vector1[1] = (0.)-(0.6881909604000001);
 		vector1[2] = (0.)-(0.4999999998);
 
-		vector2[0] = (-0.1183932448542015)-(-0.425325404);
-		vector2[1] = (0.1256159250281217)-(0.6881909604000001);
-		vector2[2] = (0.01541019663681068)-(0.4999999998);
+		vector2[0] = (-0.1107373875714675)-(-0.425325404);
+		vector2[1] = (0.09765309126819299)-(0.6881909604000001);
+		vector2[2] = (-0.01158980334752883)-(0.4999999998);
 
-		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.95105651599999996,0.,0.],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,0.49999999979999998],[ -0.95105651599999996,0.,0.],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4564,11 +4564,11 @@
 		vector1[1] = (0.09454610973931203)-(0.6881909604000001);
 		vector1[2] = (-0.01458980334578877)-(-0.4999999998);
 
-		vector2[0] = (-0.005118984749543602)-(-0.425325404);
-		vector2[1] = (0.1724394192620157)-(0.6881909604000001);
-		vector2[2] = (0.01649963342152638)-(-0.4999999998);
+		vector2[0] = (-0.0323914902632459)-(-0.425325404);
+		vector2[1] = (0.1437551338510901)-(0.6881909604000001);
+		vector2[2] = (0.01478078637399565)-(-0.4999999998);
 
-		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.0051189847495436017,0.17243941926201567,0.016499633421526383]);
+		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.032391490263245899,0.14375513385109012,0.014780786373995653]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4577,11 +4577,11 @@
 		vector1[1] = (0.09454610973931203)-(0.6881909604000001);
 		vector1[2] = (-0.01458980334578877)-(-0.4999999998);
 
-		vector2[0] = (-0.1357419861035725)-(-0.425325404);
-		vector2[1] = (0.06214779413913728)-(0.6881909604000001);
-		vector2[2] = (-0.08800886366509909)-(-0.4999999998);
+		vector2[0] = (-0.1262788260812469)-(-0.425325404);
+		vector2[1] = (0.02692462598166831)-(0.6881909604000001);
+		vector2[2] = (-0.07253924021004472)-(-0.4999999998);
 
-		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.10988673676227483,0.094546109739312031,-0.014589803345788771],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4590,11 +4590,11 @@
 		vector1[1] = (-0.262865556)-(0.6881909604000001);
 		vector1[2] = (-0.809016994)-(-0.4999999998);
 
-		vector2[0] = (-0.1357419861035725)-(-0.425325404);
-		vector2[1] = (0.06214779413913728)-(0.6881909604000001);
-		vector2[2] = (-0.08800886366509909)-(-0.4999999998);
+		vector2[0] = (-0.1262788260812469)-(-0.425325404);
+		vector2[1] = (0.02692462598166831)-(0.6881909604000001);
+		vector2[2] = (-0.07253924021004472)-(-0.4999999998);
 
-		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.42532540400000002,-0.262865556,-0.80901699400000004],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.42532540400000002,0.68819096040000005,-0.49999999979999998],[ -0.42532540400000002,-0.262865556,-0.80901699400000004],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4612,41 +4612,41 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.005118984749543602)-(-0.1098867367622748);
-		vector1[1] = (0.1724394192620157)-(0.09454610973931203);
-		vector1[2] = (0.01649963342152638)-(-0.01458980334578877);
+		vector1[0] = (-0.0323914902632459)-(-0.1098867367622748);
+		vector1[1] = (0.1437551338510901)-(0.09454610973931203);
+		vector1[2] = (0.01478078637399565)-(-0.01458980334578877);
 
-		vector2[0] = (-0.1357419861035725)-(-0.1098867367622748);
-		vector2[1] = (0.06214779413913728)-(0.09454610973931203);
-		vector2[2] = (-0.08800886366509909)-(-0.01458980334578877);
+		vector2[0] = (-0.1262788260812469)-(-0.1098867367622748);
+		vector2[1] = (0.02692462598166831)-(0.09454610973931203);
+		vector2[2] = (-0.07253924021004472)-(-0.01458980334578877);
 
-		var incenter = calulateIncenter([-0.10988673676227483,0.094546109739312031,-0.014589803345788771],[ -0.0051189847495436017,0.17243941926201567,0.016499633421526383],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.10988673676227483,0.094546109739312031,-0.014589803345788771],[ -0.032391490263245899,0.14375513385109012,0.014780786373995653],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.005118984749543602)-(0.0449027976);
-		vector1[1] = (0.1724394192620157)-(0.0277514551);
-		vector1[2] = (0.01649963342152638)-(-0.08541019649999999);
+		vector1[0] = (-0.0323914902632459)-(0.0449027976);
+		vector1[1] = (0.1437551338510901)-(0.0277514551);
+		vector1[2] = (0.01478078637399565)-(-0.08541019649999999);
 
-		vector2[0] = (-0.1357419861035725)-(0.0449027976);
-		vector2[1] = (0.06214779413913728)-(0.0277514551);
-		vector2[2] = (-0.08800886366509909)-(-0.08541019649999999);
+		vector2[0] = (-0.1262788260812469)-(0.0449027976);
+		vector2[1] = (0.02692462598166831)-(0.0277514551);
+		vector2[2] = (-0.07253924021004472)-(-0.08541019649999999);
 
-		var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ -0.0051189847495436017,0.17243941926201567,0.016499633421526383],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([0.044902797600000002,0.027751455099999999,-0.085410196499999994],[ -0.032391490263245899,0.14375513385109012,0.014780786373995653],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.1183932448542015)-(-0.1252273638565441);
-		vector1[1] = (0.1256159250281217)-(0.02301094063083842);
-		vector1[2] = (0.01541019663681068)-(-0.07082039315948313);
+		vector1[0] = (-0.1107373875714675)-(-0.1252273638565441);
+		vector1[1] = (0.09765309126819299)-(0.02301094063083842);
+		vector1[2] = (-0.01158980334752883)-(-0.07082039315948313);
 
-		vector2[0] = (-0.1519452257355765)-(-0.1252273638565441);
-		vector2[1] = (-0.05639505893132236)-(0.02301094063083842);
-		vector2[2] = (-0.06136807718159017)-(-0.07082039315948313);
+		vector2[0] = (-0.1140925856710204)-(-0.1252273638565441);
+		vector2[1] = (-0.0667618703114202)-(0.02301094063083842);
+		vector2[2] = (-0.06677539473245975)-(-0.07082039315948313);
 
-		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.11839324485420148,0.12561592502812169,0.015410196636810683],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.11073738757146749,0.097653091268192993,-0.011589803347528826],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4655,11 +4655,11 @@
 		vector1[1] = (0.)-(0.02301094063083842);
 		vector1[2] = (0.)-(-0.07082039315948313);
 
-		vector2[0] = (-0.1183932448542015)-(-0.1252273638565441);
-		vector2[1] = (0.1256159250281217)-(0.02301094063083842);
-		vector2[2] = (0.01541019663681068)-(-0.07082039315948313);
+		vector2[0] = (-0.1107373875714675)-(-0.1252273638565441);
+		vector2[1] = (0.09765309126819299)-(0.02301094063083842);
+		vector2[2] = (-0.01158980334752883)-(-0.07082039315948313);
 
-		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11839324485420148,0.12561592502812169,0.015410196636810683]);
+		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11073738757146749,0.097653091268192993,-0.011589803347528826]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4681,11 +4681,11 @@
 		vector1[1] = (-0.06791373824254218)-(-0.262865556);
 		vector1[2] = (-0.06737620779366749)-(-0.809016994);
 
-		vector2[0] = (-0.1357419861035725)-(-0.425325404);
-		vector2[1] = (0.06214779413913728)-(-0.262865556);
-		vector2[2] = (-0.08800886366509909)-(-0.809016994);
+		vector2[0] = (-0.1262788260812469)-(-0.425325404);
+		vector2[1] = (0.02692462598166831)-(-0.262865556);
+		vector2[2] = (-0.07253924021004472)-(-0.809016994);
 
-		var incenter = calulateIncenter([-0.42532540400000002,-0.262865556,-0.80901699400000004],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.42532540400000002,-0.262865556,-0.80901699400000004],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4703,15 +4703,15 @@
 
 		vector1 = [];
 		vector2 = [];
-		vector1[0] = (-0.1519452257355765)-(-0.425325404);
-		vector1[1] = (-0.05639505893132236)-(-0.8506508085);
-		vector1[2] = (-0.06136807718159017)-(0.);
+		vector1[0] = (-0.1140925856710204)-(-0.425325404);
+		vector1[1] = (-0.0667618703114202)-(-0.8506508085);
+		vector1[2] = (-0.06677539473245975)-(0.);
 
-		vector2[0] = (-0.05137477354054253)-(-0.425325404);
-		vector2[1] = (-0.159628748345718)-(-0.8506508085);
-		vector2[2] = (-0.06446784401280611)-(0.);
+		vector2[0] = (-0.03701706912727964)-(-0.425325404);
+		vector2[1] = (-0.1260306832039071)-(-0.8506508085);
+		vector2[2] = (-0.07018513824565099)-(0.);
 
-		var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.15194522573557651,-0.056395058931322357,-0.061368077181590173],[-0.051374773540542526,-0.15962874834571802,-0.064467844012806114]);
+		var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.11409258567102043,-0.066761870311420196,-0.066775394732459747],[-0.037017069127279638,-0.12603068320390712,-0.070185138245650994]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4720,11 +4720,11 @@
 		vector1[1] = (-0.06791373824254218)-(-0.122297564854817);
 		vector1[2] = (-0.06737620779366749)-(-0.07082039316041154);
 
-		vector2[0] = (-0.1357419861035725)-(-0.03542176863691709);
-		vector2[1] = (0.06214779413913728)-(-0.122297564854817);
-		vector2[2] = (-0.08800886366509909)-(-0.07082039316041154);
+		vector2[0] = (-0.1262788260812469)-(-0.03542176863691709);
+		vector2[1] = (0.02692462598166831)-(-0.122297564854817);
+		vector2[2] = (-0.07253924021004472)-(-0.07082039316041154);
 
-		var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ -0.10988673677495864,-0.067913738242542182,-0.067376207793667486],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4733,11 +4733,11 @@
 		vector1[1] = (0.0277514551)-(-0.122297564854817);
 		vector1[2] = (-0.08541019649999999)-(-0.07082039316041154);
 
-		vector2[0] = (-0.1357419861035725)-(-0.03542176863691709);
-		vector2[1] = (0.06214779413913728)-(-0.122297564854817);
-		vector2[2] = (-0.08800886366509909)-(-0.07082039316041154);
+		vector2[0] = (-0.1262788260812469)-(-0.03542176863691709);
+		vector2[1] = (0.02692462598166831)-(-0.122297564854817);
+		vector2[2] = (-0.07253924021004472)-(-0.07082039316041154);
 
-		var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[-0.13574198610357255,0.062147794139137284,-0.088008863665099094]);
+		var incenter = calulateIncenter([-0.035421768636917095,-0.12229756485481702,-0.070820393160411541],[ 0.044902797600000002,0.027751455099999999,-0.085410196499999994],[-0.12627882608124694,0.026924625981668306,-0.072539240210044723]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4746,11 +4746,11 @@
 		vector1[1] = (0.)-(-0.8506508085);
 		vector1[2] = (0.)-(0.);
 
-		vector2[0] = (-0.1519452257355765)-(-0.425325404);
-		vector2[1] = (-0.05639505893132236)-(-0.8506508085);
-		vector2[2] = (-0.06136807718159017)-(0.);
+		vector2[0] = (-0.1140925856710204)-(-0.425325404);
+		vector2[1] = (-0.0667618703114202)-(-0.8506508085);
+		vector2[2] = (-0.06677539473245975)-(0.);
 
-		var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.95105651599999996,0.,0.],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+		var incenter = calulateIncenter([-0.42532540400000002,-0.85065080849999997,0.],[ -0.95105651599999996,0.,0.],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 		normals.push([vector1, vector2, incenter]);
 
 		vector1 = [];
@@ -4759,11 +4759,11 @@
 		vector1[1] = (0.)-(0.02301094063083842);
 		vector1[2] = (0.)-(-0.07082039315948313);
 
-		vector2[0] = (-0.1519452257355765)-(-0.1252273638565441);
-		vector2[1] = (-0.05639505893132236)-(0.02301094063083842);
-		vector2[2] = (-0.06136807718159017)-(-0.07082039315948313);
+		vector2[0] = (-0.1140925856710204)-(-0.1252273638565441);
+		vector2[1] = (-0.0667618703114202)-(0.02301094063083842);
+		vector2[2] = (-0.06677539473245975)-(-0.07082039315948313);
 
-		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.15194522573557651,-0.056395058931322357,-0.061368077181590173]);
+		var incenter = calulateIncenter([-0.12522736385654409,0.02301094063083842,-0.07082039315948313],[ -0.95105651599999996,0.,0.],[-0.11409258567102043,-0.066761870311420196,-0.066775394732459747]);
 		normals.push([vector1, vector2, incenter]);
 
 	return normals;
@@ -4825,8 +4825,12 @@
 	guiParameters.planeX = 0.;
 	guiParameters.planeY = 0.;
 	guiParameters.planeZ = 0.;
+	var performanceOverlayEnabled = false;
 	// --- end of generated output --- //
 
+    const center = new THREE.Vector3(guiParameters.planeX, guiParameters.planeY, guiParameters.planeZ);
+    controls.target = center;
+    
     const planeFolder = gui.addFolder("Intersection Planes");
     planeFolder.add(guiParameters, 'planeXactive');
     planeFolder.add(guiParameters, 'planeX', guiParameters.minX*1.1, guiParameters.maxX*1.1);
@@ -4835,8 +4839,10 @@
     planeFolder.add(guiParameters, 'planeZactive');
     planeFolder.add(guiParameters, 'planeZ', guiParameters.minZ*1.1, guiParameters.maxZ*1.1);
     
-    camera.position.z = Math.max((1.5)*guiParameters.minZ, 1)
-    camera.lookAt(0,0,-1);
+    camera.position.x = Math.min((1.1)*Math.abs(guiParameters.minX), -1)
+    camera.position.y = Math.min((1.1)*Math.abs(guiParameters.minY), -1)
+    camera.position.z = Math.min((1.1)*Math.abs(guiParameters.minZ), -1)
+    camera.lookAt(guiParameters.planeX,guiParameters.planeY,guiParameters.planeZ);
 
     scene.background = new THREE.Color( 'white' );
 
@@ -4985,7 +4991,13 @@
             updateNormals();
         }
 
+        //update controls
         controls.update();
+
+        //update performance overlay of enabled
+        if(performanceOverlayEnabled){
+            stats.update();
+        }
 
         renderer.localClippingEnabled = true;
 

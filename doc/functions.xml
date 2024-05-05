@@ -1,7 +1,51 @@
 <Chapter Label="Functions">
 <Heading>Functions</Heading>
-<Section Label="Functions">
-	<Heading>Functions</Heading>
-	<#Include Label="SetNonManifoldVertexShift">
+<Section Label="Main High-Level Functions">
+	<Heading>Main High-Level Functions</Heading>
+		<#Include Label="PrintableOuterHull">
+		<#Include Label="PrintableSymmetricOuterHull">
+		<#Include Label="DrawSTLScratch">
+		<#Include Label="DrawSTLwithNormals">
+		<#Include Label="DrawSurfaceToObj">
+		<#Include Label="DrawSTLScratchVOF">
+		<#Include Label="DrawSTLwithNormalsVOF">
+		<#Include Label="ComponentsOuterHull">
+		<#Include Label="MergeOuterHull">
+		<#Include Label="JoinComponents">
+</Section>
+
+<Section Label="Compute Intersections and Retriangulation">
+	<Heading>Compute Intersections</Heading>
+		<#Include Label="TwoTriangleIntersection">
+		<#Include Label="ComputeSelfIntersections">
+		<#Include Label="RectifyDiscIntersections">
+		<#Include Label="DiscTriangulation">
+		<#Include Label="Retriangulation">
+		<#Include Label="ComponentsRetriangulation">
+		<#Include Label="SymmetricRetriangulation">
+</Section>
+
+<Section Label="Outer Hull and Chambers">
+	<Heading>Computing Outer Hull and Chambers</Heading>
+		<#Include Label="FindOuterTriangle">
+		<#Include Label="ExtractChamber">
+		<#Include Label="OuterHull">
+		<#Include Label="ComputeChambers">
+
+</Section>
+
+<Section Label="Non-Manifold Parts">
+	<Heading>Remedying Non-Manifold Parts</Heading>
+		<#Include Label="RemedyNonManifold">
+		<#Include Label="FixNMEdgePath">
+		<#Include Label="FixNMVerts">
+</Section>
+
+
+<Section Label="Parameters">
+	<Heading>Adjusting Parameters</Heading>
+		<#Include Label="SetNonManifoldVertexShift">
+		<#Include Label="SetNonManifoldEdgeShift">
+		<#Include Label="SetPrecisionForIntersections">
 </Section>
 </Chapter>

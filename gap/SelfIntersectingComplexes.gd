@@ -60,7 +60,7 @@ DeclareGlobalFunction("FindOuterTriangle");
 ## <ManSection>
 ## <Func Name="ExtractChamber" Arg="t,coordinates,f,n"/>
 ## <Description>
-##   Extracts the chamber of a given triangular complex <A>t</A>, with embedding given by <A>coordinates</A>, containing face <A>f</A> with normal vector <A>n</n>.
+##   Extracts the chamber of a given triangular complex <A>t</A>, with embedding given by <A>coordinates</A>, containing face <A>f</A> with normal vector <A>n</A>.
 ## </Description>
 ## </ManSection>
 ## <#/GAPDoc>
@@ -88,7 +88,7 @@ DeclareGlobalFunction("DrawSTLScratch");
 
 ## <#GAPDoc Label="DrawSTLwithNormals">
 ## <ManSection>
-## <Func Name="DrawSTLScratch" Arg="t,fileName, coordinates,normals,visualize_normal_list"/>
+## <Func Name="DrawSTLwithNormals" Arg="t,fileName, coordinates,normals,visualize_normal_list"/>
 ## <Description>
 ##   Generates STL-file with name given by the string <A>fileName</A> of the triangular complex <A>t</A> with embedding given by <A>coordinates</A>. As an STL-file requires normal vector for each face, normal vectors are given in the list <A>normals</A> for each face. The list <A>visualize_normal_list</A> contains faces for which a normal vector is visualized using a triangle. Normally, this list will be kept empty and is primarly useful for debugging purposes.
 ## </Description>
@@ -142,7 +142,7 @@ DeclareGlobalFunction("ComputeChambers");
 ## <ManSection>
 ## <Func Name="RectifyDiscIntersections" Arg="l"/>
 ## <Description>
-##   Given a list <A>l</A> that is given by vertices <A>l[1]</A> and edges connecting them <A>l[2]</A>. We compute all intersections of edges contained in <A>l[2]</A> and return a new list <C>l</D> which is geometrically equivalent but contains no self-intersecting edges.
+##   Given a list <A>l</A> that is given by vertices <A>l[1]</A> and edges connecting them <A>l[2]</A>. We compute all intersections of edges contained in <A>l[2]</A> and return a new list <C>l</C> which is geometrically equivalent but contains no self-intersecting edges.
 ## </Description>
 ## </ManSection>
 ## <#/GAPDoc>
@@ -162,7 +162,7 @@ DeclareGlobalFunction("DiscTriangulation");
 ## <ManSection>
 ## <Func Name="MergeOuterHull" Arg="t,coordinates,name"/>
 ## <Description>
-##   TODO
+##   Merge connected components of <A>t</A> and compute the outer hull. 
 ## </Description>
 ## </ManSection>
 ## <#/GAPDoc>
@@ -182,15 +182,15 @@ DeclareGlobalFunction("ComponentsOuterHull");
 ## <ManSection>
 ## <Func Name="JoinComponents" Arg="t,coordinates,name"/>
 ## <Description>
-##   TODO 
+##   Join connected components of given embedded complex.
 ## </Description>
 ## </ManSection>
 ## <#/GAPDoc>
 DeclareGlobalFunction("JoinComponents");
 
-## <#GAPDoc Label="PrintableOuterHull">
+## <#GAPDoc Label="PrintableSymmetricOuterHull">
 ## <ManSection>
-## <Func Name="PrintableOuterHull" Arg="t,coordinates,name"/>
+## <Func Name="PrintableSymmetricOuterHull" Arg="t,coordinates,name"/>
 ## <Description>
 ##   First compute a retriangulation and then fix degenerations of an embedded triangular complex <A>t</A> with coordinates <A>coordinates</A> and symmetry group acting on the faces together withs its orthogonoal embedding in <M>O(3)</M>. Moreover, an STL-file with name given by the string <A>name</A> is generated. 
 ## </Description>
@@ -259,14 +259,39 @@ DeclareGlobalFunction("SymmetricRetriangulation");
 DeclareGlobalFunction("TwoTriangleIntersection");
 
 
-
-DeclareGlobalFunction("OrderNMEdges");
-
+## <#GAPDoc Label="FixNMEdgePath">
+## <ManSection>
+## <Func Name="FixNMEdgePath" Arg="s, data, points, coordinates, shift"/>
+## <Description>
+##   Fixes all non-manifold edges.
+## </Description>
+## </ManSection>
+## <#/GAPDoc>
 DeclareGlobalFunction("FixNMEdgePath");
 
+## <#GAPDoc Label="FixNMVerts">
+## <ManSection>
+## <Func Name="FixNMVerts" Arg="s, data, points, coordinates, shift"/>
+## <Description>
+##   Fixes all non-manifold vertices (you need to fix non-manifold edges first)
+## </Description>
+## </ManSection>
+## <#/GAPDoc>
 DeclareGlobalFunction("FixNMVerts");
 
+## <#GAPDoc Label="RemedyNonManifold">
+## <ManSection>
+## <Func Name="RemedyNonManifold" Arg="data,coordinates, shift"/>
+## <Description>
+##   The input structure is data=[s1,s2,faces,normals_coordinates] (output of outer hull function), coordinates of the points of s2, shift: norm of the vectors that will be added to shift vertices, s1 is a intersection free complex, s2 its outer hull, faces are the faces of s2, normals_coordinates are the coordinates of the normals of the faces of surf2, indexed by the resp. face number, output has structure [fully_m_s, fully_m_points, fully_m_coords, order_data] where fully_m_s is the manifold version of s2 and the other two its data. order_data is the information about the non-manifold edge paths present in the original complex.
+## </Description>
+## </ManSection>
+## <#/GAPDoc>
 DeclareGlobalFunction("RemedyNonManifold");
+
+
+# not sure if user needs this function
+DeclareGlobalFunction("OrderNMEdges");
 
 # recursive function
 DeclareGlobalFunction("_OrderPath");

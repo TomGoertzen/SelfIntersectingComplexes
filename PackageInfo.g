@@ -23,7 +23,7 @@
 SetPackageInfo( rec(
 
 PackageName := "SelfIntersectingComplexes",
-Subtitle := "Provides algorithms for retriangulating and computing outer hulls of self-intersecting complexes.",
+Subtitle := "provides algorithms for retriangulating and computing outer hulls of self-intersecting complexes.",
 Version := "1.0dev",
 Date := "11/03/2024", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
