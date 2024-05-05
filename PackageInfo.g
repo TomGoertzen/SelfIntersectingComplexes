@@ -54,15 +54,14 @@ Persons := [
 ],
 
 
-
 SourceRepository := rec(
     Type := "git",
     URL := "https://github.com/TomGoertzen/SelfIntersectingComplexes",
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
-#PackageWWWHome := "https://TomGoertzen.github.io/SelfIntersectingComplexes/",
-#PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-#README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
+PackageWWWHome := "https://TomGoertzen.github.io/SelfIntersectingComplexes/",
+PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
                                  "/", ~.PackageName, "-", ~.Version ),
