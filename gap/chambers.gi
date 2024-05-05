@@ -1,6 +1,6 @@
 # Given an edge e, from a triangular complex s, with vertexCoordinates vC and a face f with MyNormal vector n
 # calculate the fan [(f,n),(f2,n2),...] in direction of MyNormal
-BindGlobal("CalculateFan",function(s,e,vC,f,MyNormal)
+BindGlobal("_CalculateFan",function(s,e,vC,f,MyNormal)
 	local FacesOfEdge_e, ThirdPoint, VoE, a, p, n, t, vec, face; 
 	# for all faces with edge e in s arrange them first
 	FacesOfEdge_e:=FacesOfEdge(s,e);
@@ -34,9 +34,9 @@ BindGlobal("CalculateFan",function(s,e,vC,f,MyNormal)
 	return ThirdPoint;
 end);
 
-BindGlobal("UpwardContinuation",function(s,e,vC,f,MyNormal)
+BindGlobal("_UpwardContinuation",function(s,e,vC,f,MyNormal)
 	local Fan, index, i;
-	Fan:=CalculateFan(s,e,vC,f,MyNormal);
+	Fan:=_CalculateFan(s,e,vC,f,MyNormal);
 	for i in [1..Size(Fan)] do 
 		if Fan[i][1]=f then
 			index:=(i mod (Size(Fan))) + 1;
@@ -51,7 +51,7 @@ end);
 # Find outer triangle
 # for a triangular complex with points find an outer face and
 # a normal vector pointing outwards
-BindGlobal("FindOuterTriangle",function(t,points)
+InstallGlobalFunction(FindOuterTriangle,function(t,points)
     local i_max,px_max,i,eov,j_min,x_max,j_max,x_min,e,f,n,foe,j,index,indices;
     # find point with maximal x coordinate
     indices:=Filtered([1..Size(points)],i->IsBound(points[i]));
@@ -117,7 +117,7 @@ InstallGlobalFunction(ExtractChamber,function(s,vC,f,n)
 	InnerTriangles:=[];
 	while not IsEmpty(B) do 
 		t:=Remove(B);
-		t_new:=UpwardContinuation(s,t[2],vC,t[1],NormalVectors[t[1]]);
+		t_new:=_UpwardContinuation(s,t[2],vC,t[1],NormalVectors[t[1]]);
 		if not t_new[1] in OuterTriangles then
 
 			Add(OuterTriangles,t_new[1]);

@@ -9,7 +9,7 @@ BindGlobal("UmbrellaPathFaceVertex",function(t,f,v,data,points)
 		# this way you only find one butterfly part of the non-manifold edge
 		old_face:=new_face;
 		if IsRamifiedEdge(t,edge) then
-			new_face:=UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
+			new_face:=_UpwardContinuation(t,edge,points,new_face,data[4][new_face])[1];
 		else
 			new_face:=Difference(FacesOfEdge(t,edge),[new_face])[1];
 		fi;
@@ -112,7 +112,7 @@ BindGlobal("_FixVertOfOuterNMEdge", function(t,e,Coords,points,data,shift_param,
 	f:=FacesOfEdge(t,e)[1];
 
 	
-	data_fan:=CalculateFan(t,e,points,f,data[4][f]);
+	data_fan:=_CalculateFan(t,e,points,f,data[4][f]);
     
 
 	index_f:=0;
@@ -223,7 +223,7 @@ BindGlobal("_FixVertOfInnerNMEdge", function(t,e,Coords,points,data,shift_param,
 	initial_f:=FacesOfEdge(t,e)[1];
 
 	#halber winkel
-	data_fan:=CalculateFan(t,e,points,initial_f,data[4][initial_f]);
+	data_fan:=_CalculateFan(t,e,points,initial_f,data[4][initial_f]);
     
 
 	index_f:=0;

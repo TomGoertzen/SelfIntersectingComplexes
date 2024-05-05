@@ -46,6 +46,16 @@ DeclareGlobalFunction("SetNonManifoldEdgeShift");
 ## <#/GAPDoc>
 DeclareGlobalFunction("SetPrecisionForIntersections");
 
+## <#GAPDoc Label="FindOuterTriangle">
+## <ManSection>
+## <Func Name="FindOuterTriangle" Arg="t,coordinates"/>
+## <Description>
+##   For a given triangular complex <A>t</A>, with embedding given by <A>coordinates</A>, returns a face on the outer hull together with a correctly oriented normal
+## </Description>
+## </ManSection>
+## <#/GAPDoc>
+DeclareGlobalFunction("FindOuterTriangle");
+
 ## <#GAPDoc Label="ExtractChamber">
 ## <ManSection>
 ## <Func Name="ExtractChamber" Arg="t,coordinates,f,n"/>
