@@ -35,6 +35,7 @@ jobs:
           GAP_PKGS_TO_CLONE: "sebasguts/AttributeScheduler.git gap-packages/NautyTracesInterface.git gap-packages/SimplicialSurfaces.git"
           GAPBRANCH: ${{ matrix.gap-branch }}
       - uses: gap-actions/build-pkg@v1
+      - uses: gap-actions/build-pkg-docs@v1
       - uses: gap-actions/run-pkg-tests@v2
       - uses: gap-actions/process-coverage@v2
       - name: Upload coverage reports to Codecov
