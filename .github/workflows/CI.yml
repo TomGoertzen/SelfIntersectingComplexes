@@ -37,9 +37,10 @@ jobs:
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v2
       - uses: gap-actions/process-coverage@v2
-      - uses: codecov/codecov-action@v3
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}  # Reference the secret here
+          token: ${{ secrets.CODECOV_TOKEN }}
 
  # The documentation job
   manual:
