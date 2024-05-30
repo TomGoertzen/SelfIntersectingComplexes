@@ -16,10 +16,15 @@ end);
 
 # Create Simplicial Surface from Coordinate List
 # Input is of type [IsList,IsFloat]
-BindGlobal( "_SimplicialSurfaceFromCoordinates", function(params,eps)
-        local Coords, faces, f, i, j, l, pos, VerticesInFaces, VerticesCoords, verts, surf;
-        Coords := params[1];
-        faces := params[2];
+BindGlobal( "_SimplicialSurfaceFromCoordinates", function(Coords)
+        local faces, f, i, j, l, c, pos, eps, VerticesInFaces, VerticesCoords, verts, surf;
+        
+        eps := _SelfIntersectingComplexesParameters.eps;
+        faces := [];
+        
+        for c in Coords do
+            faces[Position(Coords,c)]:= Position(Coords,c);
+        od;
         
         # vertex counter
         i := 1;
@@ -37,7 +42,7 @@ BindGlobal( "_SimplicialSurfaceFromCoordinates", function(params,eps)
                 pos := _NumericalPosition(VerticesCoords,Coords[f][l],eps);
             
                 if pos = fail then
-                    # vertex coord is new
+                    # vertex coord. is new
                     VerticesCoords[i] := Coords[f][l];
                     
                     verts[l] := i;
@@ -58,7 +63,8 @@ BindGlobal( "_SimplicialSurfaceFromCoordinates", function(params,eps)
         surf := TriangularComplexByVerticesInFaces(VerticesInFaces);
 
         return [surf,VerticesCoords];
-end);
+    end
+);
 
 InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,group,group_ort)
     local data, f, n, order_data, unramified_data, unram_surf, unram_points,coords;
@@ -78,8 +84,7 @@ InstallGlobalFunction(PrintableSymmetricOuterHull, function(t, points, name,grou
     coords := f[3];
     order_data := f[4];
     
-    DrawSTLwithNormals(unram_surf, name, unram_points, -data[4], []);
-    # TODO: normals wont be completely correct after we remedy the mfd
+    DrawSTLwithNormals(unram_surf, name, unram_points, -f[5], []);
     return [data[1], unram_surf, unram_points, data[4]];
 end);
 
@@ -101,8 +106,8 @@ InstallGlobalFunction(PrintableOuterHull, function(t, points, name)
     coords := f[3];
     order_data := f[4];
     
-    DrawSTLwithNormals(unram_surf, name, unram_points, -data[4], []);
-    # TODO: normals wont be completely correct after we remedy the mfd
+    
+    DrawSTLwithNormals(unram_surf, name, unram_points, -f[5], []);
     return [data[1], unram_surf, unram_points, data[4]];
 end);
 

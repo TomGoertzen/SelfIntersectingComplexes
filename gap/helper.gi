@@ -381,7 +381,6 @@ BindGlobal("_ReadSTL", function(fileName)
 			endsign := r2[1];
 			if not endsign = "endsolid" then
 				Coords[i]:=[];
-				# TODO:  maybe find way to round less?
 				
 				normal := [Float(r2[3]),Float(r2[4]),Float(r2[5])];
 				Coords[i][4]:=normal;
