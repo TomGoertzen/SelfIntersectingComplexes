@@ -358,7 +358,7 @@ BindGlobal("_ChooseStartOfNMPath", function(e,verts_of_e)
 	Flat(delet_e);
 	if delet_e = [] then
 		# NM edges form circle
-		return [e,true,inner,isolated_edges];
+		return [e,true,inner,isolated,isolated_edges];
 	else
 		return [delet_e,false,inner,isolated,isolated_edges];
 	fi;
