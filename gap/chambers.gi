@@ -136,7 +136,7 @@ InstallGlobalFunction(DrawSTLScratch,function(t,fileName,vC)
 	local f,normals,normal,x,y,ccoords,vof;
 	normals:=[];
     if IsSimplicialSurface(t) then
-        if IsOrientable(t) then
+        if IsOrientableSurface(t) then
 		  vof:=VerticesOfFaces(t);
         fi;
 	else
