@@ -111,14 +111,14 @@ BindGlobal("_LineSegmentIntersectionColinear",function(l1,l2,eps)
 				fi;
 			od;
 			# check if r1 has same non-zero entries
-			for i in BoundPositions(r1) do
-				for j in BoundPositions(r1) do
+			for i in PositionsBound(r1) do
+				for j in PositionsBound(r1) do
 					if r1[i]^2>eps and r1[j]^2>eps and (r1[i]-r1[j])^2>eps then
 						return [false];
 					fi;
 				od;
 			od;
-			for i in BoundPositions(r1) do
+			for i in PositionsBound(r1) do
 				if r1[i]^2>eps then
 					r1:=r1[i];
 					break;
@@ -127,7 +127,7 @@ BindGlobal("_LineSegmentIntersectionColinear",function(l1,l2,eps)
 			if IsList(r1) then
 				r1:=0.;
 			fi;
-			for i in BoundPositions(r2) do
+			for i in PositionsBound(r2) do
 				if r2[i]^2>eps then
 					r2:=r2[i];
 					break;
@@ -136,7 +136,7 @@ BindGlobal("_LineSegmentIntersectionColinear",function(l1,l2,eps)
 			if IsList(r2) then
 				r2:=0.;
 			fi;
-			for i in BoundPositions(s1) do
+			for i in PositionsBound(s1) do
 				if s1[i]^2>eps then
 					s1:=s1[i];
 					break;
@@ -145,7 +145,7 @@ BindGlobal("_LineSegmentIntersectionColinear",function(l1,l2,eps)
 			if IsList(s1) then
 				s1:=0.;
 			fi;
-			for i in BoundPositions(s2) do
+			for i in PositionsBound(s2) do
 				if s2[i]^2>eps then
 					s2:=s2[i];
 					break;
@@ -449,7 +449,7 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 		cur:=Remove(check_edges,1);
 		i:=cur[1];
 		j:=cur[2];
-		if i <=Size(data[2]) and j<=Size(data[2]) and i in BoundPositions(data[2]) and j in BoundPositions(data[2]) then
+		if i <=Size(data[2]) and j<=Size(data[2]) and i in PositionsBound(data[2]) and j in PositionsBound(data[2]) then
 			res:=_LineSegmentIntersection([data[1][data[2][i][1]],data[1][data[2][i][2]]],[data[1][data[2][j][1]],data[1][data[2][j][2]]],eps);
 			if res[1] then
 				entry:=_MyNumericalPosition(data[1],res[2],eps);
@@ -470,7 +470,7 @@ InstallGlobalFunction(RectifyDiscIntersections,function(data)
 				fi;
 			fi;
 		fi;
-		for k in BoundPositions(data[2]) do
+		for k in PositionsBound(data[2]) do
 			if Size(data[2][k])=1 then
 				Error();
 			fi;

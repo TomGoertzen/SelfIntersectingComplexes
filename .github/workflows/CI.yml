@@ -4,14 +4,15 @@ name: CI
 on:
   push:
     branches:
+      - master
       - main
   pull_request:
 
 # the `concurrency` settings ensure that not too many CI jobs run in parallel
 concurrency:
   # group by workflow and ref; the last slightly strange component ensures that for pull
-  # requests, we limit to 1 concurrent job, but for the master branch we don't
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/master' || github.run_number }}
+  # requests, we limit to 1 concurrent job, but for the default repository branch we don't
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref_name != github.event.repository.default_branch || github.run_number }}
   # Cancel intermediate builds, but only if it is a pull request build.
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
@@ -25,38 +26,60 @@ jobs:
       matrix:
         gap-branch:
           - master
+          - stable-4.15
+          - stable-4.14
+          - stable-4.13
           - stable-4.12
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "io profiling AttributeScheduler grape datastructures orb digraphs NautyTracesInterface SimplicialSurfaces"
-          GAP_PKGS_TO_CLONE: "sebasguts/AttributeScheduler.git gap-packages/NautyTracesInterface.git gap-packages/SimplicialSurfaces.git"
+          GAP_PKGS_TO_CLONE: "gap-packages/AttributeScheduler.git gap-packages/NautyTracesInterface.git gap-packages/SimplicialSurfaces.git"
           GAPBRANCH: ${{ matrix.gap-branch }}
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/build-pkg-docs@v1
-      - uses: gap-actions/run-pkg-tests@v2
+      - uses: gap-actions/run-pkg-tests@v3
+      - uses: gap-actions/run-pkg-tests@v3
+        with:
+          only-needed: true
       - uses: gap-actions/process-coverage@v2
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+      - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
- # The documentation job
+  # The documentation job
   manual:
     name: Build manuals
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: gap-actions/setup-gap@v2
-      - uses: gap-actions/build-pkg-docs@v1
+      - run: sudo apt-get update
+      - run: sudo apt-get install sed texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-extra-utils texlive-fonts-recommended texlive-fonts-extra tex4ht 
+      - uses: actions/checkout@v6
+      - uses: gap-actions/setup-gap@v3
+      - shell: bash
+        run: |
+          # Install packages via PackageManager
+          gap -c 'LoadPackage("PackageManager");
+                    InstallPackage("io");
+                    InstallPackage("profiling");
+                    InstallPackage("grape");
+                    InstallPackage("datastructures");
+                    InstallPackage("orb");
+                    InstallPackage("digraphs");
+                    InstallPackage("https://github.com/gap-packages/AttributeScheduler.git");
+                    InstallPackage("https://github.com/gap-packages/NautyTracesInterface.git");
+                    InstallPackage("https://github.com/gap-packages/SimplicialSurfaces.git");
+                    QUIT;'
+      - uses: gap-actions/build-pkg@v1
+      - uses: gap-actions/build-pkg-docs@v2
         with:
           use-latex: 'true'
       - name: 'Upload documentation'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: manual
+          archive: false
           path: ./doc/manual.pdf
           if-no-files-found: error
